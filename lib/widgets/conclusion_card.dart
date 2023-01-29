@@ -1,0 +1,1 @@
+class ConclutionCard extends s
