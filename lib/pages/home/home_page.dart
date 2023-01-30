@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:monotes/pages/home/home_controller.dart';
@@ -31,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     BottomNavigationBarItem(icon: Icon(Icons.analytics), label: "分析"),
     BottomNavigationBarItem(icon: Icon(Icons.person), label: "我的"),
   ];
-  var homeController = Get.put(HomeController());
+  var homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
