@@ -13,6 +13,8 @@ import 'package:monotes/pages/tabs/person/person_binding.dart';
 import 'package:monotes/pages/tabs/person/person_page.dart';
 import 'package:monotes/pages/tabs/record/record_binding.dart';
 import 'package:monotes/pages/tabs/record/record_page.dart';
+import 'package:monotes/pages/login/codeLoginStepOne/codeLoginStepOne_page.dart';
+import 'package:monotes/pages/login/codeLoginStepOne/codeLoginStepOne_binding.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -42,7 +44,13 @@ abstract class AppPages {
     GetPage(
         name: Routes.RECORD,
         page: () => RecordPage(),
-        binding: RecordBinding()),
+        binding: RecordBinding()
+    ),
+    GetPage(
+        name: Routes.CODE_LOGIN_STEP_ONE,
+        page: () => codeLoginStepOnePage(),
+        binding: codeLoginStepOneBinding()
+    ),
   ];
 
 // 命名路由的名称
@@ -69,4 +77,7 @@ abstract class Routes {
 
   // 记一笔页面
   static const RECORD = "/record";
+
+  // 验证码登录第一步
+  static const CODE_LOGIN_STEP_ONE = "/code-login-step-one";
 }
