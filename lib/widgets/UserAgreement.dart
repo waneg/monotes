@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:monotes/common/styleColor.dart';
 import 'package:bruno/bruno.dart';
+import 'package:get/get.dart';
 
 class UserAgreement extends StatefulWidget {
-  const UserAgreement({Key? key}) : super(key: key);
+  const UserAgreement({super.key});
 
   @override
   State<UserAgreement> createState() => _UserAgreementState();
 }
 
 class _UserAgreementState extends State<UserAgreement> {
+  late bool _checkValue = false;
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -21,28 +23,30 @@ class _UserAgreementState extends State<UserAgreement> {
           child: Transform.scale(
             scale:0.7,
             child: Checkbox(
-                activeColor: primary_color,
-                value: false,
-                onChanged: (v) {
-
-                }
+                activeColor: const Color.fromRGBO(64, 149, 229, 1),
+                value: _checkValue,
+                onChanged: (v){
+                  setState(() {
+                    _checkValue = v!;
+                  });
+                },
             ),
           ),
         ),
         const Text("同意", style: TextStyle(color: Color.fromRGBO(154, 154, 154, 1)),),
         const Text(
           "用户协议",
-          style: TextStyle(color: primary_color, decoration: TextDecoration.underline, decorationColor: primary_color),
+          style: TextStyle(color: Color.fromRGBO(64, 149, 229, 1), decoration: TextDecoration.underline, decorationColor: Color.fromRGBO(64, 149, 229, 1)),
         ),
         const Text("，",style: TextStyle(color: Color.fromRGBO(154, 154, 154, 1)),),
         const Text(
           "隐私政策",
-          style: TextStyle(color: primary_color, decoration: TextDecoration.underline, decorationColor: primary_color),
+          style: TextStyle(color: Color.fromRGBO(64, 149, 229, 1), decoration: TextDecoration.underline, decorationColor: Color.fromRGBO(64, 149, 229, 1)),
         ),
         const Text("和",style: TextStyle(color: Color.fromRGBO(154, 154, 154, 1)),),
         const Text(
           "儿童隐私保护指引",
-          style: TextStyle(color: primary_color, decoration: TextDecoration.underline, decorationColor: primary_color),
+          style: TextStyle(color: Color.fromRGBO(64, 149, 229, 1), decoration: TextDecoration.underline, decorationColor: Color.fromRGBO(64, 149, 229, 1)),
         )
       ],
     );

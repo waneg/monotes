@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:monotes/pages/login/codeLoginStepOne/codeLoginStepOne_controller.dart';
-import 'package:monotes/widgets/phone_text_field.dart';
+import 'package:monotes/widgets/text_field.dart';
 import 'package:monotes/widgets/UserAgreement.dart';
 
 class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
@@ -34,28 +34,35 @@ class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
         height: ScreenUtil().screenHeight,
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.only(left: 32, top: 44, right: 32).w,
+          padding: const EdgeInsets.only(left: 32, right: 32).w,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 40.h,),
               Text(
                 "验证码登录",
                 style: TextStyle(color: Colors.black, fontSize: 25.sp),
               ),
-              SizedBox(width: 1.w,height: 15.h,),
+              SizedBox(height: 15.h,),
               Text(
                 "首次登录会创建新账号",
                 style: TextStyle(color: Colors.black54, fontSize: 15.sp),
               ),
-              SizedBox(width: 1.w, height: 45.h,),
-              const PhoneTextField(),
-              SizedBox(width: 1.w, height: 10.h,),
-              const UserAgreement(),
-              SizedBox(width: 1.w, height: 25.h,),
+              SizedBox(height: 45.h,),
+              PhoneTextField(
+                controller: controller.phoneController,
+                onChanged: (value){
+
+                },
+              ),
+              SizedBox(height: 10.h,),
+              UserAgreement(),
+              SizedBox(height: 25.h,),
               BrnBigMainButton(
                 title: "下一步",
                 onTap: (){
-
+                  // Get.offNamed("code-login-step-two");
+                  Get.toNamed("/code-login-step-two");
                 }
               ),
               const Spacer(),
