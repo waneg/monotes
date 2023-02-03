@@ -15,6 +15,8 @@ import 'package:monotes/pages/tabs/record/record_binding.dart';
 import 'package:monotes/pages/tabs/record/record_page.dart';
 import 'package:monotes/pages/login/codeLoginStepOne/codeLoginStepOne_page.dart';
 import 'package:monotes/pages/login/codeLoginStepOne/codeLoginStepOne_binding.dart';
+import 'package:monotes/pages/login/codeLoginStepTwo/codeLoginStepTwo_page.dart';
+import 'package:monotes/pages/login/codeLoginStepTwo/codeLoginStepTwo_binding.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -51,6 +53,12 @@ abstract class AppPages {
         page: () => codeLoginStepOnePage(),
         binding: codeLoginStepOneBinding()
     ),
+    GetPage(
+        name: Routes.CODE_LOGIN_STEP_TWO,
+        page: () => codeLoginStepTwoPage(),
+        binding: codeLoginStepTwoBinding()
+    ),
+
   ];
 
 // 命名路由的名称
@@ -78,6 +86,9 @@ abstract class Routes {
   // 记一笔页面
   static const RECORD = "/record";
 
-  // 验证码登录第一步
+  // 验证码登录第一步——输入手机号
   static const CODE_LOGIN_STEP_ONE = "/code-login-step-one";
+
+  // 验证码登录第二步——输入验证码
+  static const CODE_LOGIN_STEP_TWO = "/code-login-step-two";
 }

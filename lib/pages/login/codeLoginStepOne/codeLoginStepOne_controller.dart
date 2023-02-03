@@ -16,4 +16,5 @@ class codeLoginStepOneController extends GetxController {
     // TODO: implement onReady
     super.onReady();
   }
+
 }
