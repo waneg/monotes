@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:monotes/common/config.dart';
 
 class ConclusionCard extends StatefulWidget {
@@ -32,35 +33,35 @@ class _ConclusionCardState extends State<ConclusionCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         "本月收入",
                         style:
-                            TextStyle(fontSize: 16, color: Color(0xFF6B7979)),
+                            TextStyle(fontSize: 12.w, color: const Color(0xFF6B7979)),
                       ),
                       Text(
                         widget._income.toStringAsFixed(2),
-                        style: const TextStyle(
-                            fontSize: 18,
+                        style: TextStyle(
+                            fontSize: 14.w,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF6B7979)),
+                            color: const Color(0xFF6B7979)),
                       )
                     ],
                   ),
-                  const SizedBox(
-                    width: 100,
+                  SizedBox(
+                    width: 55.w,
                   ),
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("本月结余",
+                        Text("本月结余",
                             style: TextStyle(
-                                fontSize: 16, color: Color(0xFF6B7979))),
+                                fontSize: 12.w, color: const Color(0xFF6B7979))),
                         Text(
                           widget._balance.toStringAsFixed(2),
-                          style: const TextStyle(
-                              fontSize: 18,
+                          style: TextStyle(
+                              fontSize: 14.w,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF6B7979)),
+                              color: const Color(0xFF6B7979)),
                         )
                       ])
                 ],
@@ -69,16 +70,16 @@ class _ConclusionCardState extends State<ConclusionCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "本月支出",
-                    style: TextStyle(fontSize: 16, color: Color(0xFF6B7979)),
+                    style: TextStyle(fontSize: 12.w, color: const Color(0xFF6B7979)),
                   ),
                   Text(
                     widget._expenditure.toStringAsFixed(2),
-                    style: const TextStyle(
-                        fontSize: 26,
+                    style: TextStyle(
+                        fontSize: 18.w,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF5FA392)),
+                        color: const Color(0xFF5FA392)),
                   )
                 ],
               )

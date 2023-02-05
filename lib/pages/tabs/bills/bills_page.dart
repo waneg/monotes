@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/pages/tabs/bills/bills_controller.dart';
 import 'package:monotes/widgets/conclusion_card.dart';
+import 'package:monotes/widgets/detail_card.dart';
 
 class BillsPage extends StatelessWidget {
   BillsPage({Key? key}) : super(key: key);
@@ -22,7 +24,7 @@ class BillsPage extends StatelessWidget {
         title: const Text("账单明细"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.fromLTRB(20.w, 20.w, 20.2, 0),
         child: Column(
           children: [
             ConclusionCard(0, 0, 0),
@@ -59,9 +61,9 @@ class BillsPage extends StatelessWidget {
             ),
             Expanded(
                 child: ListView.builder(
-                    itemCount: 4,
+                    itemCount: billsController.billItems.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ListTile(title: Text("$index"));
+                      return DetailCard(billsController.billItems[index]);
                     }))
           ],
         ),
