@@ -4,10 +4,11 @@ class ThemeColor {
   static var pageColor = const Color.fromRGBO(241, 243, 240, 1);
   static var conclusionBgColor = const Color.fromRGBO(221, 240, 238, 1);
   static var appBarColor = const Color(0xFF4095E5);
+  static var bgColor = const Color(0xFFEFEFEF);
 }
 
 const SHOPPING_TYPE = {
-  1: "餐饮美食  ",
+  1: "餐饮美食",
   2: "服饰装扮",
   3: "日用百货",
   4: "家居家装",

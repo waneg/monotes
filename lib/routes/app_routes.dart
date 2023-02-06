@@ -46,6 +46,7 @@ abstract class AppPages {
     GetPage(
         name: Routes.RECORD,
         page: () => RecordPage(),
+        transition: Transition.downToUp,
         binding: RecordBinding()
     ),
     GetPage(

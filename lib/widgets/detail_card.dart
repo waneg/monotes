@@ -23,7 +23,7 @@ class DetailCard extends StatelessWidget {
               Row(
                 children: [
                   SvgPicture.asset(
-                    "assets/bill_icons/餐饮美食.svg",
+                    "assets/bill_icons/${SHOPPING_TYPE[billsDetail.typeId]}.svg",
                     width: 20.w,
                   ),
                   SizedBox(width: 20.w),

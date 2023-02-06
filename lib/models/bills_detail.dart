@@ -4,7 +4,5 @@ class BillsDetail {
   late String merchant; // 商家
   late double amount; // 消费金额
   late DateTime time; // 消费时间
-  List<String> labels = [];
+  List<String> labels = []; // 消费标签
 }
-
-
