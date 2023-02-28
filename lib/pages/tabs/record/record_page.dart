@@ -1,6 +1,7 @@
 import 'package:bruno/bruno.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,7 +41,6 @@ class RecordPage extends GetView<RecordController> {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10.w))),
                 width: double.infinity,
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,7 +52,7 @@ class RecordPage extends GetView<RecordController> {
                         ),
                         const Spacer(),
                         Container(
-                          width: 200,
+                          width: 200.sp,
                           child: TextField(
                               controller: controller.inputTimeController,
                               readOnly: true,
@@ -61,10 +61,10 @@ class RecordPage extends GetView<RecordController> {
                                     icon: const Icon(Icons.date_range),
                                     onPressed: () {
                                       Pickers.showDatePicker(context,
-                                        onConfirm: (p) {
-                                          controller.inputTimeController.text = "${p.year}-${p.month}-${p.day}";
-                                        }
-                                      );
+                                          onConfirm: (p) {
+                                        controller.inputTimeController.text =
+                                            "${p.year}-${p.month}-${p.day}";
+                                      });
                                     },
                                   ),
                                   contentPadding: const EdgeInsets.all(15),
@@ -74,10 +74,70 @@ class RecordPage extends GetView<RecordController> {
                                   ))),
                         )
                       ],
-                    ),
+                    ), //消费时间
+                    Row(
+                      children: [
+                        Text(
+                          "消费金额",
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                        const Spacer(),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          width: 200.sp,
+                          child: TextField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              controller: controller.inputCostController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(15),
+                                  enabled: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ))),
+                        )
+                      ],
+                    ), //消费金额
+                    Row(
+                      children: [
+                        Text(
+                          "消费店家",
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                        const Spacer(),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          width: 200.sp,
+                          child: TextField(
+                              controller: controller.inputMerchantController,
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(15),
+                                  enabled: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ))),
+                        )
+                      ],
+                    ), //消费店家
+                    SizedBox(
+                        height: 300.w,
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, //每行三列
+                            childAspectRatio: 1.0, //显示区域宽高相等
+                          ),
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            //如果显示到最后一个并且Icon总数小于200时继续获取数据
+                            return Icon(Icons.abc);
+                          },
+                        ))
                   ],
                 )),
-            Spacer(),
+            const Spacer(),
             Column(
               children: [
                 FloatingActionButton(

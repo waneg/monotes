@@ -7,6 +7,9 @@ class RecordController extends GetxController {
   var inputCostController = TextEditingController();
   var inputMerchantController = TextEditingController();
 
+  var consumptionTypes = [];
+  var selectedTypes = 0.obs;
+
   @override
   void onInit() {
     // TODO: implement onReady
