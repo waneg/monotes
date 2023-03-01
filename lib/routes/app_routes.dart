@@ -17,6 +17,10 @@ import 'package:monotes/pages/login/codeLoginStepOne/codeLoginStepOne_page.dart'
 import 'package:monotes/pages/login/codeLoginStepOne/codeLoginStepOne_binding.dart';
 import 'package:monotes/pages/login/codeLoginStepTwo/codeLoginStepTwo_page.dart';
 import 'package:monotes/pages/login/codeLoginStepTwo/codeLoginStepTwo_binding.dart';
+import 'package:monotes/pages/expand_function/multi_currency/multi_currency_binding.dart';
+import 'package:monotes/pages/expand_function/multi_currency/multi_currency_page.dart';
+import 'package:monotes/pages/expand_function/add_currency/add_currency_binding.dart';
+import 'package:monotes/pages/expand_function/add_currency/add_currency_page.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -59,7 +63,16 @@ abstract class AppPages {
         page: () => codeLoginStepTwoPage(),
         binding: codeLoginStepTwoBinding()
     ),
-
+    GetPage(
+        name: Routes.MULTI_CURRENCY,
+        page: () => MultiCurrencyPage(),
+        binding: MultiCurrencyBinding()
+    ),
+    GetPage(
+        name: Routes.ADD_CURRENCY,
+        page: () => AddCurrencyPage(),
+        binding: AddCurrencyBinding()
+    ),
   ];
 
 // 命名路由的名称
@@ -92,4 +105,10 @@ abstract class Routes {
 
   // 验证码登录第二步——输入验证码
   static const CODE_LOGIN_STEP_TWO = "/code-login-step-two";
+
+  // 多币种页面
+  static const MULTI_CURRENCY = "/multi_currency";
+
+  // 添加其他币种
+  static const ADD_CURRENCY = "/add_currency";
 }
