@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/pages/tabs/record/record_controller.dart';
@@ -121,20 +122,32 @@ class RecordPage extends GetView<RecordController> {
                         )
                       ],
                     ), //消费店家
-                    SizedBox(
+                    Container(
+                        margin: EdgeInsets.all(10.w),
                         height: 300.w,
                         child: GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, //每行三列
-                            childAspectRatio: 1.0, //显示区域宽高相等
-                          ),
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            //如果显示到最后一个并且Icon总数小于200时继续获取数据
-                            return Icon(Icons.abc);
-                          },
-                        ))
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              childAspectRatio: 1.0, //显示区域宽高相等
+                            ),
+                            itemCount: controller.consumptionTypes.length,
+                            itemBuilder: (context, index) {
+                              var info = controller.consumptionTypes[index];
+                              return TextButton.icon(
+                                  style: const ButtonStyle(
+                                      foregroundColor: MaterialStatePropertyAll(
+                                          Colors.black)),
+                                  onPressed: () {
+                                    controller.selectedType = (index + 1).obs;
+                                    print("${index + 1}个图标被点击");
+                                  },
+                                  icon: SizedBox(
+                                    width: 20.w,
+                                    child: SvgPicture.asset(info.assetName),
+                                  ),
+                                  label: Text(info.label));
+                            }))
                   ],
                 )),
             const Spacer(),
