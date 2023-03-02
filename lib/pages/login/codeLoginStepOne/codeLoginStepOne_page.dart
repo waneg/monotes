@@ -6,9 +6,14 @@ import 'package:get/get.dart';
 import 'package:monotes/pages/login/codeLoginStepOne/codeLoginStepOne_controller.dart';
 import 'package:monotes/widgets/text_field.dart';
 import 'package:monotes/widgets/UserAgreement.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
   const codeLoginStepOnePage({Key? key}) : super(key: key);
+
+  static bool isChinaPhoneLegal(String str) {
+    return new RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +66,31 @@ class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
               BrnBigMainButton(
                 title: "下一步",
                 onTap: (){
-                  // Get.offNamed("code-login-step-two");
-                  Get.toNamed("/code-login-step-two");
+                  int phone = int.parse(controller.phoneController.text);
+                  if(isChinaPhoneLegal(phone.toString()) && controller.isCheck.value){
+                    Get.toNamed("/code-login-step-two", arguments: {"phone": phone});
+                  } else if(!isChinaPhoneLegal(phone.toString())){
+                    Fluttertoast.showToast(
+                        msg: "手机号格式不正确，请重新输入",
+                        toastLength: Toast.LENGTH_SHORT, //提示时间 只针对安卓平台
+                        gravity: ToastGravity.CENTER, //方位
+                        timeInSecForIosWeb: 1,  //提示时间 针对ios和web
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+                  }else if(!controller.isCheck.value){
+                    Fluttertoast.showToast(
+                        msg: "请先同意用户协议、隐私政策和儿童隐私保护指引",
+                        toastLength: Toast.LENGTH_SHORT, //提示时间 只针对安卓平台
+                        gravity: ToastGravity.CENTER, //方位
+                        timeInSecForIosWeb: 1,  //提示时间 针对ios和web
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+                  }
+
                 }
               ),
               const Spacer(),

@@ -47,7 +47,7 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                     style: TextStyle(color: Colors.black54, fontSize: 14.sp),
                   ),
                   Text(
-                    "+86 153****9286",
+                    "+86 ${controller.phone.toString().replaceRange(4, 7, '****')}",
                     style: TextStyle(color: Colors.black54, fontSize: 14.sp),
                   ),
                 ],
@@ -90,7 +90,11 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                   // 隐藏键盘
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
-                onChanged: (value){},
+                onChanged: (value){
+                  if(value.length == 6){
+                    controller.loginByCode(value.toString());
+                  }
+                },
                 beforeTextPaste: (text) {
                   print("Allowing to paste $text");
                   return true;
@@ -100,7 +104,11 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Obx(()=>controller.seconds.value==0?
-                    TextButton(onPressed: (){}, child: const Text("重新发送验证码", style: TextStyle(color: Colors.black54),)):
+                    TextButton(
+                        onPressed: (){
+                          controller.sendCode();
+                          },
+                        child: const Text("重新发送验证码", style: TextStyle(color: Colors.black54),)):
                       Text("重新发送（${controller.seconds.value}）", style: const TextStyle(color: Colors.black54),)
                   ),
                   TextButton(onPressed: (){}, child: const Text("获取帮助")),
