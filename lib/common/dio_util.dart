@@ -64,19 +64,13 @@ class DioUtils {
 }
 
 class DioInterceptors extends Interceptor {
-  // getToken() async{
-  //   var token =  await StorageUtil.getStringItem("token");
-  //   print(token);
-  //   return token;
-  // }
-
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // String token = getToken() as String;
-    // if(token != null){
-    //   // 头部添加token
-    //   options.headers["token"] = token;
-    // }
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async{
+    var token = await StorageUtil.getToken();
+    if(token != null){
+      // 头部添加token
+      options.headers["token"] = token.toString();
+    }
     // 更多业务需求
     handler.next(options);
     // super.onRequest(options, handler);

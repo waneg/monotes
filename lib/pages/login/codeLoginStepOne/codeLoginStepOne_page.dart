@@ -12,7 +12,7 @@ class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
   const codeLoginStepOnePage({Key? key}) : super(key: key);
 
   static bool isChinaPhoneLegal(String str) {
-    return new RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
+    return RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
   }
 
   @override
@@ -61,7 +61,7 @@ class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
                 },
               ),
               SizedBox(height: 10.h,),
-              UserAgreement(),
+              UserAgreement(controller: controller,),
               SizedBox(height: 25.h,),
               BrnBigMainButton(
                 title: "下一步",
@@ -93,33 +93,6 @@ class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
 
                 }
               ),
-              const Spacer(),
-              Container(
-                margin: const EdgeInsets.only(bottom: 30).h,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("更多登录方式", style: TextStyle(color: Color.fromRGBO(154, 154, 154, 1)),),
-                    InkWell(
-                      onTap: (){
-
-                      },
-                      child: Transform.scale(
-                        scale: 0.8,
-                        child: Container(
-                          padding: const EdgeInsets.all(3).w,
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(3, 191, 155, 1),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: const Icon(Icons.wechat, color: Colors.white,),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              )
-
             ],
           ),
         ),

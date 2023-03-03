@@ -21,6 +21,8 @@ import 'package:monotes/pages/expand_function/multi_currency/multi_currency_bind
 import 'package:monotes/pages/expand_function/multi_currency/multi_currency_page.dart';
 import 'package:monotes/pages/expand_function/add_currency/add_currency_binding.dart';
 import 'package:monotes/pages/expand_function/add_currency/add_currency_page.dart';
+import 'package:monotes/pages/login/set_password/set_password_binding.dart';
+import 'package:monotes/pages/login/set_password/set_password_page.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -73,6 +75,11 @@ abstract class AppPages {
         page: () => AddCurrencyPage(),
         binding: AddCurrencyBinding()
     ),
+    GetPage(
+        name: Routes.SET_PASSWORD,
+        page: () => SetPasswordPage(),
+        binding: SetPasswordBinding()
+    ),
   ];
 
 // 命名路由的名称
@@ -111,4 +118,7 @@ abstract class Routes {
 
   // 添加其他币种
   static const ADD_CURRENCY = "/add_currency";
+
+  // 设置密码（新用户和忘记密码时）
+  static const SET_PASSWORD = "/set_password";
 }
