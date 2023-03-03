@@ -67,4 +67,13 @@ class StorageUtil{
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
+
+  static getToken() async{
+    String token =  await getStringItem("token");
+    return token;
+  }
+
+  static setToken(String token) async{
+    await setStringItem("token", token);
+  }
 }

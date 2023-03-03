@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/dio_util.dart';
 import 'package:monotes/common/storage_util.dart';
+import 'package:monotes/common/config.dart';
 
 class codeLoginStepTwoController extends GetxController {
   final TextEditingController editingController = TextEditingController();
@@ -34,25 +35,21 @@ class codeLoginStepTwoController extends GetxController {
     });
   }
 
-  void sendCode() async{
+  sendCode() async{
     seconds.value = 60;
     var response = await DioUtils().post("/user/getCode", data: {"phone": phone});
-    print(response);
   }
   
-  void loginByCode(String code) async{
+  loginByCode(String code) async{
     var response = await DioUtils().post("/user/loginByCode", data: {"phone": phone.toString(), "code": code});
-    print(response);
-    if(response.data["msg"] == "success"){
-      String token = response.data["data"]["token"];
-      setToken(token);
+    int status = response.data["code"];
+    if(status == ResponseStatus.SUCCESS){
+      String token =  response.data["data"]["token"];
+      await StorageUtil.setToken(token);
     }
-
+    return status;
   }
 
-  void setToken(String token) async{
-    await StorageUtil.setStringItem("token", token);
-  }
 
 
 }

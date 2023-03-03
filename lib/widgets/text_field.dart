@@ -30,3 +30,36 @@ class PhoneTextField extends StatelessWidget {
     );
   }
 }
+
+class PasswordTextField extends StatelessWidget {
+  final void Function(String)? onChanged;
+  final TextEditingController? controller;
+  final String hintText;
+  const PasswordTextField({super.key,this.controller,this.onChanged, required this.hintText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      height: 52.h,
+      padding: const EdgeInsets.only(left: 20).w,
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(243, 243, 243, 1),
+        borderRadius: BorderRadius.circular(10).w,
+      ),
+      child: TextField(
+        controller: controller,
+        style: TextStyle(fontSize: 19.sp),
+        obscureText: true,
+        keyboardType: TextInputType.visiblePassword,
+        decoration: InputDecoration(
+          hintText: hintText,
+          border: InputBorder.none,
+          // suffixIcon:
+        ),
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+

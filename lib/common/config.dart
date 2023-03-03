@@ -32,3 +32,8 @@ const SHOPPING_TYPE = {
   22: "亲友",
   23: "其他",
 };
+
+class ResponseStatus{
+  static int SUCCESS = 0;
+  static int LOGIN_FAIL = 100;
+}
