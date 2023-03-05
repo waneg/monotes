@@ -81,8 +81,8 @@ class DioInterceptors extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    var token = await StorageUtil.getToken();
-    if (token != null) {
+    String token = await StorageUtil.getToken()??'';
+    if (token != '') {
       // 头部添加token
       options.headers["token"] = token.toString();
       print(options.headers["token"]);
