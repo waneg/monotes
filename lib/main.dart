@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: Routes.CODE_LOGIN_STEP_ONE,
+            initialRoute: Routes.SPLASH,
             getPages: AppPages.pages,
           );
         });

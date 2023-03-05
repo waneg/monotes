@@ -163,7 +163,8 @@ class RecordPage extends GetView<RecordController> {
                   style: TextStyle(color: Color(0xFF101010), height: 2.5),
                 )
               ],
-            )
+            ),
+            ElevatedButton(onPressed: controller.submitRecord, child: const Text("确定")),
           ],
         ),
       ),

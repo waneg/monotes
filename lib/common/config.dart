@@ -7,6 +7,8 @@ class ThemeColor {
   static var bgColor = const Color(0xFFEFEFEF);
 }
 
+const String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxIiwiZXhwIjoxNjgwMzU2NDAwfQ.P2S1L1oYIkurEuAVszaQgIAJ1sXkRfiSwLN55gk_M4g";
+
 const SHOPPING_TYPE = {
   1: "餐饮美食",
   2: "服饰装扮",
