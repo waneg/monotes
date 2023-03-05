@@ -3,8 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bruno/bruno.dart';
 import 'package:get/get.dart';
 
+import '../pages/login/codeLoginStepOne/codeLoginStepOne_controller.dart';
+
 class UserAgreement extends StatefulWidget {
-  const UserAgreement({super.key});
+  final controller;
+  const UserAgreement({super.key, this.controller});
 
   @override
   State<UserAgreement> createState() => _UserAgreementState();
@@ -12,6 +15,7 @@ class UserAgreement extends StatefulWidget {
 
 class _UserAgreementState extends State<UserAgreement> {
   late bool _checkValue = false;
+  // final controller = Get.find<codeLoginStepOneController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,7 @@ class _UserAgreementState extends State<UserAgreement> {
                 activeColor: const Color.fromRGBO(64, 149, 229, 1),
                 value: _checkValue,
                 onChanged: (v){
+                  widget.controller.isCheck.value = v!;
                   setState(() {
                     _checkValue = v!;
                   });
