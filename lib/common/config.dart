@@ -36,6 +36,17 @@ const SHOPPING_TYPE = {
 };
 
 class ResponseStatus{
-  static int SUCCESS = 0;
-  static int LOGIN_FAIL = 100;
+  static int SUCCESS = 0; ///响应成功
+  static int LOGIN_FAIL = 100; ///登录失败，用户名或密码错误
+  static int CODE_FAIL = 101; ///获取验证码失败，服务器未能发送验证码，请稍后再试
+  static int PHONE_ERROR = 102; ///手机号码格式错误,请修改后重新获取验证码
+  static int SET_PASSWORD_FAIL = 110; ///设置密码失败，请稍后再试
+  static int SET_PASSWORD_NOT_ALLOW = 111; ///超时未设置密码，已失效，请重新获取验证码
+  static int FAIL = 201; ///获取数据失败
+  static int NO_TOKEN = 400; ///无token，请重新登录
+  static int TOKEN_EX = 401; ///token验证失败，可能已过期，请重新登录
+  static int USER_EX = 402; ///用户不存在，请重新登录
+
+
+
 }
