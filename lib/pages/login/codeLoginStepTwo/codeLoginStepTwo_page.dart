@@ -10,6 +10,18 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
   const codeLoginStepTwoPage({Key? key}) : super(key: key);
 
+  void _toast(String text){
+    Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT, //提示时间 只针对安卓平台
+        gravity: ToastGravity.CENTER, //方位
+        timeInSecForIosWeb: 1,  //提示时间 针对ios和web
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,19 +106,19 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                 },
                 onChanged: (value) async{
                   if(value.length == 6){
-                    int status = await controller.loginByCode(value.toString());
+                    var res = await controller.loginByCode(value.toString());
+                    int status = res[0];
+                    bool isRegister = res[1];
                     if(status == ResponseStatus.SUCCESS){
-                      Get.offAndToNamed("/set_password");
+                      if(isRegister){
+                        Get.offAndToNamed("/set_password");
+                      }else{
+                        Get.toNamed("/home");
+                      }
                     } else if(status == ResponseStatus.LOGIN_FAIL){
-                      Fluttertoast.showToast(
-                          msg: "验证码错误",
-                          toastLength: Toast.LENGTH_SHORT, //提示时间 只针对安卓平台
-                          gravity: ToastGravity.CENTER, //方位
-                          timeInSecForIosWeb: 1,  //提示时间 针对ios和web
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
+                      _toast("验证码错误");
+                    } else if(status == ResponseStatus.CODE_FAIL){
+                      _toast("获取验证码失败，请稍后再试");
                     }
                   }
                 },
@@ -137,3 +149,5 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
     );
   }
 }
+
+

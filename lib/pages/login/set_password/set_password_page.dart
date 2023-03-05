@@ -10,6 +10,18 @@ import 'package:monotes/widgets/text_field.dart';
 class SetPasswordPage extends GetView<SetPasswordController> {
   const SetPasswordPage({super.key});
 
+  void _toast(String text){
+    Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT, //提示时间 只针对安卓平台
+        gravity: ToastGravity.CENTER, //方位
+        timeInSecForIosWeb: 1,  //提示时间 针对ios和web
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -65,7 +77,15 @@ class SetPasswordPage extends GetView<SetPasswordController> {
             BrnBigMainButton(
                 title: "开始使用",
                 onTap: (){
-
+                  String pass = controller.passwordController.text;
+                  String pass_confirm = controller.passwordConfirmController.text;
+                  if(pass.isNotEmpty && pass_confirm.isNotEmpty){
+                    if(pass == pass_confirm){
+                      controller.sendPassword(pass);
+                    }
+                  }else{
+                    _toast("密码不得为空");
+                  }
                 }
             ),
           ],

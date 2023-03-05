@@ -23,6 +23,8 @@ import 'package:monotes/pages/expand_function/add_currency/add_currency_binding.
 import 'package:monotes/pages/expand_function/add_currency/add_currency_page.dart';
 import 'package:monotes/pages/login/set_password/set_password_binding.dart';
 import 'package:monotes/pages/login/set_password/set_password_page.dart';
+import 'package:monotes/pages/login/login_by_password/login_by_password_binding.dart';
+import 'package:monotes/pages/login/login_by_password/login_by_password_page.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -80,6 +82,11 @@ abstract class AppPages {
         page: () => SetPasswordPage(),
         binding: SetPasswordBinding()
     ),
+    GetPage(
+        name: Routes.LOGIN_BY_PASSWORD,
+        page: () => LoginByPasswordPage(),
+        binding: LoginByPasswordBinding()
+    ),
   ];
 
 // 命名路由的名称
@@ -121,4 +128,7 @@ abstract class Routes {
 
   // 设置密码（新用户和忘记密码时）
   static const SET_PASSWORD = "/set_password";
+
+  // 通过手机号和密码登录
+  static const LOGIN_BY_PASSWORD = "/login_by_password";
 }
