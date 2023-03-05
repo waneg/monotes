@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/dio_util.dart';
+import 'package:monotes/common/storage_util.dart';
 
 class codeLoginStepOneController extends GetxController {
   TextEditingController phoneController = TextEditingController();
@@ -11,6 +12,7 @@ class codeLoginStepOneController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    StorageUtil.setToken("");
   }
 
   @override
