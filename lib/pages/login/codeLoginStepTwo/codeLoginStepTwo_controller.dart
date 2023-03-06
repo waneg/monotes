@@ -37,7 +37,12 @@ class codeLoginStepTwoController extends GetxController {
 
   sendCode() async{
     seconds.value = 60;
-    var response = await DioUtils().post("/user/getCode", data: {"phone": phone});
+    try {
+      var response = await DioUtils().post("/user/getCode", data: {"phone": phone});
+    } catch (e) {
+      print(e);
+    }
+
   }
   
   loginByCode(String code) async{
@@ -48,9 +53,7 @@ class codeLoginStepTwoController extends GetxController {
       String token =  response.data["data"]["token"];
       await StorageUtil.setToken(token);
     }
-    return [status, isRegister];
+    return {'status': status, 'isRegister': isRegister};
   }
-
-
 
 }

@@ -2,7 +2,9 @@ import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:monotes/common/dio_util.dart';
 import 'package:monotes/pages/login/login_by_password/login_by_password_controller.dart';
+import 'package:monotes/routes/app_routes.dart';
 import 'package:monotes/widgets/text_field.dart';
 import '../../../common/config.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +15,18 @@ import '../../../widgets/UserAgreement.dart';
 
 class LoginByPasswordPage extends GetView<LoginByPasswordController> {
   const LoginByPasswordPage({super.key});
+
+  static void _toast(String text){
+    Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT, //提示时间 只针对安卓平台
+        gravity: ToastGravity.CENTER, //方位
+        timeInSecForIosWeb: 1,  //提示时间 针对ios和web
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +75,17 @@ class LoginByPasswordPage extends GetView<LoginByPasswordController> {
             SizedBox(height: 25.h,),
             BrnBigMainButton(
                 title: "登录",
-                onTap: (){
+                onTap:() async {
+                  String phoneNumber = controller.phoneController.text;
+                  String password = controller.passwordController.text;
+                  var map = {'phone': phoneNumber, 'password': password};
+                  var response = await DioUtils().post('/user/loginByPassword', data: map);
+                  if (response.data['code'] == ResponseStatus.SUCCESS) {
 
+                    Get.toNamed(Routes.HOME);
+                  } else {
+                    _toast(response.data['msg']);
+                  }
                 }
             ),
             Align(

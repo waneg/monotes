@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:monotes/routes/app_routes.dart';
 import '../../../common/config.dart';
 import 'codeLoginStepTwo_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
   const codeLoginStepTwoPage({Key? key}) : super(key: key);
 
-  void _toast(String text){
+  static void _toast(String text){
     Fluttertoast.showToast(
         msg: text,
         toastLength: Toast.LENGTH_SHORT, //提示时间 只针对安卓平台
@@ -107,13 +108,13 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                 onChanged: (value) async{
                   if(value.length == 6){
                     var res = await controller.loginByCode(value.toString());
-                    int status = res[0];
-                    bool isRegister = res[1];
+                    int status = res['status'];
+                    bool isRegister = res['isRegister'];
                     if(status == ResponseStatus.SUCCESS){
                       if(isRegister){
                         Get.offAndToNamed("/set_password");
                       }else{
-                        Get.toNamed("/home");
+                        Get.toNamed(Routes.HOME);
                       }
                     } else if(status == ResponseStatus.LOGIN_FAIL){
                       _toast("验证码错误");

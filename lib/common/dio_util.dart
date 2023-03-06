@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'storage_util.dart';
 
 class DioUtils {
-  static const String BASE_URL = "http://100.65.145.188:8080"; //base url
+  static const String BASE_URL = "http://100.67.39.110:8080"; //base url
   static late DioUtils _instance;
   late Dio _dio;
   late BaseOptions _baseOptions;
@@ -68,20 +68,19 @@ class DioUtils {
     try {
       response = await _dio.put(url, data: data, options: options);
       print('post result ---${response.data}');
-    }on DioError catch(e){
+    } on DioError catch (e) {
       print('请求失败---错误类型${e.type}--错误信息${e.message}');
     }
 
     return response;
   }
-
 }
 
 class DioInterceptors extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    String token = await StorageUtil.getToken()??'';
+    String token = await StorageUtil.getToken() ?? '';
     if (token != '') {
       // 头部添加token
       options.headers["token"] = token.toString();

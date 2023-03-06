@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/pages/tabs/bills/bills_controller.dart';
+import 'package:monotes/routes/app_routes.dart';
 import 'package:monotes/widgets/conclusion_card.dart';
 import 'package:monotes/widgets/detail_card.dart';
 
@@ -31,7 +32,9 @@ class BillsPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15),
               child: CupertinoButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  Get.toNamed(Routes.RECORD)
+                },
                 color: const Color(0xFF93D2F3),
                 child: const Text("添加一条新记账"),
               ),

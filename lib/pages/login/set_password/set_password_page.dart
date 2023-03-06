@@ -82,7 +82,8 @@ class SetPasswordPage extends GetView<SetPasswordController> {
                   String pass_confirm = controller.passwordConfirmController.text;
                   if(pass.isNotEmpty && pass_confirm.isNotEmpty){
                     if(pass == pass_confirm){
-                      int status = controller.sendPassword(pass);
+                      Future status = controller.sendPassword(pass);
+                      print(status);
                       if(status == ResponseStatus.SUCCESS){
                         Get.toNamed("/Home");
                       }else if(status == ResponseStatus.SET_PASSWORD_NOT_ALLOW){
