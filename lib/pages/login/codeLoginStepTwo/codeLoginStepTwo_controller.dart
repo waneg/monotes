@@ -25,7 +25,7 @@ class codeLoginStepTwoController extends GetxController {
     super.onReady();
   }
 
-  countDown(){
+  countDown() {
     Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       seconds.value--;
       if (seconds.value == 0) {
@@ -35,25 +35,25 @@ class codeLoginStepTwoController extends GetxController {
     });
   }
 
-  sendCode() async{
+  sendCode() async {
     seconds.value = 60;
     try {
-      var response = await DioUtils().post("/user/getCode", data: {"phone": phone});
+      var response = await DioUtils().post(
+          "/user/getCode", data: {"phone": phone});
     } catch (e) {
       print(e);
     }
-
   }
-  
-  loginByCode(String code) async{
-    var response = await DioUtils().post("/user/loginByCode", data: {"phone": phone.toString(), "code": code});
+
+  loginByCode(String code) async {
+    var response = await DioUtils().post(
+        "/user/loginByCode", data: {"phone": phone.toString(), "code": code});
     int status = response.data["code"];
-    bool isRegister = response.data["data"]["isRegister"];
-    if(status == ResponseStatus.SUCCESS){
-      String token =  response.data["data"]["token"];
+    if (status == ResponseStatus.SUCCESS) {
+      String token = response.data["data"]["token"];
+      bool isRegister = response.data["data"]["isRegister"];
       await StorageUtil.setToken(token);
+      return {'status': status, 'isRegister': isRegister};
     }
-    return {'status': status, 'isRegister': isRegister};
   }
-
 }
