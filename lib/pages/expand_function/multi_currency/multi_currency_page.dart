@@ -31,7 +31,7 @@ class MultiCurrencyPage extends GetView<MultiCurrencyController> {
         ),
       ),
       floatingActionButton: SizedBox(
-        width: 120.w,
+        width: 155.w,
         child: FloatingActionButton(
           onPressed: () { Get.toNamed("/add_currency"); },
           shape: RoundedRectangleBorder(

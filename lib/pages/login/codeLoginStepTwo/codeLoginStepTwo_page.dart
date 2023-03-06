@@ -1,3 +1,4 @@
+import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -10,18 +11,6 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
   const codeLoginStepTwoPage({Key? key}) : super(key: key);
-
-  static void _toast(String text){
-    Fluttertoast.showToast(
-        msg: text,
-        toastLength: Toast.LENGTH_SHORT, //提示时间 只针对安卓平台
-        gravity: ToastGravity.CENTER, //方位
-        timeInSecForIosWeb: 1,  //提示时间 针对ios和web
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,18 +98,17 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                   if(value.length == 6){
                     var res = await controller.loginByCode(value.toString());
                     int status = res['status'];
-                    bool isRegister = res['isRegister'];
-
                     if(status == ResponseStatus.SUCCESS){
+                      bool isRegister = res['isRegister'];
                       if(isRegister){
                         Get.offAndToNamed("/set_password");
                       }else{
-                        Get.toNamed(Routes.HOME);
+                        Get.offAllNamed("/home");
                       }
                     } else if(status == ResponseStatus.LOGIN_FAIL){
-                      _toast("验证码错误");
+                      BrnToast.showInCenter(text: "验证码错误", context: context);
                     } else if(status == ResponseStatus.CODE_FAIL){
-                      _toast("获取验证码失败，请稍后再试");
+                      BrnToast.showInCenter(text: "获取验证码失败，请稍后再试", context: context);
                     }
                   }
                 },

@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // StorageUtil.clear();
     return ScreenUtilInit(
         designSize: const Size(375, 812),
         minTextAdapt: true,
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: Routes.CODE_LOGIN_STEP_ONE,
+            initialRoute: Routes.SPLASH,
             getPages: AppPages.pages,
           );
         });
