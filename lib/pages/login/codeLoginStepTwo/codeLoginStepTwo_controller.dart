@@ -53,7 +53,11 @@ class codeLoginStepTwoController extends GetxController {
       String token = response.data["data"]["token"];
       bool isRegister = response.data["data"]["isRegister"];
       await StorageUtil.setToken(token);
+      if(!isRegister){
+        await StorageUtil.setBoolItem("isLogin", true);
+      }
       return {'status': status, 'isRegister': isRegister};
     }
+    return {'status':status};
   }
 }

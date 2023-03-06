@@ -69,7 +69,7 @@ class StorageUtil{
   }
 
   static getToken() async{
-    String token =  await getStringItem("token");
+    String? token =  await getStringItem("token");
     return token;
   }
 

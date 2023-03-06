@@ -1,10 +1,11 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'storage_util.dart';
 
 class DioUtils {
-  static const String BASE_URL = "http://100.67.39.110:8080"; //base url
+  //hym 100.65.145.188
+  //真机 192.168.251.81
+  static const String BASE_URL = "http://192.168.251.81:8080"; //base url
   static late DioUtils _instance;
   late Dio _dio;
   late BaseOptions _baseOptions;
@@ -80,11 +81,11 @@ class DioInterceptors extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    String token = await StorageUtil.getToken() ?? '';
-    if (token != '') {
+    String token = await StorageUtil.getToken()??"";
+    print("dio_util:::$token");
+    if (token != "" && token.isNotEmpty) {
       // 头部添加token
-      options.headers["token"] = token.toString();
-      print(options.headers["token"]);
+      options.headers["token"] = token;
     }
     // 更多业务需求
     handler.next(options);
