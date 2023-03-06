@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/dio_util.dart';
+import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/pages/login/login_by_password/login_by_password_controller.dart';
 import 'package:monotes/routes/app_routes.dart';
 import 'package:monotes/widgets/text_field.dart';
@@ -81,7 +82,7 @@ class LoginByPasswordPage extends GetView<LoginByPasswordController> {
                   var map = {'phone': phoneNumber, 'password': password};
                   var response = await DioUtils().post('/user/loginByPassword', data: map);
                   if (response.data['code'] == ResponseStatus.SUCCESS) {
-
+                    StorageUtil.setToken(response.data['data']['token']);
                     Get.toNamed(Routes.HOME);
                   } else {
                     _toast(response.data['msg']);

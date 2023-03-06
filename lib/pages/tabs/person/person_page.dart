@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:monotes/routes/app_routes.dart';
 import 'person_controller.dart';
 
 class PersonPage extends GetView<PersonController> {
@@ -40,10 +41,10 @@ class PersonPage extends GetView<PersonController> {
               style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 15.h,),
-            FunctionCard(icon: Icons.add, title: "收支分析", onTap: (){}),
-            FunctionCard(icon: Icons.add, title: "数据报表", onTap: (){}),
+            FunctionCard(icon: Icons.add, title: "收支分析", onTap: (){Get.toNamed(Routes.BILLS);}),
+            FunctionCard(icon: Icons.add, title: "数据报表", onTap: (){Get.toNamed(Routes.ANALYSIS);}),
             FunctionCard(icon: Icons.add, title: "记账分类管理", onTap: (){}),
-            FunctionCard(icon: Icons.add, title: "多币种", onTap: (){Get.toNamed("/multi_currency");}),
+            FunctionCard(icon: Icons.add, title: "多币种", onTap: (){Get.toNamed(Routes.MULTI_CURRENCY);}),
             FunctionCard(icon: Icons.add, title: "订阅和分期", onTap: (){}),
             FunctionCard(icon: Icons.add, title: "账单导入与导出", onTap: (){}),
           ],

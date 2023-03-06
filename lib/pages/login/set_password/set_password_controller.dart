@@ -24,6 +24,4 @@ class SetPasswordController extends GetxController {
     var response = await DioUtils().put("/user/setPassword", data: {"password" : password});
     return response.data["code"];
   }
-
-
 }

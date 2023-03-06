@@ -112,7 +112,6 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                     bool isRegister = res['isRegister'];
 
                     if(status == ResponseStatus.SUCCESS){
-                      bool isRegister = res[1];
                       if(isRegister){
                         Get.offAndToNamed("/set_password");
                       }else{

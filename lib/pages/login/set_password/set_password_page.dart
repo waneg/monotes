@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:monotes/common/config.dart';
+import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/pages/login/set_password/set_password_controller.dart';
 import 'package:monotes/widgets/UserAgreement.dart';
 import 'package:monotes/widgets/text_field.dart';
@@ -77,12 +78,12 @@ class SetPasswordPage extends GetView<SetPasswordController> {
             ),
             BrnBigMainButton(
                 title: "开始使用",
-                onTap: (){
+                onTap: () async {
                   String pass = controller.passwordController.text;
                   String pass_confirm = controller.passwordConfirmController.text;
                   if(pass.isNotEmpty && pass_confirm.isNotEmpty){
                     if(pass == pass_confirm){
-                      Future status = controller.sendPassword(pass);
+                      int status = await controller.sendPassword(pass);
                       print(status);
                       if(status == ResponseStatus.SUCCESS){
                         Get.toNamed("/Home");
