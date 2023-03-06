@@ -43,12 +43,13 @@ class codeLoginStepTwoController extends GetxController {
   loginByCode(String code) async{
     var response = await DioUtils().post("/user/loginByCode", data: {"phone": phone.toString(), "code": code});
     int status = response.data["code"];
-    bool isRegister = response.data["data"]["isRegister"];
     if(status == ResponseStatus.SUCCESS){
       String token =  response.data["data"]["token"];
+      bool isRegister = response.data["data"]["isRegister"];
       await StorageUtil.setToken(token);
+      return [status, isRegister];
     }
-    return [status, isRegister];
+    return [status];
   }
 
 
