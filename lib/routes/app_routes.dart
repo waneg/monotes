@@ -47,10 +47,10 @@ abstract class AppPages {
       page: () => BillsPage(),
       binding: BillsBinding(),
     ),
-    GetPage(
-        name: Routes.PERSON,
-        page: () => PersonPage(),
-        binding: PersonBinding()),
+    // GetPage(
+    //     name: Routes.PERSON,
+    //     page: () => PersonPage(),
+    //     binding: PersonBinding()),
     GetPage(
         name: Routes.RECORD,
         page: () => RecordPage(),

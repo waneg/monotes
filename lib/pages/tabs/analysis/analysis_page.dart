@@ -2,10 +2,17 @@ import 'package:bruno/bruno.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:monotes/common/config.dart';
+import 'package:monotes/pages/tabs/analysis/analysis_controller.dart';
+import 'package:monotes/widgets/separated_card.dart';
 
-class AnalysisPage extends StatelessWidget {
-  const AnalysisPage({Key? key}) : super(key: key);
+class AnalysisPage extends GetView<AnalysisController> {
+  AnalysisPage({super.key});
+
+  var _ = Get.put(AnalysisController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +28,14 @@ class AnalysisPage extends StatelessWidget {
         body: Padding(
             padding: EdgeInsets.fromLTRB(20.w, 20.w, 20.w, 0),
             child: ListView(
-              children: [ExpenseLineChart()],
+              children: [
+                SeparatedCard(title: "支出趋势", widget: ExpenseLineChart()),
+                SeparatedCard(
+                    title: "支出构成",
+                    widget: Column(
+                      children: controller.getExpenditureItems(),
+                    ))
+              ],
             )));
   }
 }
@@ -36,35 +50,9 @@ class ExpenseLineChart extends StatefulWidget {
 class _ExpenseLineChartState extends State<ExpenseLineChart> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Stack(
-        children: <Widget>[
-          Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-                color: Color(0xffffffff)),
-            child: Padding(
-                padding: EdgeInsets.only(
-                    right: 16.sp, left: 16.sp, top: 12.sp, bottom: 12.sp),
-                child:
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  Text("收支分析", style: TextStyle(fontSize: 16.sp),),
-                  Divider(),
-                  SizedBox(height: 10.sp,),
-                  SizedBox(
-                  height: 200.w,
-                  child: LineChart(
-                    mainData(),
-                  ),
-                )],)
-                ),
-          ),
-        ],
-      ),
+    return Container(
+      height: 200.w,
+      child: LineChart(mainData()),
     );
   }
 

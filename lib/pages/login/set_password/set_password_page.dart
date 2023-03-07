@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/pages/login/set_password/set_password_controller.dart';
+import 'package:monotes/routes/app_routes.dart';
 import 'package:monotes/widgets/UserAgreement.dart';
 import 'package:monotes/widgets/text_field.dart';
 
@@ -86,7 +87,7 @@ class SetPasswordPage extends GetView<SetPasswordController> {
                       int status = await controller.sendPassword(pass);
                       print(status);
                       if(status == ResponseStatus.SUCCESS){
-                        Get.toNamed("/Home");
+                        Get.toNamed(Routes.HOME);
                       }else if(status == ResponseStatus.SET_PASSWORD_NOT_ALLOW){
                         _toast("超时未设置密码，已失效，请重新获取验证码");
                       }else{

@@ -5,6 +5,6 @@ class AnalysisBinding extends Bindings {
   @override
   void dependencies() {
     // TODO: implement dependencies
-    Get.put<AnalysisController>(AnalysisController());
+    Get.lazyPut(() => AnalysisController());
   }
 }
