@@ -19,10 +19,12 @@ class ExpenditureItem extends StatelessWidget {
       margin: EdgeInsets.only(top: 5.w, bottom: 5.w),
       child: Row(
         children: [
-          SvgPicture.asset(
-            "assets/bill_icons/$typeId.svg",
+          SizedBox(
             width: 22.w,
             height: 22.w,
+            child: SvgPicture.asset(
+              "assets/bill_icons/$typeId.svg",
+            ),
           ),
           SizedBox(
             width: 10.w,
@@ -57,8 +59,12 @@ class ExpenditureItem extends StatelessWidget {
                 width: double.infinity,
                 height: 14.sp,
                 value: pct / 100,
-                brnProgressIndicatorBuilder: (BuildContext context, double value) {
-                  return Text("${value * 100}%", style: TextStyle(color: Colors.white),);
+                brnProgressIndicatorBuilder:
+                    (BuildContext context, double value) {
+                  return Text(
+                    "${value * 100}%",
+                    style: TextStyle(color: Colors.white),
+                  );
                 },
               )
             ],

@@ -51,7 +51,8 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200.w,
+      padding: EdgeInsets.only(top: 5.w, right: 5.w),
+      height: 150.w,
       child: LineChart(mainData()),
     );
   }
@@ -65,16 +66,36 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
       ),
       titlesData: FlTitlesData(
           leftTitles: AxisTitles(
-              sideTitles: SideTitles(reservedSize: 40, showTitles: true)),
+              sideTitles: SideTitles(showTitles: false),
+              axisNameWidget: Text(
+                "金额",
+                style: TextStyle(height: 0.1),
+              )),
           rightTitles: AxisTitles(
-              sideTitles: SideTitles(reservedSize: 40, showTitles: false)),
+              sideTitles: SideTitles(reservedSize: 70, showTitles: false)),
           topTitles: AxisTitles(
-              sideTitles: SideTitles(reservedSize: 40, showTitles: false)),
+              sideTitles: SideTitles(reservedSize: 80, showTitles: false)),
           bottomTitles: AxisTitles(
-              sideTitles: SideTitles(reservedSize: 40, showTitles: true))),
+              sideTitles: SideTitles(
+            interval: 1,
+            reservedSize: 40,
+            showTitles: true,
+            getTitlesWidget: (value, meta) => value % 2 == 0
+                ? Text("${value.toInt()}月",
+                    style: TextStyle(fontSize: 10.sp, color: Color(0xffBEBEBE)))
+                : Container(),
+          ))),
       minX: 1,
       maxX: 12,
-      minY: 0,
+      borderData: FlBorderData(
+        show: true,
+        border: Border(
+          bottom: BorderSide(color: Colors.black12, width: 1.w),
+          left:  BorderSide(color: Colors.transparent, width: 10.w),
+          right: const BorderSide(color: Colors.transparent),
+          top: const BorderSide(color: Colors.transparent),
+        ),
+      ),
       lineBarsData: linesBarData1(),
     );
   }
@@ -95,11 +116,12 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
         FlSpot(11, 3.9),
         FlSpot(12, 2.9)
       ],
+      color: ThemeColor.appBarColor,
       isCurved: false,
-      barWidth: 3,
+      barWidth: 2,
       isStrokeCapRound: true,
       dotData: FlDotData(
-        show: false,
+        show: true,
       ),
     );
     return [lineChartBarData1];

@@ -1,10 +1,8 @@
-import 'package:bruno/bruno.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/routes/app_routes.dart';
 
 class SplashController extends GetxController {
-
   @override
   void onInit() {
     // TODO: implement onInit
@@ -18,22 +16,22 @@ class SplashController extends GetxController {
     super.onReady();
   }
 
-  countDown() async{
+  countDown() async {
     var _duration = const Duration(seconds: 3);
-    bool? isLogin = await StorageUtil.getBoolItem("isLogin")??false;
+    bool? isLogin = await StorageUtil.getBoolItem("isLogin") ?? false;
     print(isLogin);
-    if(isLogin!= null && isLogin){
+    if (isLogin != null && isLogin) {
       Future.delayed(_duration, newHomePage);
-    }else{
+    } else {
       Future.delayed(_duration, newLoginPage);
     }
   }
 
-  newLoginPage(){
-    Get.toNamed("/code_login_step_one");
+  newLoginPage() {
+    Get.toNamed(Routes.CODE_LOGIN_STEP_ONE);
   }
 
-  newHomePage(){
-    Get.offAllNamed("/home");
+  newHomePage() {
+    Get.offAllNamed(Routes.HOME);
   }
 }
