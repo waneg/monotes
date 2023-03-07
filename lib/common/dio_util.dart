@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:monotes/common/config.dart';
+import 'package:monotes/common/toast_util.dart';
 import 'my_exception.dart';
 import 'storage_util.dart';
 
 class DioUtils {
   //hym 100.65.145.188
   //真机 192.168.251.81
-  static const String BASE_URL = "http://192.168.251.81:8080"; //base url
+  static const String BASE_URL = "http://100.65.145.188:8080"; //base url
   static late DioUtils _instance;
   late Dio _dio;
   late BaseOptions _baseOptions;
@@ -42,8 +44,13 @@ class DioUtils {
     try {
       response = await _dio.get(url, queryParameters: data, options: options);
       debugPrint('get result ---${response.data}');
+      if (response.data["code"] != ResponseStatus.SUCCESS) {
+        // 这里处理业务异常，具体异常处理在调用处处理
+        throw MyException(response.data["msg"]);
+      }
     } on DioError catch (e) {
       print('请求失败---错误类型${e.type}--错误信息${e.message}');
+      throw Exception(e.message);
     }
 
     return response;
@@ -56,8 +63,13 @@ class DioUtils {
     try {
       response = await _dio.post(url, data: data, options: options);
       print('post result ---${response.data}');
+      if (response.data["code"] != ResponseStatus.SUCCESS) {
+        // 这里处理业务异常，具体异常处理在调用处处理
+        throw MyException(response.data["msg"]);
+      }
     } on DioError catch (e) {
       print('请求失败---错误类型${e.type}--错误信息${e.message}');
+      throw Exception(e.message);
     }
 
     return response;
@@ -68,22 +80,13 @@ class DioUtils {
     print('post request path ------${url}-------请求参数${data}');
     late Response response;
     try {
-      response = await _dio.post(url, data: data, options: options);
+      response = await _dio.put(url, data: data, options: options);
       print('post result ---${response.data}');
-      if (response.data["code"] == 401) {
-        //这里处理token失效的情况，目前token有效期为30天，如果token失效，目前直接登出，重新登录，后期优化为刷新token
-        // throw Exception(response.data["msg"]);
-        //  await StorageUtil.removeToken();
-        //  await StorageUtil.removeBoolItem("isLogin");
-        //  清除token，退出登录，跳转登录页......
-      } else if (response.data["code"] != 200) {
+      if (response.data["code"] != ResponseStatus.SUCCESS) {
         // 这里处理业务异常，具体异常处理在调用处处理
-        //例子在：lib\pages\login\codeLoginStepTwo\codeLoginStepTwo_controller.dart sendCode方法
         throw MyException(response.data["msg"]);
       }
     } on DioError catch (e) {
-      //这里处理网络异常，比如超时，连接失败等
-      print("无法连接到服务器，请稍后重试，Toast提醒用户");
       //TODO TOAST提示用户
       print('请求失败---错误类型${e.type}--错误信息${e.message}');
       //  这里处理了错误可能同样涉及到业务异常，所以需要抛出异常，根据业务决定是否在调用处处理
@@ -100,7 +103,6 @@ class DioInterceptors extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     String token = await StorageUtil.getToken()??"";
-    print("dio_util:::$token");
     if (token != "" && token.isNotEmpty) {
       // 头部添加token
       options.headers["token"] = token;
@@ -112,6 +114,13 @@ class DioInterceptors extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
+    if (response.data["code"] == ResponseStatus.TOKEN_EX) {
+      //这里处理token失效的情况，目前token有效期为30天，如果token失效，目前直接登出，重新登录，后期优化为刷新token
+      // throw Exception(response.data["msg"]);
+      //  await StorageUtil.removeToken();
+      //  await StorageUtil.removeBoolItem("isLogin");
+      //  清除token，退出登录，跳转登录页......
+    }
     // 重点
     handler.next(response);
   }
@@ -123,12 +132,14 @@ class DioInterceptors extends Interceptor {
       case DioErrorType.connectTimeout:
         {
           // 根据自己的业务需求来设定该如何操作,可以是弹出框提示/或者做一些路由跳转处理
+          ToastUtil.showBasicToast("无法连接到服务器，请稍后重试");
         }
         break;
       // 响应超时
       case DioErrorType.receiveTimeout:
         {
           // 根据自己的业务需求来设定该如何操作,可以是弹出框提示/或者做一些路由跳转处理
+          ToastUtil.showBasicToast("无法连接到服务器，请稍后重试");
         }
         break;
       // 发送超时

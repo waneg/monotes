@@ -96,20 +96,7 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                 },
                 onChanged: (value) async{
                   if(value.length == 6){
-                    var res = await controller.loginByCode(value.toString());
-                    int status = res['status'];
-                    if(status == ResponseStatus.SUCCESS){
-                      bool isRegister = res['isRegister'];
-                      if(isRegister){
-                        Get.offAndToNamed("/set_password");
-                      }else{
-                        Get.offAllNamed("/home");
-                      }
-                    } else if(status == ResponseStatus.LOGIN_FAIL){
-                      BrnToast.showInCenter(text: "验证码错误", context: context);
-                    } else if(status == ResponseStatus.CODE_FAIL){
-                      BrnToast.showInCenter(text: "获取验证码失败，请稍后再试", context: context);
-                    }
+                    await controller.loginByCode(value.toString());
                   }
                 },
                 beforeTextPaste: (text) {

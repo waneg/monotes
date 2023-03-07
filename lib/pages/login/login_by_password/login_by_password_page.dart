@@ -77,17 +77,7 @@ class LoginByPasswordPage extends GetView<LoginByPasswordController> {
             BrnBigMainButton(
                 title: "登录",
                 onTap:() async {
-                  String phoneNumber = controller.phoneController.text;
-                  String password = controller.passwordController.text;
-                  var map = {'phone': phoneNumber, 'password': password};
-                  var response = await DioUtils().post('/user/loginByPassword', data: map);
-                  if (response.data['code'] == ResponseStatus.SUCCESS) {
-                    await StorageUtil.setToken(response.data['data']['token']);
-                    await StorageUtil.setBoolItem("isLogin", true);
-                    Get.offAllNamed(Routes.HOME);
-                  } else {
-                    BrnToast.showInCenter(text: response.data['msg'], context: context);
-                  }
+                  await controller.loginByPassword();
                 }
             ),
             Align(
