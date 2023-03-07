@@ -28,6 +28,7 @@ class LoginByPasswordController extends GetxController {
     if(status == ResponseStatus.SUCCESS){
       String token =  response.data["data"]["token"];
       await StorageUtil.setToken(token);
+      await StorageUtil.setBoolItem("isLogin", true);
     }
     return status;
   }

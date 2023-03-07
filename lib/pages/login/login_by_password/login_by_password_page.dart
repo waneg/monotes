@@ -82,10 +82,11 @@ class LoginByPasswordPage extends GetView<LoginByPasswordController> {
                   var map = {'phone': phoneNumber, 'password': password};
                   var response = await DioUtils().post('/user/loginByPassword', data: map);
                   if (response.data['code'] == ResponseStatus.SUCCESS) {
-                    StorageUtil.setToken(response.data['data']['token']);
-                    Get.toNamed(Routes.HOME);
+                    await StorageUtil.setToken(response.data['data']['token']);
+                    await StorageUtil.setBoolItem("isLogin", true);
+                    Get.offAllNamed(Routes.HOME);
                   } else {
-                    _toast(response.data['msg']);
+                    BrnToast.showInCenter(text: response.data['msg'], context: context);
                   }
                 }
             ),

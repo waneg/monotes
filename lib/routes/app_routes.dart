@@ -115,10 +115,10 @@ abstract class Routes {
   static const RECORD = "/record";
 
   // 验证码登录第一步——输入手机号
-  static const CODE_LOGIN_STEP_ONE = "/code-login-step-one";
+  static const CODE_LOGIN_STEP_ONE = "/code_login_step_one";
 
   // 验证码登录第二步——输入验证码
-  static const CODE_LOGIN_STEP_TWO = "/code-login-step-two";
+  static const CODE_LOGIN_STEP_TWO = "/code_login_step_two";
 
   // 多币种页面
   static const MULTI_CURRENCY = "/multi_currency";

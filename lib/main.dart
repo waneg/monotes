@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // StorageUtil.clear();
     return ScreenUtilInit(
         designSize: const Size(375, 812),
         minTextAdapt: true,

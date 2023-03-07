@@ -1,6 +1,8 @@
+import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/routes/app_routes.dart';
 import 'person_controller.dart';
 
@@ -47,6 +49,10 @@ class PersonPage extends GetView<PersonController> {
             FunctionCard(icon: Icons.add, title: "多币种", onTap: (){Get.toNamed(Routes.MULTI_CURRENCY);}),
             FunctionCard(icon: Icons.add, title: "订阅和分期", onTap: (){}),
             FunctionCard(icon: Icons.add, title: "账单导入与导出", onTap: (){}),
+            BrnBigMainButton(title: "退出",onTap: (){
+              Get.offAllNamed("/code_login_step_one");
+              StorageUtil.clear();
+            },)
           ],
         ),
       ),
