@@ -9,6 +9,7 @@ import 'package:monotes/pages/login/set_password/set_password_controller.dart';
 import 'package:monotes/routes/app_routes.dart';
 import 'package:monotes/widgets/UserAgreement.dart';
 import 'package:monotes/widgets/text_field.dart';
+import 'package:monotes/common/password_encrypt.dart';
 
 class SetPasswordPage extends GetView<SetPasswordController> {
   const SetPasswordPage({super.key});
@@ -68,40 +69,7 @@ class SetPasswordPage extends GetView<SetPasswordController> {
             BrnBigMainButton(
                 title: "开始使用",
                 onTap: () async {
-                  String pass = controller.passwordController.text;
-                  String pass_confirm =
-                      controller.passwordConfirmController.text;
-                  if (pass.isNotEmpty && pass_confirm.isNotEmpty) {
-                    if (pass == pass_confirm) {
-                      if (pass.length < 8) {
-                        BrnToast.showInCenter(
-                            text: "密码位数不得少于8位", context: context);
-                      } else if (pass.length > 16) {
-                        BrnToast.showInCenter(
-                            text: "密码位数不得超过16位", context: context);
-                      } else if (!controller.isPasswordLegal(pass)) {
-                        BrnToast.showInCenter(
-                            text: "密码必须包含字母、数字、符号中的至少两种", context: context);
-                      } else {
-                        int status = await controller.sendPassword(pass);
-                        if (status == ResponseStatus.SUCCESS) {
-                          Get.offAllNamed("/home");
-                        } else if (status ==
-                            ResponseStatus.SET_PASSWORD_NOT_ALLOW) {
-                          BrnToast.showInCenter(
-                              text: "超时未设置密码，已失效，请重新获取验证码", context: context);
-                        } else {
-                          BrnToast.showInCenter(
-                              text: "设置密码失败，请稍后再试", context: context);
-                        }
-                      }
-                    } else {
-                      BrnToast.showInCenter(
-                          text: "两次密码不一致，请重试", context: context);
-                    }
-                  } else {
-                    BrnToast.showInCenter(text: "密码不得为空", context: context);
-                  }
+                  await controller.setButton();
                 }),
           ],
         ),

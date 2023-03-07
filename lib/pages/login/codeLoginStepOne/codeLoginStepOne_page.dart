@@ -62,21 +62,7 @@ class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
               BrnBigMainButton(
                 title: "下一步",
                 onTap: (){
-                  String phone_text = controller.phoneController.text;
-                  if(phone_text.isNotEmpty){
-                    int phone = int.parse(controller.phoneController.text);
-                    if(controller.isChinaPhoneLegal(phone.toString()) && controller.isCheck.value){
-                      Get.toNamed("/code_login_step_two", arguments: {"phone": phone});
-                    } else if(!controller.isChinaPhoneLegal(phone.toString())){
-                      BrnToast.showInCenter(text: "手机号格式不正确，请重新输入", context: context);
-                    }else if(!controller.isCheck.value){
-                      BrnToast.showInCenter(text: "请先同意用户协议、隐私政策和儿童隐私保护指引", context: context);
-                    }
-                  }else{
-                    BrnToast.showInCenter(text: "手机号格式不正确，请重新输入", context: context);
-                  }
-
-
+                  controller.nextButton();
                 }
               ),
             ],
