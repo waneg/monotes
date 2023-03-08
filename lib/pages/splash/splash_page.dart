@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:monotes/routes/app_routes.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -42,16 +39,6 @@ class SplashPage extends StatelessWidget {
                   )
                 ],
               )),
-          Positioned(
-              bottom: 100,
-              child: CupertinoButton(
-                color: Colors.orange,
-                borderRadius: BorderRadius.circular(20),
-                child: const Text("点击进入"),
-                onPressed: () {
-                  Get.toNamed(Routes.HOME);
-                },
-              ))
         ],
       ),
     );
