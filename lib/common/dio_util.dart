@@ -8,7 +8,8 @@ import 'storage_util.dart';
 class DioUtils {
   //hym 100.65.145.188
   //真机 192.168.251.81
-  static const String BASE_URL = "http://100.65.145.188:8080"; //base url
+  //阿里云 http://47.120.1.145:8080
+  static const String BASE_URL = "http://47.120.1.145:8080"; //base url
   static late DioUtils _instance;
   late Dio _dio;
   late BaseOptions _baseOptions;

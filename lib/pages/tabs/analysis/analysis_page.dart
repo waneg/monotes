@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/pages/tabs/analysis/analysis_controller.dart';
+import 'package:monotes/widgets/doughnut_chart_card.dart';
 import 'package:monotes/widgets/separated_card.dart';
 
 class AnalysisPage extends GetView<AnalysisController> {
@@ -34,7 +35,8 @@ class AnalysisPage extends GetView<AnalysisController> {
                     title: "支出构成",
                     widget: Column(
                       children: controller.getExpenditureItems(),
-                    ))
+                    )),
+                DoughnutChartCard()
               ],
             )));
   }
@@ -91,7 +93,7 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
         show: true,
         border: Border(
           bottom: BorderSide(color: Colors.black12, width: 1.w),
-          left:  BorderSide(color: Colors.transparent, width: 10.w),
+          left: BorderSide(color: Colors.transparent, width: 10.w),
           right: const BorderSide(color: Colors.transparent),
           top: const BorderSide(color: Colors.transparent),
         ),

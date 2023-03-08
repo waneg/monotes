@@ -17,14 +17,11 @@ class SplashController extends GetxController {
   }
 
   countDown() async {
-    var _duration = const Duration(seconds: 3);
-    bool? isLogin = await StorageUtil.getBoolItem("isLogin") ?? false;
-    print(isLogin);
-    if (isLogin != null && isLogin) {
-      Future.delayed(_duration, newHomePage);
-    } else {
-      Future.delayed(_duration, newLoginPage);
-    }
+    var duration = const Duration(seconds: 3);
+    bool isLogin = await StorageUtil.getBoolItem("isLogin") ?? false;
+    print("是否登录：$isLogin");
+
+    Future.delayed(duration, isLogin ? newHomePage : newLoginPage);
   }
 
   newLoginPage() {
