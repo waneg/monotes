@@ -22,7 +22,7 @@ class _DoughnutChartCardState extends State<DoughnutChartCard> {
           width: double.infinity,
           height: 250.w,
           padding:
-              EdgeInsets.only(left: 50.w, right: 50.w, top: 20.w, bottom: 20.w),
+              EdgeInsets.only(left: 40.w, right: 40.w, top: 20.w, bottom: 20.w),
           data: getChartData(),
         ));
   }
@@ -34,7 +34,7 @@ class _DoughnutChartCardState extends State<DoughnutChartCard> {
           value: 0.05,
           title: value,
           color: Color.fromRGBO(Random().nextInt(256), Random().nextInt(256),
-              Random().nextInt(256), 1)));
+              Random().nextInt(256), 0.7)));
     });
     return ans;
   }

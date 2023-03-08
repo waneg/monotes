@@ -1,3 +1,7 @@
+
+
+import 'dart:io';
+
 import 'package:bruno/bruno.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +11,26 @@ import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/pages/tabs/record/record_controller.dart';
 import 'package:monotes/routes/app_routes.dart';
 
 class RecordPage extends GetView<RecordController> {
-  const RecordPage({super.key});
+  RecordPage({super.key});
+
+  late File _image ;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    print("getImage() clicked");
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+    } else {
+      print('No image selected.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +162,7 @@ class RecordPage extends GetView<RecordController> {
                                   },
                                   icon: SizedBox(
                                     width: 20.w,
-                                    child: SvgPicture.asset(info.assetName),
+                                    child: SvgPicture.asset(info.assetName, width: 18.w,),
                                   ),
                                   label: Text(info.label));
                             }))
@@ -155,7 +173,7 @@ class RecordPage extends GetView<RecordController> {
               children: [
                 FloatingActionButton(
                   backgroundColor: Colors.green,
-                  onPressed: () {},
+                  onPressed: getImage,
                   child: const Icon(Icons.camera_enhance_outlined),
                 ),
                 const Text(
