@@ -32,7 +32,11 @@ abstract class AppPages {
         name: Routes.SPLASH,
         page: () => const SplashPage(),
         binding: SplashBinding()),
-    GetPage(name: Routes.HOME, page: () => HomePage(), binding: HomeBinding()),
+    GetPage(
+        name: Routes.HOME,
+        page: () => HomePage(),
+        bindings: [HomeBinding(), IntroductoryBinding(), AnalysisBinding(), BillsBinding(), PersonBinding()]
+    ),
     GetPage(
         name: Routes.ANALYSIS,
         page: () => AnalysisPage(),
@@ -47,46 +51,39 @@ abstract class AppPages {
       page: () => BillsPage(),
       binding: BillsBinding(),
     ),
-    // GetPage(
-    //     name: Routes.PERSON,
-    //     page: () => PersonPage(),
-    //     binding: PersonBinding()),
+    GetPage(
+        name: Routes.PERSON,
+        page: () => PersonPage(),
+        binding: PersonBinding()),
     GetPage(
         name: Routes.RECORD,
         page: () => RecordPage(),
         transition: Transition.downToUp,
-        binding: RecordBinding()
-    ),
+        binding: RecordBinding()),
     GetPage(
         name: Routes.CODE_LOGIN_STEP_ONE,
         page: () => codeLoginStepOnePage(),
-        binding: codeLoginStepOneBinding()
-    ),
+        binding: codeLoginStepOneBinding()),
     GetPage(
         name: Routes.CODE_LOGIN_STEP_TWO,
         page: () => codeLoginStepTwoPage(),
-        binding: codeLoginStepTwoBinding()
-    ),
+        binding: codeLoginStepTwoBinding()),
     GetPage(
         name: Routes.MULTI_CURRENCY,
         page: () => MultiCurrencyPage(),
-        binding: MultiCurrencyBinding()
-    ),
+        binding: MultiCurrencyBinding()),
     GetPage(
         name: Routes.ADD_CURRENCY,
         page: () => AddCurrencyPage(),
-        binding: AddCurrencyBinding()
-    ),
+        binding: AddCurrencyBinding()),
     GetPage(
         name: Routes.SET_PASSWORD,
         page: () => SetPasswordPage(),
-        binding: SetPasswordBinding()
-    ),
+        binding: SetPasswordBinding()),
     GetPage(
         name: Routes.LOGIN_BY_PASSWORD,
         page: () => LoginByPasswordPage(),
-        binding: LoginByPasswordBinding()
-    ),
+        binding: LoginByPasswordBinding()),
   ];
 
 // 命名路由的名称
