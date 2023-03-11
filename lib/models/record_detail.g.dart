@@ -9,7 +9,7 @@ part of 'record_detail.dart';
 RecordDetail _$RecordDetailFromJson(Map<String, dynamic> json) => RecordDetail(
       json['typeId'] as int,
       json['time'] as String,
-      json['price'] as String,
+      (json['price'] as num).toDouble(),
       json['shopkeeper'] as String,
     );
 

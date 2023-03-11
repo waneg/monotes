@@ -25,7 +25,7 @@ class RecordController extends GetxController {
   void submitRecord() async {
     if (validateInput()) {
       var record = RecordDetail(selectedType.value, inputCostController.text,
-          inputTimeController.text, inputMerchantController.text);
+          double.parse(inputTimeController.text) , inputMerchantController.text);
       String token = TOKEN;
       try {
         var response = DioUtils().post('/record',

@@ -6,7 +6,7 @@ part 'record_detail.g.dart';
 class RecordDetail {
   final int typeId;
   final String time;
-  final String price;
+  final double price;
   final String shopkeeper;
 
   RecordDetail(this.typeId, this.time, this.price, this.shopkeeper);
