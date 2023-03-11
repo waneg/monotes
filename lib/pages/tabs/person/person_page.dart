@@ -13,15 +13,12 @@ class PersonPage extends GetView<PersonController> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
       body: Container(
         color: Colors.white,
         child: ListView(
           padding: const EdgeInsets.only(left: 20, right: 20).w,
           children: [
+            SizedBox(height: 80.h,),
             const InformationCard(),
             SizedBox(
               height: 20.h,
