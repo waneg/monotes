@@ -30,7 +30,7 @@ class DetailCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(billsDetail.merchant,
+                      Text(billsDetail.goods,
                           style: TextStyle(fontSize: 14.sp, height: 2)),
                       Text(
                         SHOPPING_TYPE[billsDetail.typeId]!,
@@ -50,7 +50,7 @@ class DetailCard extends StatelessWidget {
                   )
                 ],
               ),
-              Positioned(right: 0, top: 0, child: Text("-${billsDetail.amount}", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, height: 1.5),))
+              Positioned(right: 0, top: 0, child: Text("-${billsDetail.price}", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, height: 1.5),))
             ],
           )),
     );

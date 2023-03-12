@@ -16,7 +16,7 @@ class IntroductoryController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     fillLabelItem();
-    fillBillItems();
+    getBill();
   }
 
   @override
@@ -33,20 +33,26 @@ class IntroductoryController extends GetxController {
   }
 
   void fillBillItems() {
-    for (int i = 0; i < 6; i++) {
-      billItems.add(BillsDetail()
-        ..id = 5
-        ..typeId = 1
-        ..amount = 99.99
-        ..merchant = "饿了么"
-        ..labels = ["聚餐"]
-        ..time = DateTime(2023));
-    }
+    // for (int i = 0; i < 6; i++) {
+    //   billItems.add(BillsDetail()
+    //     ..billId = 5
+    //     ..typeId = 1
+    //     ..amount = 99.99
+    //     ..merchant = "饿了么"
+    //     ..labels = ["聚餐"]
+    //     ..time = DateTime(2023));
+    // }
   }
 
   getBill() async {
     try{
       var response = await DioUtils().get("/bill/getList");
+      if (response.data['code'] == 0) {
+        var list = response.data['data'];
+        for (var item in list) {
+          billItems.add(BillsDetail.fromJson(item));
+        }
+      }
     } on MyException catch (e){
       print(e);
       ToastUtil.showBasicToast(e.msg);

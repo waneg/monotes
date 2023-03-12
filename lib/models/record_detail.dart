@@ -8,8 +8,10 @@ class RecordDetail {
   final String time;
   final double price;
   final String shopkeeper;
+  final String remark;
+  final String goods;
 
-  RecordDetail(this.typeId, this.time, this.price, this.shopkeeper);
+  RecordDetail(this.typeId, this.time, this.price, this.shopkeeper, this.remark, this.goods);
 
   factory RecordDetail.fromJson(Map<String, dynamic> json) => _$RecordDetailFromJson(json);
 

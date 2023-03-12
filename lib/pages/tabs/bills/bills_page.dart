@@ -32,9 +32,7 @@ class BillsPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15),
               child: CupertinoButton(
-                onPressed: () => {
-                  Get.toNamed(Routes.RECORD)
-                },
+                onPressed: () => {Get.toNamed(Routes.RECORD)},
                 color: const Color(0xFF93D2F3),
                 child: const Text("添加一条新记账"),
               ),
@@ -62,12 +60,12 @@ class BillsPage extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
+            Obx(() => Expanded(
                 child: ListView.builder(
                     itemCount: billsController.billItems.length,
                     itemBuilder: (BuildContext context, int index) {
                       return DetailCard(billsController.billItems[index]);
-                    }))
+                    })))
           ],
         ),
       ),

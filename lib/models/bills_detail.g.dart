@@ -1,26 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'record_detail.dart';
+part of 'bills_detail.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-RecordDetail _$RecordDetailFromJson(Map<String, dynamic> json) => RecordDetail(
+BillsDetail _$BillsDetailFromJson(Map<String, dynamic> json) => BillsDetail(
+      json['billId'] as int,
       json['typeId'] as int,
-      json['time'] as String,
       (json['price'] as num).toDouble(),
-      json['shopkeeper'] as String,
-      json['remark'] as String,
       json['goods'] as String,
+      json['time'] as String,
     );
 
-Map<String, dynamic> _$RecordDetailToJson(RecordDetail instance) =>
+Map<String, dynamic> _$BillsDetailToJson(BillsDetail instance) =>
     <String, dynamic>{
+      'billId': instance.billId,
       'typeId': instance.typeId,
-      'time': instance.time,
       'price': instance.price,
-      'shopkeeper': instance.shopkeeper,
-      'remark': instance.remark,
       'goods': instance.goods,
+      'time': instance.time,
     };

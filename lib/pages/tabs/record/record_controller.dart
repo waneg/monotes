@@ -1,5 +1,8 @@
+import 'dart:io';
+
+import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
@@ -9,7 +12,8 @@ import 'package:monotes/models/record_detail.dart';
 class RecordController extends GetxController {
   var inputTimeController = TextEditingController();
   var inputCostController = TextEditingController();
-  var inputMerchantController = TextEditingController();
+  var goodsController = TextEditingController();
+  var remarkController = TextEditingController();
 
   List<TypeButtonInfo> consumptionTypes = <TypeButtonInfo>[];
   var selectedType = 0.obs;
@@ -24,29 +28,51 @@ class RecordController extends GetxController {
 
   void submitRecord() async {
     if (validateInput()) {
-      var record = RecordDetail(selectedType.value, inputCostController.text,
-          double.parse(inputTimeController.text) , inputMerchantController.text);
-      String token = TOKEN;
+      var record = RecordDetail(
+          selectedType.value,
+          DateTime.parse(inputTimeController.text).toString(),
+          double.parse(inputCostController.text),
+          "",
+          remarkController.text,
+          goodsController.text);
       try {
-        var response = DioUtils().post('/record',
-            data: record.toJson(),
-            options: BaseOptions(headers: {'token': TOKEN}));
+        var response =
+            DioUtils().post('/bill/addRecord', data: record.toJson());
       } catch (e) {
-        print(e);
+        LogUtil.d(this, tag: "SUBMIT");
       }
     }
+  }
+
+  Future<RecordDetail> getOcrInfo(File image) async {
+    var formData = dio.FormData.fromMap({
+      "file": [image]
+    });
+    var response = await DioUtils().post('/bill/ocr', data: formData);
+
+    return RecordDetail.fromJson(response.data['data'][0]);
+  }
+
+  void setInfo(RecordDetail recordDetail) {
+    inputTimeController.text = recordDetail.time;
+    inputCostController.text = recordDetail.price.toString();
+    goodsController.text = recordDetail.shopkeeper.toString();
   }
 
   bool validateInput() {
     String time = inputTimeController.text;
     String price = inputCostController.text;
-    String shopkeeper = inputMerchantController.text;
+    String shopkeeper = goodsController.text;
 
-    if (time.isEmpty || price.isEmpty || shopkeeper.isEmpty) {
+    if (time.isEmpty ||
+        price.isEmpty ||
+        shopkeeper.isEmpty ||
+        selectedType.value == 0) {
       Get.defaultDialog(
           title: "提示",
           middleText: "输入信息有误",
           middleTextStyle: const TextStyle(color: Colors.blue));
+      return false;
     }
 
     return true;

@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:bruno/bruno.dart';
@@ -13,13 +11,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:monotes/common/config.dart';
+import 'package:monotes/models/record_detail.dart';
 import 'package:monotes/pages/tabs/record/record_controller.dart';
 import 'package:monotes/routes/app_routes.dart';
 
 class RecordPage extends GetView<RecordController> {
   RecordPage({super.key});
 
-  late File _image ;
+  late File _image;
+
   final picker = ImagePicker();
 
   Future getImage() async {
@@ -27,6 +27,11 @@ class RecordPage extends GetView<RecordController> {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       _image = File(pickedFile.path);
+      Future<RecordDetail> future = controller.getOcrInfo(_image);
+      future.then((value) {
+        print(value);
+        controller.setInfo(value);
+      });
     } else {
       print('No image selected.');
     }
@@ -55,7 +60,7 @@ class RecordPage extends GetView<RecordController> {
         child: Column(
           children: [
             Container(
-                padding: EdgeInsets.all(20.w),
+                padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 15.w),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10.w))),
@@ -79,14 +84,25 @@ class RecordPage extends GetView<RecordController> {
                                   suffixIcon: IconButton(
                                     icon: const Icon(Icons.date_range),
                                     onPressed: () {
+                                      DateTime datetime = DateTime.now();
                                       Pickers.showDatePicker(context,
+                                          minDate: PDuration(
+                                              year: datetime.year - 2,
+                                              month: datetime.month,
+                                              day: datetime.day),
+                                          maxDate: PDuration(
+                                              year: datetime.year,
+                                              month: datetime.month,
+                                              day: datetime.day),
                                           onConfirm: (p) {
                                         controller.inputTimeController.text =
-                                            "${p.year}-${p.month}-${p.day}";
+                                            DateTime(p.year ?? 2023,
+                                                    p.month ?? 12, p.day ?? 12)
+                                                .toString();
                                       });
                                     },
                                   ),
-                                  contentPadding: const EdgeInsets.all(15),
+                                  contentPadding: const EdgeInsets.all(10),
                                   enabled: true,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15.0),
@@ -111,7 +127,7 @@ class RecordPage extends GetView<RecordController> {
                               controller: controller.inputCostController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(15),
+                                  contentPadding: const EdgeInsets.all(10),
                                   enabled: true,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15.0),
@@ -122,7 +138,7 @@ class RecordPage extends GetView<RecordController> {
                     Row(
                       children: [
                         Text(
-                          "消费店家",
+                          "消费信息",
                           style: TextStyle(fontSize: 14.sp),
                         ),
                         const Spacer(),
@@ -130,7 +146,7 @@ class RecordPage extends GetView<RecordController> {
                           margin: const EdgeInsets.only(top: 10),
                           width: 200.sp,
                           child: TextField(
-                              controller: controller.inputMerchantController,
+                              controller: controller.goodsController,
                               decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(15),
                                   enabled: true,
@@ -140,31 +156,73 @@ class RecordPage extends GetView<RecordController> {
                         )
                       ],
                     ), //消费店家
+                    SizedBox(
+                      height: 10.w,
+                    ),
+                    TextField(
+                        controller: controller.remarkController,
+                        style: TextStyle(fontSize: 12.sp),
+                        decoration: InputDecoration(
+                            fillColor: ThemeColor.bgColor,
+                            filled: true,
+                            contentPadding: const EdgeInsets.all(10),
+                            border: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            hintText: "请输入备注",
+                            prefix: const Text("备注："),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.transparent, width: 0.5),
+                                borderRadius: BorderRadius.circular(5.w)))),
                     Container(
-                        margin: EdgeInsets.all(10.w),
-                        height: 300.w,
+                        margin: EdgeInsets.all(8.w),
                         child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
+                              crossAxisCount: 5,
                               childAspectRatio: 1.0, //显示区域宽高相等
                             ),
                             itemCount: controller.consumptionTypes.length,
                             itemBuilder: (context, index) {
                               var info = controller.consumptionTypes[index];
-                              return TextButton.icon(
-                                  style: const ButtonStyle(
-                                      foregroundColor: MaterialStatePropertyAll(
-                                          Colors.black)),
-                                  onPressed: () {
-                                    controller.selectedType = (index + 1).obs;
-                                    print("${index + 1}个图标被点击");
-                                  },
-                                  icon: SizedBox(
-                                    width: 20.w,
-                                    child: SvgPicture.asset(info.assetName, width: 18.w,),
-                                  ),
-                                  label: Text(info.label));
+                              return Obx(() => TextButton(
+                                    style: ButtonStyle(
+                                        overlayColor: MaterialStateProperty.all(
+                                            Colors.transparent),
+                                        backgroundColor:
+                                            controller.selectedType.value ==
+                                                    index + 1
+                                                ? MaterialStateProperty.all(
+                                                    ThemeColor.bgColor)
+                                                : null),
+                                    onPressed: () {
+                                      controller.selectedType.value = index + 1;
+                                    },
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          width: 20.w,
+                                          height: 20.w,
+                                          child: SvgPicture.asset(
+                                            "assets/bill_icons/${index + 1}.svg",
+                                            width: 20.w,
+                                            height: 20.w,
+                                          ),
+                                        ),
+                                        Text(SHOPPING_TYPE[index + 1] ?? "",
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 13.sp,
+                                                height: 2))
+                                      ],
+                                    ),
+                                  ));
                             }))
                   ],
                 )),
@@ -178,11 +236,12 @@ class RecordPage extends GetView<RecordController> {
                 ),
                 const Text(
                   "扫描账单",
-                  style: TextStyle(color: Color(0xFF101010), height: 2.5),
+                  style: TextStyle(color: Color(0xFF101010), height: 2),
                 )
               ],
             ),
-            ElevatedButton(onPressed: controller.submitRecord, child: const Text("确定")),
+            ElevatedButton(
+                onPressed: controller.submitRecord, child: const Text("确定")),
           ],
         ),
       ),
