@@ -8,8 +8,8 @@ import '../../../models/bills_detail.dart';
 
 class IntroductoryController extends GetxController {
   ScrollController scrollController = ScrollController();
-  List labelItem = [];
-  List billItems = [];
+  RxList labelItem = [].obs;
+  RxList billItems = [].obs;
 
   @override
   void onInit() {
@@ -30,18 +30,6 @@ class IntroductoryController extends GetxController {
       labelItem.add("#第$i个标签");
     }
     labelItem[0] = "#早餐";
-  }
-
-  void fillBillItems() {
-    // for (int i = 0; i < 6; i++) {
-    //   billItems.add(BillsDetail()
-    //     ..billId = 5
-    //     ..typeId = 1
-    //     ..amount = 99.99
-    //     ..merchant = "饿了么"
-    //     ..labels = ["聚餐"]
-    //     ..time = DateTime(2023));
-    // }
   }
 
   getBill() async {
