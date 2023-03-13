@@ -19,7 +19,10 @@ class PersonPage extends GetView<PersonController> {
           padding: const EdgeInsets.only(left: 20, right: 20).w,
           children: [
             SizedBox(height: 80.h,),
-            const InformationCard(),
+            InkWell(
+              child: const InformationCard(),
+              onTap: (){Get.toNamed(Routes.ACCOUNT_SETTING);},
+            ),
             SizedBox(
               height: 20.h,
             ),
@@ -46,10 +49,6 @@ class PersonPage extends GetView<PersonController> {
             FunctionCard(icon: Icons.add, title: "多币种", onTap: (){Get.toNamed(Routes.MULTI_CURRENCY);}),
             FunctionCard(icon: Icons.add, title: "订阅和分期", onTap: (){}),
             FunctionCard(icon: Icons.add, title: "账单导入与导出", onTap: (){}),
-            BrnBigMainButton(title: "退出",onTap: (){
-              Get.offAllNamed("/code_login_step_one");
-              StorageUtil.clear();
-            },)
           ],
         ),
       ),

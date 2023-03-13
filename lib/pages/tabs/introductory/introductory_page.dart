@@ -39,14 +39,20 @@ class IntroductoryPage extends GetView<IntroductoryController> {
           SizedBox(height: 30.h,),
           Text("近3日账单", style: TextStyle(fontSize: 20.sp, color: const Color.fromRGBO(31, 41, 51, 1.0)),),
           SizedBox(height: 20.h,),
-          ListView.builder(
-              shrinkWrap: true,
-              controller: controller.scrollController,
-              itemCount: controller.billItems.length,
-              itemBuilder: (BuildContext context, int index) {
-                return DetailCard(controller.billItems[index]);
-              }
-          ),
+          Obx((){
+            if(controller.billItems.isNotEmpty){
+              return ListView.builder(
+                  shrinkWrap: true,
+                  controller: controller.scrollController,
+                  itemCount: controller.billItems.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return DetailCard(controller.billItems[index]);
+                  }
+              );
+            }else {
+              return const Center(child: Text("暂时没有账单", style: TextStyle(color: Colors.black54),),);
+            }
+          })
         ],
         ),
       );
