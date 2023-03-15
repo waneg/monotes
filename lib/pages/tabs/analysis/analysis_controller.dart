@@ -5,8 +5,13 @@ import 'package:monotes/models/expenditure_info.dart';
 import 'package:monotes/widgets/expenditure_item.dart';
 
 class AnalysisController extends GetxController {
-  List<ExpenditureInfo> items = [];
-  var spots = [
+  // 0 月度， 1表示年度
+  var showMode = 0.obs;
+  var year = 2023.obs;
+  var month = DateTime(2023, 3).obs;
+
+  RxList<ExpenditureInfo> items = <ExpenditureInfo>[].obs;
+  var spotsYear = [
     FlSpot(1, 3),
     FlSpot(2, 2),
     FlSpot(3, 5),
@@ -19,6 +24,33 @@ class AnalysisController extends GetxController {
     FlSpot(10, 3.2),
     FlSpot(11, 3.9),
     FlSpot(12, 2.9)
+  ].obs;
+
+  var spotsMonth = [
+    FlSpot(1, 3),
+    FlSpot(2, 2),
+    FlSpot(3, 5),
+    FlSpot(4, 3.1),
+    FlSpot(5, 4),
+    FlSpot(6, 3),
+    FlSpot(7, 4),
+    FlSpot(8, 3),
+    FlSpot(9, 3.5),
+    FlSpot(10, 3.2),
+    FlSpot(11, 3.9),
+    FlSpot(12, 2.9),
+    FlSpot(13, 3),
+    FlSpot(14, 2),
+    FlSpot(15, 5),
+    FlSpot(16, 3.1),
+    FlSpot(17, 4),
+    FlSpot(18, 3),
+    FlSpot(19, 4),
+    FlSpot(20, 3),
+    FlSpot(21, 3.5),
+    FlSpot(22, 3.2),
+    FlSpot(23, 3.9),
+    FlSpot(24, 2.9)
   ].obs;
 
   @override
