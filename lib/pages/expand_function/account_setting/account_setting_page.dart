@@ -110,17 +110,20 @@ class AccountSettingPage extends GetView<AccountSettingController> {
               color: Color.fromRGBO(220, 220, 220, 1.0),
             ),
             const Spacer(),
-            ElevatedButton(
-                onPressed: (){
-                  Get.offAllNamed("/code_login_step_one");
-                  StorageUtil.clear();
-                },
-              style: ButtonStyle(
-                elevation: MaterialStateProperty.all(0),
-                minimumSize: MaterialStateProperty.all(Size(300.w, 50.h)),
-                backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(239, 239, 239, 1.0),),
+            Padding(
+              padding: EdgeInsets.only(bottom: 50.h),
+              child: ElevatedButton(
+                  onPressed: (){
+                    Get.offAllNamed("/code_login_step_one");
+                    StorageUtil.clear();
+                  },
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.all(0),
+                  minimumSize: MaterialStateProperty.all(Size(300.w, 50.h)),
+                  backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(239, 239, 239, 1.0),),
+                ),
+                  child: Text("退出登录", style: TextStyle(color: const Color.fromRGBO(154, 154, 154, 1), fontSize: 18.sp, fontWeight: FontWeight.bold),),
               ),
-                child: Text("退出登录", style: TextStyle(color: const Color.fromRGBO(154, 154, 154, 1), fontSize: 18.sp, fontWeight: FontWeight.bold),),
             )
           ],
         ),

@@ -1,42 +1,77 @@
 import 'dart:math';
 
 import 'package:common_utils/common_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/dio_util.dart';
 import 'package:monotes/models/bills_detail.dart';
 import 'package:monotes/widgets/detail_card.dart';
 
-class BillsController extends GetxController {
-  var billItems = [].obs;
+import '../../../common/my_exception.dart';
+import '../../../common/toast_util.dart';
 
-  void fillBillItems() {
-    // for (int i = 0; i < 20; i++) {
-    //   billItems.add(BillsDetail()
-    //     ..billId = 5
-    //     ..typeId = 1
-    //     ..amount = 99.99
-    //     ..merchant = "饿了么"
-    //     ..labels = ["聚餐"]
-    //     ..time = DateTime(2023));
-    // }
-  }
+class BillsController extends GetxController {
+  RxList billItems = [].obs;
+  RxDouble monthlyPay = 0.0.obs;
 
   @override
   void onInit() async {
     // TODO: implement onInit
+    getBills();
+    getMonthlyPay();
     super.onInit();
-    Future future = DioUtils().get("/bill/getList");
-    future.then((response) {
-      if (response.data['code'] == 0) {
-        var list = response.data['data'];
-        for (var item in list) {
-          billItems.value.add(BillsDetail.fromJson(item));
-        }
-        print(billItems.value.length);
-      } else {
-        LogUtil.d(Exception(), tag: "ERROR");
+  }
+
+  getBills() async {
+    try {
+      var response = await DioUtils().get("/bill/getList");
+      var list = response.data['data'];
+      var tempList = [];
+      for (var item in list) {
+        tempList.add(BillsDetail.fromJson(item));
       }
-    });
-    fillBillItems();
+      billItems.value = tempList;
+      update();
+    } on MyException catch (e) {
+      print(e);
+      ToastUtil.showBasicToast(e.msg);
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  deleteBill(int selectedIndex) async {
+    try {
+      BillsDetail item = billItems[selectedIndex];
+      String billId = item.billId.toString();
+      await DioUtils().delete("/bill/delete/$billId");
+      ToastUtil.showBasicToast("删除成功");
+      billItems.removeAt(selectedIndex);
+      getMonthlyPay();
+      update();
+    } on MyException catch (e) {
+      print(e);
+      ToastUtil.showBasicToast(e.msg);
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+  
+  getMonthlyPay() async{
+    try{
+      var response = await DioUtils().get("/analysis/curMonthTotal");
+      double money = response.data['data'];
+      monthlyPay.value = money;
+    }on MyException catch (e) {
+      print(e);
+      ToastUtil.showBasicToast(e.msg);
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  refreshAllData(){
+    getBills();
+    getMonthlyPay();
   }
 }

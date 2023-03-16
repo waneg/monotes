@@ -9,6 +9,8 @@ import 'package:monotes/common/config.dart';
 import 'package:monotes/common/dio_util.dart';
 import 'package:monotes/models/record_detail.dart';
 
+import '../bills/bills_controller.dart';
+
 class RecordController extends GetxController {
   var inputTimeController = TextEditingController();
   var inputCostController = TextEditingController();
@@ -38,8 +40,11 @@ class RecordController extends GetxController {
       try {
         var response =
             DioUtils().post('/bill/addRecord', data: record.toJson());
+        // 返回并刷新
+        back();
       } catch (e) {
         LogUtil.d(this, tag: "SUBMIT");
+        Get.back();
       }
     }
   }
@@ -77,6 +82,13 @@ class RecordController extends GetxController {
 
     return true;
   }
+
+  back(){
+    BillsController billsController = Get.find();
+    billsController.refreshAllData();
+    Get.back();
+  }
+
 }
 
 class TypeButtonInfo {
