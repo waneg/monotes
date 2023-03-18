@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/pages/tabs/bills/bills_controller.dart';
@@ -28,7 +29,7 @@ class BillsPage extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20.w, 20.w, 20.2, 0),
         child: Column(
           children: [
-            ConclusionCard(0, 0, 0),
+            Obx(()=> ConclusionCard(0, billsController.monthlyPay.value, 0)),
             Padding(
               padding: const EdgeInsets.all(15),
               child: CupertinoButton(
@@ -60,12 +61,58 @@ class BillsPage extends StatelessWidget {
                 ],
               ),
             ),
-            Obx(() => Expanded(
-                child: ListView.builder(
+            Obx(() {
+              if (billsController.billItems.isNotEmpty) {
+                return Expanded(
+                    child: SlidableAutoCloseBehavior(
+                  child: ListView.separated(
                     itemCount: billsController.billItems.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return DetailCard(billsController.billItems[index]);
-                    })))
+                      return Slidable(
+                        key: const ValueKey(0),
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              // An action can be bigger than the others.
+                              onPressed: (context){
+
+                              },
+                              backgroundColor: Colors.black45,
+                              foregroundColor: Colors.white,
+                              icon: Icons.archive,
+                              label: '修改',
+                            ),
+                            SlidableAction(
+                              onPressed: (context){
+                                billsController.deleteBill(index);
+                              },
+                              backgroundColor: Colors.redAccent,
+                              borderRadius: BorderRadius.horizontal(
+                                  left: Radius.zero,
+                                  right: Radius.circular(8.w)),
+                              foregroundColor: Colors.white,
+                              icon: Icons.save,
+                              label: '删除',
+                            ),
+                          ],
+                        ),
+                        child: DetailCard(billsController.billItems[index]),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                        height: 10.h,
+                      );
+                    },
+                  ),
+                ));
+              } else {
+                return const Center(
+                  child: Text("暂时没有账单"),
+                );
+              }
+            }),
           ],
         ),
       ),
