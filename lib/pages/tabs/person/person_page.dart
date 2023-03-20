@@ -20,7 +20,7 @@ class PersonPage extends GetView<PersonController> {
           children: [
             SizedBox(height: 80.h,),
             InkWell(
-              child: const InformationCard(),
+              child: Obx(()=>InformationCard(username: controller.p_username.value,)),
               onTap: (){Get.toNamed(Routes.ACCOUNT_SETTING);},
             ),
             SizedBox(
@@ -58,7 +58,9 @@ class PersonPage extends GetView<PersonController> {
 }
 
 class InformationCard extends StatelessWidget {
-  const InformationCard({Key? key}) : super(key: key);
+  final String username;
+
+  const InformationCard({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,7 @@ class InformationCard extends StatelessWidget {
             width: 20.w,
           ),
           Text(
-            "Daniel Hua",
+            username,
             style: TextStyle(
                 color: const Color.fromRGBO(64, 64, 64, 1),
                 fontSize: 24.sp,

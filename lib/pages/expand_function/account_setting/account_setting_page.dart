@@ -1,3 +1,5 @@
+import 'package:monotes/common/config.dart';
+import 'package:monotes/common/toast_util.dart';
 import 'package:monotes/pages/expand_function/account_setting/account_setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,16 +57,26 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                 "用户名",
                 style: TextStyle(color: Color.fromRGBO(108, 108, 108, 1)),
               ),
-              trailing: const Text("玛丽亚"),
-              onTap: (){
+              trailing: Obx(()=>Text(controller.username.value)),
+              onTap: () {
                 BrnMiddleInputDialog(
                   title: "修改昵称",
-                  hintText: "请输入2~12位昵称",
+                  hintText: "请输入2~8位昵称",
                   cancelText: "取消",
                   confirmText: "确定",
                   autoFocus: true,
                   maxLines: 1,
-                  onConfirm: (value){},
+                  onConfirm: (value) async {
+                    // 还未调试
+                    // if(value.length < 2){
+                    //   ToastUtil.showBasicToast("用户名过短！");
+                    // }else if(value.length > 8){
+                    //   ToastUtil.showBasicToast("用户名过长！");
+                    // }else{
+                    //   await controller.updateUsername(value);
+                    //   Get.back();
+                    // }
+                  },
                   onCancel: (){Get.back();}
                 ).show(context);
               },
@@ -74,24 +86,30 @@ class AccountSettingPage extends GetView<AccountSettingController> {
               indent: 0.0,
               color: Color.fromRGBO(220, 220, 220, 1.0),
             ),
-            const ListTile(
-              title: Text(
+            ListTile(
+              title: const Text(
                 "生日",
                 style: TextStyle(color: Color.fromRGBO(108, 108, 108, 1)),
               ),
-              trailing: Text("1993/01/22"),
+              trailing: Obx((){
+                if(controller.birthday.isNotEmpty){
+                  return Text(controller.birthday.value);
+                }else{
+                  return TextButton(onPressed: (){}, child: Text("请选择",style: TextStyle(color: ThemeColor.appBarColor),));
+                }
+              }),
             ),
             const Divider(
               height: 0.0,
               indent: 0.0,
               color: Color.fromRGBO(220, 220, 220, 1.0),
             ),
-            const ListTile(
-              title: Text(
+            ListTile(
+              title: const Text(
                 "手机号",
                 style: TextStyle(color: Color.fromRGBO(108, 108, 108, 1)),
               ),
-              trailing: Text("15381079286"),
+              trailing: Obx(()=>Text(controller.phone.value)),
             ),
             const Divider(
               height: 0.0,
