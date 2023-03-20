@@ -59,7 +59,7 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
               SizedBox(height: 30.h,),
               PinCodeTextField(
                 appContext: context,
-                length: 6,
+                length: 4,
                 keyboardType: TextInputType.number,
                 autoFocus: true, // 进入就弹出键盘
                 obscureText: false,

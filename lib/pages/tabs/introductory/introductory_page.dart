@@ -27,35 +27,62 @@ class IntroductoryPage extends GetView<IntroductoryController> {
           const Center(
             child: Text("待放东西，没想好"),
           ),
-          SizedBox(height: 30.h,),
-          Text("常用标签", style: TextStyle(fontSize: 20.sp, color: const Color.fromRGBO(31, 41, 51, 1.0)),),
-          SizedBox(height: 20.h,),
+          SizedBox(
+            height: 30.h,
+          ),
+          Text(
+            "常用标签",
+            style: TextStyle(
+                fontSize: 20.sp, color: const Color.fromRGBO(31, 41, 51, 1.0)),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
           Wrap(
               alignment: WrapAlignment.center,
               spacing: 10, //主轴间距
               runSpacing: 10, //次轴间距
-              children: List.generate(controller.labelItem.length, (index){return LabelCard(str: controller.labelItem[index]);})
+              children: List.generate(controller.labelItem.length, (index) {
+                return LabelCard(str: controller.labelItem[index]);
+              })),
+          SizedBox(
+            height: 30.h,
           ),
-          SizedBox(height: 30.h,),
-          Text("近3日账单", style: TextStyle(fontSize: 20.sp, color: const Color.fromRGBO(31, 41, 51, 1.0)),),
-          SizedBox(height: 20.h,),
-          Obx((){
-            if(controller.billItems.isNotEmpty){
-              return ListView.builder(
-                  shrinkWrap: true,
-                  controller: controller.scrollController,
-                  itemCount: controller.billItems.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return DetailCard(controller.billItems[index]);
-                  }
+          Text(
+            "近3日账单",
+            style: TextStyle(
+                fontSize: 20.sp, color: const Color.fromRGBO(31, 41, 51, 1.0)),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          Obx(() {
+            if (controller.billItems.isNotEmpty) {
+              return ListView.separated(
+                shrinkWrap: true,
+                controller: controller.scrollController,
+                itemCount: controller.billItems.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return DetailCard(controller.billItems[index]);
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    height: 10.h,
+                  );
+                },
               );
-            }else {
-              return const Center(child: Text("暂时没有账单", style: TextStyle(color: Colors.black54),),);
+            } else {
+              return const Center(
+                child: Text(
+                  "暂时没有账单",
+                  style: TextStyle(color: Colors.black54),
+                ),
+              );
             }
           })
         ],
-        ),
-      );
+      ),
+    );
   }
 }
 

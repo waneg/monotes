@@ -40,6 +40,21 @@ class BillsController extends GetxController {
     }
   }
 
+  editBill(int selectedIndex, double price) async {
+    try {
+      BillsDetail item = billItems[selectedIndex];
+      int billId = item.billId;
+      var response = await DioUtils().put("/bill/editRecord", data: {"billId":billId, "price": price});
+      refreshAllData();
+    } on MyException catch (e) {
+      print(e);
+      ToastUtil.showBasicToast(e.msg);
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+
   deleteBill(int selectedIndex) async {
     try {
       BillsDetail item = billItems[selectedIndex];
@@ -73,5 +88,18 @@ class BillsController extends GetxController {
   refreshAllData(){
     getBills();
     getMonthlyPay();
+  }
+
+  selectBills(int year, int month) async {
+    await getBills();
+    String format = "$year-${month.toString().padLeft(2,'0')}";
+    print(format);
+    var tempList = [];
+    for(BillsDetail item in billItems){
+      if(item.time.startsWith(format)){
+        tempList.add(item);
+      }
+    }
+    billItems.value = tempList;
   }
 }

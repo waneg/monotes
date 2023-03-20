@@ -1,9 +1,15 @@
+import 'package:bruno/bruno.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_pickers/pickers.dart';
+import 'package:flutter_pickers/time_picker/model/date_mode.dart';
+import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
+import 'package:monotes/common/toast_util.dart';
 import 'package:monotes/pages/tabs/bills/bills_controller.dart';
 import 'package:monotes/routes/app_routes.dart';
 import 'package:monotes/widgets/conclusion_card.dart';
@@ -29,7 +35,8 @@ class BillsPage extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20.w, 20.w, 20.2, 0),
         child: Column(
           children: [
-            Obx(()=> ConclusionCard(0, billsController.monthlyPay.value, 0)),
+            Obx(() => ConclusionCard(0, billsController.monthlyPay.value,
+                -billsController.monthlyPay.value)),
             Padding(
               padding: const EdgeInsets.all(15),
               child: CupertinoButton(
@@ -54,7 +61,23 @@ class BillsPage extends StatelessWidget {
                     right: 0,
                     top: 0,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        DateTime datetime = DateTime.now();
+                        Pickers.showDatePicker(context,
+                            mode: DateMode.YM,
+                            minDate: PDuration(year: datetime.year - 3),
+                            maxDate: PDuration(
+                                year: datetime.year, month: datetime.month),
+                            onConfirm: (p) {
+                              int? year = p.year;
+                              int? month = p.month;
+                              if(year != null && month != null){
+                                billsController.selectBills(year, month);
+                              }else{
+                                ToastUtil.showBasicToast("筛选失败");
+                              }
+                            });
+                      },
                       child: const Text("筛选"),
                     ),
                   )
@@ -75,16 +98,28 @@ class BillsPage extends StatelessWidget {
                           children: [
                             SlidableAction(
                               // An action can be bigger than the others.
-                              onPressed: (context){
-
+                              onPressed: (context) {
+                                BrnMiddleInputDialog(
+                                    title: "修改账单金额",
+                                    cancelText: "取消",
+                                    confirmText: "确定",
+                                    autoFocus: true,
+                                    maxLines: 1,
+                                    keyboardType: TextInputType.number,
+                                    onConfirm: (value){
+                                      billsController.editBill(index, double.parse(value));
+                                      Get.back();
+                                    },
+                                    onCancel: (){Get.back();}
+                                ).show(context);
                               },
                               backgroundColor: Colors.black45,
                               foregroundColor: Colors.white,
-                              icon: Icons.archive,
+                              icon: Icons.edit,
                               label: '修改',
                             ),
                             SlidableAction(
-                              onPressed: (context){
+                              onPressed: (context) {
                                 billsController.deleteBill(index);
                               },
                               backgroundColor: Colors.redAccent,
