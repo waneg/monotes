@@ -45,7 +45,10 @@ class BillsController extends GetxController {
       BillsDetail item = billItems[selectedIndex];
       int billId = item.billId;
       var response = await DioUtils().put("/bill/editRecord", data: {"billId":billId, "price": price});
-      refreshAllData();
+      item.price = price;
+      BillsDetail eitem = BillsDetail(item.billId, item.typeId, item.price, item.goods, item.time);
+      billItems[selectedIndex] = eitem;
+      getMonthlyPay();
     } on MyException catch (e) {
       print(e);
       ToastUtil.showBasicToast(e.msg);

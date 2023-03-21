@@ -7,7 +7,7 @@ class BillsDetail {
   final int billId; // 账单id
   final int typeId; // 消费类型id
   final String merchant = ""; // 商家
-  final double price; // 消费金额
+  double price; // 消费金额
   final String goods;
   final String time; // 消费时间
   final List<String> labels = []; // 消费标签
