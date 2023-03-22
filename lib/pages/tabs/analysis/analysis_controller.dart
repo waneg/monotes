@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
+import 'package:monotes/common/dio_util.dart';
 import 'package:monotes/models/expenditure_info.dart';
 import 'package:monotes/widgets/expenditure_item.dart';
 
@@ -12,55 +13,38 @@ class AnalysisController extends GetxController {
 
   RxList<ExpenditureInfo> items = <ExpenditureInfo>[].obs;
   var spotsYear = [
-    FlSpot(1, 3),
-    FlSpot(2, 2),
-    FlSpot(3, 5),
-    FlSpot(4, 3.1),
-    FlSpot(5, 4),
-    FlSpot(6, 3),
-    FlSpot(7, 4),
-    FlSpot(8, 3),
-    FlSpot(9, 3.5),
-    FlSpot(10, 3.2),
-    FlSpot(11, 3.9),
-    FlSpot(12, 2.9)
+    FlSpot(1, 0),
+    FlSpot(2, 0),
+    FlSpot(3, 0),
+    FlSpot(4, 0),
+    FlSpot(5, 0),
+    FlSpot(6, 0),
+    FlSpot(7, 0),
+    FlSpot(8, 0),
+    FlSpot(9, 0),
+    FlSpot(10, 0),
+    FlSpot(11, 0),
+    FlSpot(12, 0)
   ].obs;
 
-  var spotsMonth = [
-    FlSpot(1, 3),
-    FlSpot(2, 2),
-    FlSpot(3, 5),
-    FlSpot(4, 3.1),
-    FlSpot(5, 4),
-    FlSpot(6, 3),
-    FlSpot(7, 4),
-    FlSpot(8, 3),
-    FlSpot(9, 3.5),
-    FlSpot(10, 3.2),
-    FlSpot(11, 3.9),
-    FlSpot(12, 2.9),
-    FlSpot(13, 3),
-    FlSpot(14, 2),
-    FlSpot(15, 5),
-    FlSpot(16, 3.1),
-    FlSpot(17, 4),
-    FlSpot(18, 3),
-    FlSpot(19, 4),
-    FlSpot(20, 3),
-    FlSpot(21, 3.5),
-    FlSpot(22, 3.2),
-    FlSpot(23, 3.9),
-    FlSpot(24, 2.9)
-  ].obs;
+  var spotsMonth = <FlSpot>[].obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getExpenditureInfo();
+    getMonthTrendInfo(year.value);
+  }
+
+  void onRefresh() {
+    getExpenditureInfo();
+    getMonthTrendInfo(year.value);
+    getDayTrendInfo(year.value, month.value.month);
   }
 
   void getExpenditureInfo() {
+    items.clear();
     SHOPPING_TYPE.forEach((key, value) {items.add(ExpenditureInfo(key, 1200, 5));});
   }
 
@@ -72,5 +56,42 @@ class AnalysisController extends GetxController {
           typeId: item.typeId, amount: item.amount, pct: item.pct));
     }
     return ans;
+  }
+
+  void getMonthTrendInfo (int year) async {
+    var response = await DioUtils().get('/analysis/trend/month/$year-1/$year-12');
+    var data = response.data;
+    clearYearSpots();
+    for (var item in data['data']) {
+      int month = item['month'];
+      spotsYear[month - 1] = FlSpot(month.toDouble(), item['total']);
+      print("月度信息${spotsMonth[month - 1]}");
+    }
+    print(data);
+  }
+
+  void getDayTrendInfo(int year, int month) async {
+    var response = await DioUtils().get('/analysis/trend/day/$year-$month-1/$year-$month-30');
+    var data = response.data;
+    clearMonthSpots();
+    for (var item in data['data']) {
+      int day = int.parse(item['date'].split('-')[2]);
+      spotsMonth[day - 1] = FlSpot(day.toDouble(), item['total']);
+    }
+  }
+
+  void clearYearSpots() {
+    spotsYear.clear();
+    for (int i = 1; i <= 12; i++) {
+      spotsYear.add(FlSpot(i.toDouble(), 0.0));
+    }
+  }
+
+  void clearMonthSpots() {
+    spotsMonth.clear();
+    var cnt = DateTime(year.value, month.value.month + 1, 0).day;
+    for (int i = 1; i <= cnt; i++) {
+      spotsMonth.add(FlSpot(i.toDouble(), 0.0));
+    }
   }
 }

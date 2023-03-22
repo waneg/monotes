@@ -29,89 +29,101 @@ class AnalysisPage extends GetView<AnalysisController> {
           centerTitle: true,
           automaticallyImplyLeading: false,
         ),
-        body: Padding(
-            padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
-            child: ListView(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    bottom: 10.w,
-                  ),
-                  child: Row(
-                    children: [
-                      Obx(() => TextButton(
+        body: RefreshIndicator(
+          onRefresh: () {
+            return Future.delayed(Duration(seconds: 1), controller.onRefresh);
+          },
+          child: Padding(
+              padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
+              child: ListView(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: 10.w,
+                    ),
+                    child: Row(
+                      children: [
+                        Obx(() => TextButton(
+                              onPressed: () {
+                                controller.showMode.value = 0;
+                              },
+                              child: Text(
+                                "年度",
+                                style: controller.showMode.value == 0
+                                    ? TextStyle(color: Colors.black)
+                                    : TextStyle(color: Colors.grey),
+                              ),
+                            )),
+                        Obx(() => TextButton(
                             onPressed: () {
-                              controller.showMode.value = 0;
+                              controller.showMode.value = 1;
                             },
                             child: Text(
-                              "年度",
-                              style: controller.showMode.value == 0
-                                  ? TextStyle(color: Colors.black)
-                                  : TextStyle(color: Colors.grey),
-                            ),
-                          )),
-                      Obx(() => TextButton(
-                          onPressed: () {
-                            controller.showMode.value = 1;
-                          },
-                          child: Text(
-                            "月度",
-                            style: controller.showMode.value == 1
-                                ? TextStyle(color: Colors.black)
-                                : TextStyle(color: Colors.grey),
-                          ))),
-                      const Spacer(),
-                      Obx(() => TextButton(
-                            onPressed: () {
-                              DateTime datetime = DateTime.now();
-                              if (controller.showMode.value == 0) {
-                                Pickers.showDatePicker(context,
-                                    mode: DateMode.Y,
-                                    minDate: PDuration(year: datetime.year - 3),
-                                    maxDate: PDuration(year: datetime.year),
-                                    onConfirm: (p) {
-                                  controller.year.value = p.year!;
-                                  // TODO : 发送网络请求，更新图表
-                                });
-                              } else {
-                                Pickers.showDatePicker(context,
-                                    mode: DateMode.YM,
-                                    minDate: PDuration(year: datetime.year - 3),
-                                    maxDate: PDuration(
-                                        year: datetime.year,
-                                        month: datetime.month), onConfirm: (p) {
-                                  controller.month.value =
-                                      DateTime(p.year!, p.month!);
-                                });
-                              }
-                            },
-                            style: ButtonStyle(
-                                foregroundColor: const MaterialStatePropertyAll(
-                                    Color(0xff343434)),
-                                textStyle: MaterialStatePropertyAll(TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold))),
-                            child: Text(
-                              controller.showMode.value == 0
-                                  ? "${controller.year.value}年"
-                                  : "${controller.month.value.year}年${controller.month.value.month}月",
-                            ),
-                          ))
-                    ],
+                              "月度",
+                              style: controller.showMode.value == 1
+                                  ? const TextStyle(color: Colors.black)
+                                  : const TextStyle(color: Colors.grey),
+                            ))),
+                        const Spacer(),
+                        Obx(() => TextButton(
+                              onPressed: () {
+                                DateTime datetime = DateTime.now();
+                                if (controller.showMode.value == 0) {
+                                  Pickers.showDatePicker(context,
+                                      mode: DateMode.Y,
+                                      minDate:
+                                          PDuration(year: datetime.year - 3),
+                                      maxDate: PDuration(year: datetime.year),
+                                      onConfirm: (p) {
+                                    controller.year.value = p.year!;
+                                    // TODO : 发送网络请求，更新图表
+                                    controller.onRefresh();
+                                  });
+                                } else {
+                                  Pickers.showDatePicker(context,
+                                      mode: DateMode.YM,
+                                      minDate:
+                                          PDuration(year: datetime.year - 3),
+                                      maxDate: PDuration(
+                                          year: datetime.year,
+                                          month: datetime.month),
+                                      onConfirm: (p) {
+                                    controller.month.value =
+                                        DateTime(p.year!, p.month!);
+                                    print(controller.month.value);
+                                    controller.onRefresh();
+                                  });
+                                }
+                              },
+                              style: ButtonStyle(
+                                  foregroundColor:
+                                      const MaterialStatePropertyAll(
+                                          Color(0xff343434)),
+                                  textStyle: MaterialStatePropertyAll(TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold))),
+                              child: Text(
+                                controller.showMode.value == 0
+                                    ? "${controller.year.value}年"
+                                    : "${controller.month.value.year}年${controller.month.value.month}月",
+                              ),
+                            ))
+                      ],
+                    ),
                   ),
-                ),
-                SeparatedCard(
-                    title: "支出趋势",
-                    widget: ExpenseLineChart(controller.spotsYear,
-                        controller.spotsMonth, controller.showMode)),
-                DoughnutChartCard(controller.items),
-                SeparatedCard(
-                    title: "支出构成",
-                    widget: Column(
-                      children: controller.getExpenditureItems(),
-                    )),
-              ],
-            )));
+                  SeparatedCard(
+                      title: "支出趋势",
+                      widget: ExpenseLineChart(controller.spotsYear,
+                          controller.spotsMonth, controller.showMode)),
+                  DoughnutChartCard(controller.items),
+                  SeparatedCard(
+                      title: "支出构成",
+                      widget: Column(
+                        children: controller.getExpenditureItems(),
+                      )),
+                ],
+              )),
+        ));
   }
 }
 
@@ -138,6 +150,31 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
 
   LineChartData mainData() {
     return LineChartData(
+      lineTouchData: LineTouchData(
+          getTouchedSpotIndicator:
+              (LineChartBarData barData, List<int> spotIndexes) {
+            return spotIndexes.map((index) {
+              return TouchedSpotIndicatorData(
+                  FlLine(
+                    color: Colors.blueAccent,
+                  ),
+                  FlDotData());
+            }).toList();
+          },
+          touchTooltipData: LineTouchTooltipData(
+            tooltipBgColor: Colors.blueAccent,
+            getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
+              return lineBarsSpot.map((lineBarSpot) {
+                return LineTooltipItem(
+                  lineBarSpot.y.toString(),
+                  const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }).toList();
+            },
+          )),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
@@ -159,7 +196,7 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
             interval: 1,
             reservedSize: 40,
             showTitles: true,
-            getTitlesWidget: (value, meta) => value % 2 == 0
+            getTitlesWidget: (value, meta) => value % 3 == 0
                 ? Obx(() => Text(
                     "${value.toInt()}${widget.mode.value == 0 ? "月" : "日"}",
                     style:
@@ -181,14 +218,19 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
 
   List<LineChartBarData> linesBarData() {
     final LineChartBarData lineChartBarData1 = LineChartBarData(
-      spots: widget.mode.value == 0 ? widget.spotsYear.value : widget.spotsMonth.value,
+      spots: widget.mode.value == 0
+          ? widget.spotsYear.value
+          : widget.spotsMonth.value,
       color: ThemeColor.appBarColor,
       isCurved: false,
-      barWidth: 2,
-      isStrokeCapRound: true,
+      barWidth: 3,
+      isStrokeCapRound: false,
       dotData: FlDotData(
-        show: true,
-      ),
+          show: true,
+          getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+              color: Colors.white,
+              strokeColor: Colors.blueAccent,
+              strokeWidth: 2.sp)),
     );
     return [lineChartBarData1];
   }

@@ -51,13 +51,6 @@ class BillsPage extends StatelessWidget {
               child: Stack(
                 children: [
                   Positioned(
-                      left: 0,
-                      top: 0,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text("收支分析 >"),
-                      )),
-                  Positioned(
                     right: 0,
                     top: 0,
                     child: TextButton(
@@ -78,7 +71,7 @@ class BillsPage extends StatelessWidget {
                               }
                             });
                       },
-                      child: const Text("筛选"),
+                      child: Text("筛选", style: TextStyle(color: Colors.indigo, fontSize: 14.sp, fontWeight: FontWeight.bold),),
                     ),
                   )
                 ],
