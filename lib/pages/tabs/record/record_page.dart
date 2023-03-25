@@ -22,9 +22,15 @@ class RecordPage extends GetView<RecordController> {
 
   final picker = ImagePicker();
 
-  Future getImage() async {
+  Future getImage(int device) async {
     print("getImage() clicked");
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    var pickedFile;
+    if (device == 0) {
+      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    } else {
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    }
+
     if (pickedFile != null) {
       _image = File(pickedFile.path);
       Future<RecordDetail> future = controller.getOcrInfo(_image);
@@ -41,6 +47,13 @@ class RecordPage extends GetView<RecordController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: controller.submitRecord,
+              icon: Text(
+                "提交",
+              ))
+        ],
         backgroundColor: Colors.blueGrey,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
@@ -227,21 +240,40 @@ class RecordPage extends GetView<RecordController> {
                   ],
                 )),
             const Spacer(),
-            Column(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FloatingActionButton(
-                  backgroundColor: Colors.green,
-                  onPressed: getImage,
-                  child: const Icon(Icons.camera_enhance_outlined),
+                SizedBox(
+                  width: 100.w,
                 ),
-                const Text(
-                  "扫描账单",
-                  style: TextStyle(color: Color(0xFF101010), height: 2),
-                )
+                Column(
+                  children: [
+                    FloatingActionButton(
+                      backgroundColor: Colors.green,
+                      onPressed: () {
+                        getImage(0);
+                      },
+                      child: const Icon(Icons.camera_enhance_outlined),
+                    ),
+                    const Text(
+                      "扫描账单",
+                      style: TextStyle(color: Color(0xFF101010), height: 2),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: 10.w,
+                ),
+                TextButton(
+                    onPressed: () {
+                      getImage(1);
+                    },
+                    child: const Text(
+                      "从相册中选取图片",
+                      style: TextStyle(color: Colors.grey),
+                    ))
               ],
-            ),
-            ElevatedButton(
-                onPressed: controller.submitRecord, child: const Text("确定")),
+            )
           ],
         ),
       ),
