@@ -23,16 +23,14 @@ class AnalysisPage extends GetView<AnalysisController> {
     return Scaffold(
         backgroundColor: ThemeColor.bgColor,
         appBar: AppBar(
-          title: Text("分析"),
+          title: const Text("分析"),
           backgroundColor: ThemeColor.appBarColor,
           elevation: 0,
           centerTitle: true,
           automaticallyImplyLeading: false,
         ),
         body: RefreshIndicator(
-          onRefresh: () {
-            return Future.delayed(Duration(seconds: 1), controller.onRefresh);
-          },
+          onRefresh: () => Future.delayed(const Duration(seconds: 1), controller.onRefresh),
           child: Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
               child: ListView(
@@ -50,8 +48,8 @@ class AnalysisPage extends GetView<AnalysisController> {
                               child: Text(
                                 "年度",
                                 style: controller.showMode.value == 0
-                                    ? TextStyle(color: Colors.black)
-                                    : TextStyle(color: Colors.grey),
+                                    ? const TextStyle(color: Colors.black)
+                                    : const TextStyle(color: Colors.grey),
                               ),
                             )),
                         Obx(() => TextButton(
@@ -183,7 +181,7 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
       titlesData: FlTitlesData(
           leftTitles: AxisTitles(
               sideTitles: SideTitles(showTitles: false),
-              axisNameWidget: Text(
+              axisNameWidget: const Text(
                 "金额",
                 style: TextStyle(height: 0.1),
               )),

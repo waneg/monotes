@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/common/dio_util.dart';
+import 'package:monotes/common/toast_util.dart';
 import 'package:monotes/models/record_detail.dart';
 
 import '../bills/bills_controller.dart';
@@ -16,8 +17,10 @@ class RecordController extends GetxController {
   var inputCostController = TextEditingController();
   var goodsController = TextEditingController();
   var remarkController = TextEditingController();
+  var addLabelController = TextEditingController();
 
   List<TypeButtonInfo> consumptionTypes = <TypeButtonInfo>[];
+  RxList<String> labelList = <String>[].obs;
   var selectedType = 0.obs;
 
   @override
@@ -73,22 +76,34 @@ class RecordController extends GetxController {
         price.isEmpty ||
         shopkeeper.isEmpty ||
         selectedType.value == 0) {
-      Get.defaultDialog(
-          title: "提示",
-          middleText: "输入信息有误",
-          middleTextStyle: const TextStyle(color: Colors.blue));
+      ToastUtil.showBasicToast("输入信息有误");
       return false;
     }
 
     return true;
   }
 
-  back(){
+  back() {
     BillsController billsController = Get.find();
     billsController.refreshAllData();
     Get.back();
   }
 
+  addLabel() {
+    if (addLabelController.text == "") {
+      ToastUtil.showBasicToast("清输入标签名称");
+      return;
+    }
+
+    if (labelList.length == 4) {
+      ToastUtil.showBasicToast("标签数目超出限制");
+    }
+
+    String labelName = addLabelController.text;
+    if (!labelList.contains(labelName)) {
+      labelList.add(labelName);
+    }
+  }
 }
 
 class TypeButtonInfo {

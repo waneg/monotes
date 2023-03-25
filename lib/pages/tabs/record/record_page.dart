@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:monotes/common/config.dart';
+import 'package:monotes/common/toast_util.dart';
 import 'package:monotes/models/record_detail.dart';
 import 'package:monotes/pages/tabs/record/record_controller.dart';
 import 'package:monotes/routes/app_routes.dart';
@@ -18,20 +19,23 @@ import 'package:monotes/routes/app_routes.dart';
 class RecordPage extends GetView<RecordController> {
   RecordPage({super.key});
 
+  // 拍摄的照片
   late File _image;
 
+  // 图片获取对象
   final picker = ImagePicker();
 
   Future getImage(int device) async {
     print("getImage() clicked");
-    var pickedFile;
+    XFile? pickedFile;
     if (device == 0) {
-      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+      pickedFile = await picker.pickImage(source: ImageSource.camera);
     } else {
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      pickedFile = await picker.pickImage(source: ImageSource.gallery);
     }
 
     if (pickedFile != null) {
+      ToastUtil.showBasicToast("选取照片成功");
       _image = File(pickedFile.path);
       Future<RecordDetail> future = controller.getOcrInfo(_image);
       future.then((value) {
@@ -39,6 +43,7 @@ class RecordPage extends GetView<RecordController> {
         controller.setInfo(value);
       });
     } else {
+      ToastUtil.showBasicToast("选取照片失败");
       print('No image selected.');
     }
   }
@@ -50,7 +55,7 @@ class RecordPage extends GetView<RecordController> {
         actions: [
           IconButton(
               onPressed: controller.submitRecord,
-              icon: Text(
+              icon: const Text(
                 "提交",
               ))
         ],
@@ -73,7 +78,8 @@ class RecordPage extends GetView<RecordController> {
         child: Column(
           children: [
             Container(
-                padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 15.w),
+                padding: EdgeInsets.only(
+                    left: 15.w, right: 15.w, top: 15.w, bottom: 15.w),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10.w))),
@@ -88,7 +94,7 @@ class RecordPage extends GetView<RecordController> {
                           style: TextStyle(fontSize: 14.sp),
                         ),
                         const Spacer(),
-                        Container(
+                        SizedBox(
                           width: 200.sp,
                           child: TextField(
                               controller: controller.inputTimeController,
@@ -122,7 +128,8 @@ class RecordPage extends GetView<RecordController> {
                                   ))),
                         )
                       ],
-                    ), //消费时间
+                    ),
+                    //消费时间
                     Row(
                       children: [
                         Text(
@@ -147,7 +154,8 @@ class RecordPage extends GetView<RecordController> {
                                   ))),
                         )
                       ],
-                    ), //消费金额
+                    ),
+                    //消费金额
                     Row(
                       children: [
                         Text(
@@ -168,7 +176,8 @@ class RecordPage extends GetView<RecordController> {
                                   ))),
                         )
                       ],
-                    ), //消费店家
+                    ),
+                    //消费店家
                     SizedBox(
                       height: 10.w,
                     ),
@@ -191,15 +200,16 @@ class RecordPage extends GetView<RecordController> {
                                 borderSide: const BorderSide(
                                     color: Colors.transparent, width: 0.5),
                                 borderRadius: BorderRadius.circular(5.w)))),
+                    // 备注信息
                     Container(
-                        margin: EdgeInsets.all(8.w),
+                        margin: EdgeInsets.only(top: 5.w, bottom: 5.w),
                         child: GridView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 5,
-                              childAspectRatio: 1.0, //显示区域宽高相等
+                              childAspectRatio: 1.2, //显示区域宽高相等
                             ),
                             itemCount: controller.consumptionTypes.length,
                             itemBuilder: (context, index) {
@@ -220,12 +230,12 @@ class RecordPage extends GetView<RecordController> {
                                     child: Column(
                                       children: [
                                         SizedBox(
-                                          width: 20.w,
-                                          height: 20.w,
+                                          width: 18.w,
+                                          height: 18.w,
                                           child: SvgPicture.asset(
                                             "assets/bill_icons/${index + 1}.svg",
-                                            width: 20.w,
-                                            height: 20.w,
+                                            width: 18.w,
+                                            height: 18.w,
                                           ),
                                         ),
                                         Text(SHOPPING_TYPE[index + 1] ?? "",
@@ -236,7 +246,78 @@ class RecordPage extends GetView<RecordController> {
                                       ],
                                     ),
                                   ));
-                            }))
+                            })),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 60.sp,
+                          height: 35.sp,
+                          child: TextField(
+                            controller: controller.addLabelController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(left: 10.sp),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.sp)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10.w,),
+                        TextButton(
+                            onPressed: controller.addLabel,
+                            child: Text("新增"),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(
+                                          10.w))),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.blue),
+                              foregroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.white),
+                            )
+//更多请阅读：https://www.yiibai.com/flutter/flutter-textbutton.html
+
+                            ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                            child: Obx(() => Container(
+                                  width: double.infinity,
+                                  child: GridView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    //子Item的个数
+                                    itemCount: controller.labelList.length,
+                                    //子布局构建器
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      //取出每个数据
+                                      return InputChip(label: Text(controller.labelList[index]),
+                                      onDeleted: (){
+                                        controller.labelList.removeAt(index);
+                                      },);
+                                    },
+                                    //子布局排列方式
+                                    //按照固定列数来排列
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+
+                                      //次方向的Item间隔
+                                      crossAxisSpacing: 3.w,
+                                      //子Item 的宽高比
+
+                                      //每行4列
+                                      crossAxisCount: 4,
+                                    ),
+                                  ),
+                                ))),
+                      ],
+                    )
                   ],
                 )),
             const Spacer(),

@@ -94,4 +94,5 @@ class AnalysisController extends GetxController {
       spotsMonth.add(FlSpot(i.toDouble(), 0.0));
     }
   }
+
 }
