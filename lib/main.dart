@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:monotes/common/config.dart';
-import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/routes/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

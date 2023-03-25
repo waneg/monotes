@@ -46,7 +46,4 @@ class ResponseStatus{
   static int NO_TOKEN = 400; ///无token，请重新登录
   static int TOKEN_EX = 401; ///token验证失败，可能已过期，请重新登录
   static int USER_EX = 402; ///用户不存在，请重新登录
-
-
-
 }

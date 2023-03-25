@@ -6,7 +6,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
-import 'package:monotes/common/dio_util.dart';
+import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/common/toast_util.dart';
 import 'package:monotes/models/record_detail.dart';
 
@@ -24,14 +24,14 @@ class RecordController extends GetxController {
   var selectedType = 0.obs;
 
   @override
-  void onInit() {
+  onInit() {
     super.onInit();
     SHOPPING_TYPE.forEach((key, value) {
       consumptionTypes.add(TypeButtonInfo("assets/bill_icons/$key.svg", value));
     });
   }
 
-  void submitRecord() async {
+  submitRecord() async {
     if (validateInput()) {
       var record = RecordDetail(
           selectedType.value,
@@ -61,7 +61,7 @@ class RecordController extends GetxController {
     return RecordDetail.fromJson(response.data['data'][0]);
   }
 
-  void setInfo(RecordDetail recordDetail) {
+  setInfo(RecordDetail recordDetail) {
     inputTimeController.text = recordDetail.time;
     inputCostController.text = recordDetail.price.toString();
     goodsController.text = recordDetail.shopkeeper.toString();
@@ -79,7 +79,6 @@ class RecordController extends GetxController {
       ToastUtil.showBasicToast("输入信息有误");
       return false;
     }
-
     return true;
   }
 
@@ -97,14 +96,20 @@ class RecordController extends GetxController {
 
     if (labelList.length == 4) {
       ToastUtil.showBasicToast("标签数目超出限制");
+      return;
     }
 
     String labelName = addLabelController.text;
     if (!labelList.contains(labelName)) {
       labelList.add(labelName);
+    } else {
+      ToastUtil.showBasicToast("请勿重复输入标签");
     }
   }
+
 }
+
+
 
 class TypeButtonInfo {
   String assetName = "";
@@ -112,3 +117,5 @@ class TypeButtonInfo {
 
   TypeButtonInfo(this.assetName, this.label);
 }
+
+

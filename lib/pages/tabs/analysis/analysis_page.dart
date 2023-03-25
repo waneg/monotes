@@ -30,7 +30,7 @@ class AnalysisPage extends GetView<AnalysisController> {
           automaticallyImplyLeading: false,
         ),
         body: RefreshIndicator(
-          onRefresh: () => Future.delayed(const Duration(seconds: 1), controller.onRefresh),
+          onRefresh: () => Future.delayed(const Duration(seconds: 1), controller.refreshUi),
           child: Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
               child: ListView(
@@ -70,18 +70,18 @@ class AnalysisPage extends GetView<AnalysisController> {
                                   Pickers.showDatePicker(context,
                                       mode: DateMode.Y,
                                       minDate:
-                                          PDuration(year: datetime.year - 3),
+                                          PDuration(year: datetime.year - 8),
                                       maxDate: PDuration(year: datetime.year),
                                       onConfirm: (p) {
                                     controller.year.value = p.year!;
                                     // TODO : 发送网络请求，更新图表
-                                    controller.onRefresh();
+                                    controller.refreshUi();
                                   });
                                 } else {
                                   Pickers.showDatePicker(context,
                                       mode: DateMode.YM,
                                       minDate:
-                                          PDuration(year: datetime.year - 3),
+                                          PDuration(year: datetime.year - 10),
                                       maxDate: PDuration(
                                           year: datetime.year,
                                           month: datetime.month),
@@ -89,7 +89,7 @@ class AnalysisPage extends GetView<AnalysisController> {
                                     controller.month.value =
                                         DateTime(p.year!, p.month!);
                                     print(controller.month.value);
-                                    controller.onRefresh();
+                                    controller.refreshUi();
                                   });
                                 }
                               },
@@ -113,12 +113,13 @@ class AnalysisPage extends GetView<AnalysisController> {
                       title: "支出趋势",
                       widget: ExpenseLineChart(controller.spotsYear,
                           controller.spotsMonth, controller.showMode)),
-                  DoughnutChartCard(controller.items),
-                  SeparatedCard(
+                  DoughnutChartCard(controller.yearItems, controller.monthItems, controller.showMode),
+                  Obx(()=>SeparatedCard(
                       title: "支出构成",
                       widget: Column(
                         children: controller.getExpenditureItems(),
-                      )),
+                      )))
+                  ,
                 ],
               )),
         ));
@@ -126,9 +127,9 @@ class AnalysisPage extends GetView<AnalysisController> {
 }
 
 class ExpenseLineChart extends StatefulWidget {
-  RxList<FlSpot> spotsYear;
-  RxList<FlSpot> spotsMonth;
-  RxInt mode;
+  final RxList<FlSpot> spotsYear;
+  final RxList<FlSpot> spotsMonth;
+  final RxInt mode;
 
   ExpenseLineChart(this.spotsYear, this.spotsMonth, this.mode, {super.key});
 
@@ -198,7 +199,7 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
                 ? Obx(() => Text(
                     "${value.toInt()}${widget.mode.value == 0 ? "月" : "日"}",
                     style:
-                        TextStyle(fontSize: 10.sp, color: Color(0xffBEBEBE))))
+                        TextStyle(fontSize: 10.sp, color: const Color(0xffBEBEBE))))
                 : Container(),
           ))),
       borderData: FlBorderData(

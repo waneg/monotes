@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
-import 'package:monotes/common/dio_util.dart';
+import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/models/expenditure_info.dart';
 import 'package:monotes/widgets/expenditure_item.dart';
 
@@ -11,7 +11,9 @@ class AnalysisController extends GetxController {
   var year = 2023.obs;
   var month = DateTime(2023, 3).obs;
 
-  RxList<ExpenditureInfo> items = <ExpenditureInfo>[].obs;
+  RxList<ExpenditureInfo> yearItems = <ExpenditureInfo>[].obs;
+  RxList<ExpenditureInfo> monthItems = <ExpenditureInfo>[].obs;
+
   var spotsYear = [
     FlSpot(1, 0),
     FlSpot(2, 0),
@@ -33,24 +35,25 @@ class AnalysisController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    getExpenditureInfo();
     getMonthTrendInfo(year.value);
+    getProportion(Period.year, year: year.value);
+    getProportion(Period.month, month: month.value);
   }
 
-  void onRefresh() {
-    getExpenditureInfo();
+  // 刷新界面
+  void refreshUi() {
     getMonthTrendInfo(year.value);
     getDayTrendInfo(year.value, month.value.month);
+    getProportion(Period.year, year: year.value);
+    getProportion(Period.month, month: month.value);
   }
 
-  void getExpenditureInfo() {
-    items.clear();
-    SHOPPING_TYPE.forEach((key, value) {items.add(ExpenditureInfo(key, 1200, 5));});
-  }
+
 
   List<ExpenditureItem> getExpenditureItems() {
     // print(items.length);
     List<ExpenditureItem> ans = [];
+    var items = showMode.value == 0 ? yearItems : monthItems;
     for (var item in items) {
       ans.add(ExpenditureItem(
           typeId: item.typeId, amount: item.amount, pct: item.pct));
@@ -58,8 +61,9 @@ class AnalysisController extends GetxController {
     return ans;
   }
 
-  void getMonthTrendInfo (int year) async {
-    var response = await DioUtils().get('/analysis/trend/month/$year-1/$year-12');
+  getMonthTrendInfo(int year) async {
+    var response =
+        await DioUtils().get('/analysis/trend/month/$year-1/$year-12');
     var data = response.data;
     clearYearSpots();
     for (var item in data['data']) {
@@ -70,8 +74,9 @@ class AnalysisController extends GetxController {
     print(data);
   }
 
-  void getDayTrendInfo(int year, int month) async {
-    var response = await DioUtils().get('/analysis/trend/day/$year-$month-1/$year-$month-30');
+  getDayTrendInfo(int year, int month) async {
+    var response = await DioUtils()
+        .get('/analysis/trend/day/$year-$month-1/$year-$month-30');
     var data = response.data;
     clearMonthSpots();
     for (var item in data['data']) {
@@ -95,4 +100,28 @@ class AnalysisController extends GetxController {
     }
   }
 
+  void getProportion(Period p, {int year = 2023, var month}) async {
+    var response;
+    if (p == Period.year) {
+      response = await DioUtils().get('/analysis/typeProportion/year/$year');
+      yearItems.clear();
+      for (var item in response.data['data']) {
+        yearItems.add(ExpenditureInfo(
+            item['typeId'], item['total'], item['percent'] * 100));
+      }
+    } else {
+      response = await DioUtils()
+          .get('/analysis/typeProportion/month/${month.year}-${month.month}');
+      monthItems.clear();
+      for (var item in response.data['data']) {
+        monthItems.add(ExpenditureInfo(
+            item['typeId'], item['total'], item['percent'] * 100));
+      }
+    }
+  }
+}
+
+enum Period {
+  year,
+  month
 }

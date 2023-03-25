@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
-import 'package:monotes/common/dio_util.dart';
+import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/common/my_exception.dart';
 import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/common/toast_util.dart';

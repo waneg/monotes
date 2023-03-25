@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:monotes/common/dio_util.dart';
+import 'package:monotes/core/network/dio_util.dart';
 
 import '../../../common/my_exception.dart';
 import '../../../common/toast_util.dart';

@@ -1,9 +1,10 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/common/toast_util.dart';
-import 'my_exception.dart';
-import 'storage_util.dart';
+import '../../common/my_exception.dart';
+import '../../common/storage_util.dart';
 
 class DioUtils {
   //hym 100.65.145.188
@@ -11,6 +12,7 @@ class DioUtils {
   //阿里云 http://47.120.1.145:8080
   static const String BASE_URL = "http://47.120.1.145:15689"; //base url
   static late DioUtils _instance;
+  static const String TAG = "DIO";
   late Dio _dio;
   late BaseOptions _baseOptions;
 
@@ -39,8 +41,8 @@ class DioUtils {
 
   /// get请求
   get(url, {data, options}) async {
-    print('get request path ------${url}-------请求参数${data}');
-    print('------------');
+    debugPrint('get request path ------$url-------请求参数$data');
+    debugPrint('------------');
     late Response response;
     try {
       response = await _dio.get(url, queryParameters: data, options: options);
@@ -50,7 +52,7 @@ class DioUtils {
         throw MyException(response.data["msg"]);
       }
     } on DioError catch (e) {
-      print('请求失败---错误类型${e.type}--错误信息${e.message}');
+      LogUtil.v('请求失败---错误类型${e.type}--错误信息${e.message}', tag: TAG);
       throw Exception(e.message);
     }
 
@@ -59,7 +61,7 @@ class DioUtils {
 
   /// Post请求
   post(url, {data, options}) async {
-    print('post request path ------${url}-------请求参数${data}');
+    print('post request path ------$url-------请求参数$data');
     late Response response;
     try {
       response = await _dio.post(url, data: data, options: options);

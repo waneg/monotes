@@ -2,7 +2,7 @@ import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:monotes/common/dio_util.dart';
+import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/pages/login/login_by_password/login_by_password_controller.dart';
 import 'package:monotes/routes/app_routes.dart';

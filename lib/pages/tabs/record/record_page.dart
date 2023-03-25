@@ -241,7 +241,7 @@ class RecordPage extends GetView<RecordController> {
                                         Text(SHOPPING_TYPE[index + 1] ?? "",
                                             style: TextStyle(
                                                 color: Colors.black54,
-                                                fontSize: 13.sp,
+                                                fontSize: 11.w,
                                                 height: 2))
                                       ],
                                     ),
@@ -266,7 +266,6 @@ class RecordPage extends GetView<RecordController> {
                         SizedBox(width: 10.w,),
                         TextButton(
                             onPressed: controller.addLabel,
-                            child: Text("新增"),
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
@@ -277,9 +276,8 @@ class RecordPage extends GetView<RecordController> {
                                   Colors.blue),
                               foregroundColor:
                                   MaterialStateProperty.all<Color>(Colors.white),
-                            )
-//更多请阅读：https://www.yiibai.com/flutter/flutter-textbutton.html
-
+                            ),
+                            child: const Text("新增")
                             ),
                         SizedBox(
                           width: 10.w,
@@ -306,11 +304,8 @@ class RecordPage extends GetView<RecordController> {
                                     //按照固定列数来排列
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
-
                                       //次方向的Item间隔
                                       crossAxisSpacing: 3.w,
-                                      //子Item 的宽高比
-
                                       //每行4列
                                       crossAxisCount: 4,
                                     ),

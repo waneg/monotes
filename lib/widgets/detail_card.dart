@@ -29,8 +29,12 @@ class DetailCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(billsDetail.goods,
-                          style: TextStyle(fontSize: 14.sp, height: 2)),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 200.w),
+                        child: Text(billsDetail.goods,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 14.sp, height: 2)),
+                      ),
                       Text(
                         SHOPPING_TYPE[billsDetail.typeId]!,
                         style: TextStyle(
@@ -49,7 +53,16 @@ class DetailCard extends StatelessWidget {
                   )
                 ],
               ),
-              Positioned(right: 0, top: 0, child: Text("-${billsDetail.price}", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, height: 1.5),))
+              Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Text(
+                    "-${billsDetail.price}",
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        height: 1.5),
+                  ))
             ],
           )),
     );
