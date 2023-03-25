@@ -67,15 +67,14 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                   autoFocus: true,
                   maxLines: 1,
                   onConfirm: (value) async {
-                    // 还未调试
-                    // if(value.length < 2){
-                    //   ToastUtil.showBasicToast("用户名过短！");
-                    // }else if(value.length > 8){
-                    //   ToastUtil.showBasicToast("用户名过长！");
-                    // }else{
-                    //   await controller.updateUsername(value);
-                    //   Get.back();
-                    // }
+                    if(value.length < 2){
+                      ToastUtil.showBasicToast("用户名过短！");
+                    }else if(value.length > 8){
+                      ToastUtil.showBasicToast("用户名过长！");
+                    }else{
+                      await controller.updateUsername(value);
+                      Get.back();
+                    }
                   },
                   onCancel: (){Get.back();}
                 ).show(context);
@@ -93,9 +92,15 @@ class AccountSettingPage extends GetView<AccountSettingController> {
               ),
               trailing: Obx((){
                 if(controller.birthday.isNotEmpty){
-                  return Text(controller.birthday.value);
+                  return InkWell(
+                    child: Text(controller.birthday.value),
+                    onTap: (){controller.showDatePicker(context);},
+                  );
                 }else{
-                  return TextButton(onPressed: (){}, child: Text("请选择",style: TextStyle(color: ThemeColor.appBarColor),));
+                  return InkWell(
+                    child: Text("请选择",style: TextStyle(color: ThemeColor.appBarColor)),
+                    onTap: (){controller.showDatePicker(context);},
+                  );
                 }
               }),
             ),
