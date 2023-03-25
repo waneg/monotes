@@ -28,11 +28,11 @@ class PersonPage extends GetView<PersonController> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                StatisticCard(
-                    title: "总记账天数", value: 0, icon: Icons.calendar_month),
-                StatisticCard(
-                    title: "总记账次数", value: 0, icon: Icons.calendar_view_day),
+              children: [
+                Obx(()=>StatisticCard(
+                    title: "总记账天数", value: controller.createDay.value, icon: Icons.calendar_month)),
+                Obx(()=>StatisticCard(
+                    title: "总记账次数", value: controller.noteNum.value, icon: Icons.calendar_view_day))
               ],
             ),
             SizedBox(
