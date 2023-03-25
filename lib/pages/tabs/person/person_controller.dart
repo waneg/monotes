@@ -8,11 +8,14 @@ import '../../../common/toast_util.dart';
 
 class PersonController extends GetxController {
   RxString p_username = "".obs;
+  RxInt createDay = 0.obs;
+  RxInt noteNum = 0.obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     getUserInfo();
+    getStaticsInfo();
     super.onInit();
   }
 
@@ -41,6 +44,24 @@ class PersonController extends GetxController {
       }else{
         p_username.value = "手机用户${phone.substring(0,4)}...";
       }
+
+      DateTime dateTime = DateTime.parse(createTime);
+      int days = DateTime.now().difference(dateTime).inDays;
+      createDay.value = days;
+    }on MyException catch (e) {
+      print(e);
+      ToastUtil.showBasicToast(e.msg);
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  getStaticsInfo() async{
+    try{
+      var response = await DioUtils().get("/bill/getList");
+      List list = response.data['data'];
+      int num = list.length;
+      noteNum.value = num;
     }on MyException catch (e) {
       print(e);
       ToastUtil.showBasicToast(e.msg);
