@@ -109,8 +109,6 @@ class RecordController extends GetxController {
 
 }
 
-
-
 class TypeButtonInfo {
   String assetName = "";
   String label = "";

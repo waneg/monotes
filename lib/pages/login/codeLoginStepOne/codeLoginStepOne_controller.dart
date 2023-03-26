@@ -1,8 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:monotes/core/network/dio_util.dart';
-import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/common/toast_util.dart';
 
 class codeLoginStepOneController extends GetxController {

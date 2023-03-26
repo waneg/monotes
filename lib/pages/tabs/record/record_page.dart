@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:bruno/bruno.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pickers/pickers.dart';
@@ -14,7 +12,6 @@ import 'package:monotes/common/config.dart';
 import 'package:monotes/common/toast_util.dart';
 import 'package:monotes/models/record_detail.dart';
 import 'package:monotes/pages/tabs/record/record_controller.dart';
-import 'package:monotes/routes/app_routes.dart';
 
 class RecordPage extends GetView<RecordController> {
   RecordPage({super.key});

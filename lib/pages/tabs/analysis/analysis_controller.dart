@@ -1,35 +1,34 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import 'package:monotes/common/config.dart';
 import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/models/expenditure_info.dart';
 import 'package:monotes/widgets/expenditure_item.dart';
 
 class AnalysisController extends GetxController {
   // 0 月度， 1表示年度
-  var showMode = 0.obs;
-  var year = 2023.obs;
-  var month = DateTime(2023, 3).obs;
+  RxInt showMode = 0.obs;
+  RxInt year = 2023.obs;
+  Rx<DateTime> month = DateTime(2023, 3).obs;
 
   RxList<ExpenditureInfo> yearItems = <ExpenditureInfo>[].obs;
   RxList<ExpenditureInfo> monthItems = <ExpenditureInfo>[].obs;
 
   var spotsYear = [
-    FlSpot(1, 0),
-    FlSpot(2, 0),
-    FlSpot(3, 0),
-    FlSpot(4, 0),
-    FlSpot(5, 0),
-    FlSpot(6, 0),
-    FlSpot(7, 0),
-    FlSpot(8, 0),
-    FlSpot(9, 0),
-    FlSpot(10, 0),
-    FlSpot(11, 0),
-    FlSpot(12, 0)
+    const FlSpot(1, 0),
+    const FlSpot(2, 0),
+    const FlSpot(3, 0),
+    const FlSpot(4, 0),
+    const FlSpot(5, 0),
+    const FlSpot(6, 0),
+    const FlSpot(7, 0),
+    const FlSpot(8, 0),
+    const FlSpot(9, 0),
+    const FlSpot(10, 0),
+    const FlSpot(11, 0),
+    const FlSpot(12, 0)
   ].obs;
 
-  var spotsMonth = <FlSpot>[].obs;
+  RxList<FlSpot> spotsMonth = <FlSpot>[].obs;
 
   @override
   void onInit() {
@@ -48,8 +47,7 @@ class AnalysisController extends GetxController {
     getProportion(Period.month, month: month.value);
   }
 
-
-
+  // 获取消费条目，返回一个组件列表
   List<ExpenditureItem> getExpenditureItems() {
     // print(items.length);
     List<ExpenditureItem> ans = [];
@@ -61,6 +59,7 @@ class AnalysisController extends GetxController {
     return ans;
   }
 
+  // 获取月度消费趋势
   getMonthTrendInfo(int year) async {
     var response =
         await DioUtils().get('/analysis/trend/month/$year-1/$year-12');
@@ -74,6 +73,7 @@ class AnalysisController extends GetxController {
     print(data);
   }
 
+  // 获取日度消费趋势
   getDayTrendInfo(int year, int month) async {
     var response = await DioUtils()
         .get('/analysis/trend/day/$year-$month-1/$year-$month-30');

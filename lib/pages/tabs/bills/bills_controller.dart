@@ -1,11 +1,6 @@
-import 'dart:math';
-
-import 'package:common_utils/common_utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/models/bills_detail.dart';
-import 'package:monotes/widgets/detail_card.dart';
 
 import '../../../common/my_exception.dart';
 import '../../../common/toast_util.dart';

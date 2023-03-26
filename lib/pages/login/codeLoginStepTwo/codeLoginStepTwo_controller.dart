@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:monotes/common/config.dart';
 import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/common/my_exception.dart';
 import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/common/toast_util.dart';
+import 'package:monotes/routes/app_routes.dart';
 
 class codeLoginStepTwoController extends GetxController {
   final TextEditingController editingController = TextEditingController();
@@ -68,9 +68,9 @@ class codeLoginStepTwoController extends GetxController {
       await StorageUtil.setToken(token);
       if (!isRegister) {
         await StorageUtil.setBoolItem("isLogin", true);
-        Get.offAllNamed("/home");
+        Get.offAllNamed(Routes.HOME);
       }else{
-        Get.offAndToNamed("/set_password");
+        Get.offAndToNamed(Routes.SET_PASSWORD);
       }
     } on MyException catch (e){
       print(e);

@@ -2,15 +2,9 @@ import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:monotes/core/network/dio_util.dart';
-import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/pages/login/login_by_password/login_by_password_controller.dart';
-import 'package:monotes/routes/app_routes.dart';
 import 'package:monotes/widgets/text_field.dart';
-import '../../../common/config.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
-
 import '../../../widgets/UserAgreement.dart';
 
 
@@ -93,5 +87,4 @@ class LoginByPasswordPage extends GetView<LoginByPasswordController> {
       ),
     );
   }
-
 }

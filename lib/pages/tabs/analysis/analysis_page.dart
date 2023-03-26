@@ -1,4 +1,3 @@
-import 'package:bruno/bruno.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
@@ -218,8 +217,8 @@ class _ExpenseLineChartState extends State<ExpenseLineChart> {
   List<LineChartBarData> linesBarData() {
     final LineChartBarData lineChartBarData1 = LineChartBarData(
       spots: widget.mode.value == 0
-          ? widget.spotsYear.value
-          : widget.spotsMonth.value,
+          ? widget.spotsYear
+          : widget.spotsMonth,
       color: ThemeColor.appBarColor,
       isCurved: false,
       barWidth: 3,
