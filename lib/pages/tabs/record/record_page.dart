@@ -33,8 +33,7 @@ class RecordPage extends GetView<RecordController> {
 
     if (pickedFile != null) {
       ToastUtil.showBasicToast("选取照片成功");
-      _image = File(pickedFile.path);
-      Future<RecordDetail> future = controller.getOcrInfo(_image);
+      Future<RecordDetail> future = controller.getOcrInfo(pickedFile.path);
       future.then((value) {
         print(value);
         controller.setInfo(value);

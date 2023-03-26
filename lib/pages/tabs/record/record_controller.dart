@@ -46,17 +46,20 @@ class RecordController extends GetxController {
         // 返回并刷新
         back();
       } catch (e) {
-        LogUtil.d(this, tag: "SUBMIT");
+        LogUtil.v(record, tag: "SUBMIT");
         Get.back();
       }
     }
   }
 
-  Future<RecordDetail> getOcrInfo(File image) async {
+  Future<RecordDetail> getOcrInfo(String filePath) async {
     var formData = dio.FormData.fromMap({
-      "file": [image]
+      "file": [dio.MultipartFile.fromString(filePath, filename: "${DateTime.now().toString()}.jpg")]
     });
     var response = await DioUtils().post('/bill/ocr', data: formData);
+
+
+    ToastUtil.showBasicToast(response.data['msg']);
 
     return RecordDetail.fromJson(response.data['data'][0]);
   }

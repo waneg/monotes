@@ -35,6 +35,7 @@ class AnalysisController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getMonthTrendInfo(year.value);
+    getDayTrendInfo(month.value.year, month.value.month);
     getProportion(Period.year, year: year.value);
     getProportion(Period.month, month: month.value);
   }
