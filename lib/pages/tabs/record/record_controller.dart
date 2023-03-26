@@ -53,21 +53,23 @@ class RecordController extends GetxController {
   }
 
   Future<RecordDetail> getOcrInfo(String filePath) async {
+    print("图片的大小：${await File(filePath).length()}");
     var formData = dio.FormData.fromMap({
-      "file": [dio.MultipartFile.fromString(filePath, filename: "${DateTime.now().toString()}.jpg")]
+      "file": [dio.MultipartFile.fromBytes(await File(filePath).readAsBytes(), filename: "${DateTime.now().toString()}.jpg")]
     });
     var response = await DioUtils().post('/bill/ocr', data: formData);
 
 
     ToastUtil.showBasicToast(response.data['msg']);
 
-    return RecordDetail.fromJson(response.data['data'][0]);
+    return RecordDetail.fromJson(response.data['data']);
   }
 
   setInfo(RecordDetail recordDetail) {
     inputTimeController.text = recordDetail.time;
     inputCostController.text = recordDetail.price.toString();
     goodsController.text = recordDetail.shopkeeper.toString();
+    selectedType.value = recordDetail.typeId;
   }
 
   bool validateInput() {
