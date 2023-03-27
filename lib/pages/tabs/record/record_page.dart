@@ -76,7 +76,7 @@ class RecordPage extends GetView<RecordController> {
           children: [
             Container(
                 padding: EdgeInsets.only(
-                    left: 15.w, right: 15.w, top: 15.w, bottom: 15.w),
+                    left: 15.w, right: 15.w, top: 15.w, bottom: 4.w),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10.w))),
@@ -209,11 +209,10 @@ class RecordPage extends GetView<RecordController> {
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 5,
-                              childAspectRatio: 1.2, //显示区域宽高相等
+                              childAspectRatio: 1.15, //显示区域宽高相等
                             ),
                             itemCount: controller.consumptionTypes.length,
                             itemBuilder: (context, index) {
-                              var info = controller.consumptionTypes[index];
                               return Obx(() => TextButton(
                                     style: ButtonStyle(
                                         overlayColor: MaterialStateProperty.all(
@@ -283,7 +282,7 @@ class RecordPage extends GetView<RecordController> {
                           width: 10.w,
                         ),
                         Expanded(
-                            child: Obx(() => Container(
+                            child: Obx(() => SizedBox(
                                   width: double.infinity,
                                   child: GridView.builder(
                                     physics:
