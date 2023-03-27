@@ -92,6 +92,7 @@ class RecordPage extends GetView<RecordController> {
                         ),
                         const Spacer(),
                         SizedBox(
+                          height: 40.sp,
                           width: 200.sp,
                           child: TextField(
                               controller: controller.inputTimeController,
@@ -136,6 +137,7 @@ class RecordPage extends GetView<RecordController> {
                         const Spacer(),
                         Container(
                           margin: const EdgeInsets.only(top: 10),
+                          height: 40.sp,
                           width: 200.sp,
                           child: TextField(
                               inputFormatters: [
@@ -161,6 +163,7 @@ class RecordPage extends GetView<RecordController> {
                         ),
                         const Spacer(),
                         Container(
+                          height: 40.sp,
                           margin: const EdgeInsets.only(top: 10),
                           width: 200.sp,
                           child: TextField(
@@ -199,7 +202,7 @@ class RecordPage extends GetView<RecordController> {
                                 borderRadius: BorderRadius.circular(5.w)))),
                     // 备注信息
                     Container(
-                        margin: EdgeInsets.only(top: 5.w, bottom: 5.w),
+                        margin: EdgeInsets.only(top: 5.w),
                         child: GridView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -238,7 +241,7 @@ class RecordPage extends GetView<RecordController> {
                                         Text(SHOPPING_TYPE[index + 1] ?? "",
                                             style: TextStyle(
                                                 color: Colors.black54,
-                                                fontSize: 11.w,
+                                                fontSize: 12.sp,
                                                 height: 2))
                                       ],
                                     ),
