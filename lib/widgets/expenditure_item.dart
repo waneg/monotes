@@ -42,12 +42,12 @@ class ExpenditureItem extends StatelessWidget {
                     width: 20.sp,
                   ),
                   Text(
-                    "$pct%",
-                    style: TextStyle(color: Color(0xffBEBEBE), fontSize: 14.sp),
+                    "${pct.toStringAsFixed(2)}%",
+                    style: TextStyle(color: const Color(0xffBEBEBE), fontSize: 14.sp),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
-                    "￥$amount",
+                    "￥${amount.toStringAsFixed(2)}",
                     style: TextStyle(fontSize: 14.sp),
                   )
                 ],
@@ -62,7 +62,7 @@ class ExpenditureItem extends StatelessWidget {
                 brnProgressIndicatorBuilder:
                     (BuildContext context, double value) {
                   return Text(
-                    "${value * 100}%",
+                    "${(value * 100).toStringAsFixed(2)}%",
                     style: TextStyle(color: Colors.white, fontSize: 13.sp),
                   );
                 },
