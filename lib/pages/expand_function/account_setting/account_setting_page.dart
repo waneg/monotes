@@ -67,7 +67,9 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                   autoFocus: true,
                   maxLines: 1,
                   onConfirm: (value) async {
-                    if(value.length < 2){
+                    if(value.isEmpty){
+                      ToastUtil.showBasicToast("昵称不能为空！");
+                    }else if(value.length < 2){
                       ToastUtil.showBasicToast("用户名过短！");
                     }else if(value.length > 8){
                       ToastUtil.showBasicToast("用户名过长！");

@@ -27,6 +27,7 @@ class LoginByPasswordPage extends GetView<LoginByPasswordController> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
