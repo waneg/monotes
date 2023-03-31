@@ -100,8 +100,17 @@ class BillsPage extends StatelessWidget {
                                     maxLines: 1,
                                     keyboardType: TextInputType.number,
                                     onConfirm: (value){
-                                      billsController.editBill(index, double.parse(value));
-                                      Get.back();
+                                      if(double.tryParse(value) != null){
+                                        if(double.tryParse(value) == 0){
+                                          ToastUtil.showBasicToast("金额不可为0！");
+                                        }else{
+                                          billsController.editBill(index, double.parse(value));
+                                          Get.back();
+                                        }
+                                      }else{
+                                        ToastUtil.showBasicToast("请输入数字！");
+                                      }
+
                                     },
                                     onCancel: (){Get.back();}
                                 ).show(context);
