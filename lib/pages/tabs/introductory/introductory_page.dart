@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:monotes/widgets/separated_card.dart';
 import '../../../widgets/detail_card.dart';
 import 'introductory_controller.dart';
 import 'package:get/get.dart';
@@ -24,8 +25,9 @@ class IntroductoryPage extends GetView<IntroductoryController> {
       body: ListView(
         padding: EdgeInsets.only(left: 20.w, right: 20.w),
         children: [
-          const Center(
-            child: Text("待放东西，没想好"),
+          SizedBox(height: 30.h,),
+          SeparatedCard(title: "消费建议", widget: Text("首先，建议你做好每个月的消费预算，将收入和支出进行明细的分析和统计。在购买商品或服务时，可以比较不同品牌和商家的价格和质量，选择最适合自己的商品或服务。同时也可以寻找优惠券、折扣和赠品等，尽可能节省开支。此外，还要注意日常生活中的小开支，比如减少外出用餐的频率、尽可能自己做饭，避免过多的娱乐和消费。总之，理性消费是一种生活态度和消费习惯的养成，只有坚持下来，才能真正实现合理消费。",
+          style: TextStyle(fontSize: 14.sp),),
           ),
           SizedBox(
             height: 30.h,
@@ -88,6 +90,7 @@ class IntroductoryPage extends GetView<IntroductoryController> {
 
 class LabelCard extends StatelessWidget {
   final String str;
+
   const LabelCard({Key? key, required this.str}) : super(key: key);
 
   @override

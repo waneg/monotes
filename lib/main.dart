@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:monotes/routes/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // 除半透明状态栏
+    if (Theme.of(context).platform == TargetPlatform.android) {
+      // android 平台
+      SystemUiOverlayStyle style =
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+      SystemChrome.setSystemUIOverlayStyle(style);
+    }
     // StorageUtil.clear();
     return ScreenUtilInit(
         designSize: const Size(375, 812),
