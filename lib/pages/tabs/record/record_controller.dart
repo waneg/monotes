@@ -57,7 +57,7 @@ class RecordController extends GetxController {
     var formData = dio.FormData.fromMap({
       "file": [dio.MultipartFile.fromBytes(await File(filePath).readAsBytes(), filename: "${DateTime.now().toString()}.jpg")]
     });
-    var response = await DioUtils().post('/bill/ocr', data: formData);
+    var response = await DioUtils().post('/bill/ocr', data: formData, options: dio.Options(receiveTimeout: 10000));
 
 
     ToastUtil.showBasicToast(response.data['msg']);
