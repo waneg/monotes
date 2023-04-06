@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
+import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/models/bills_detail.dart';
+import 'package:monotes/pages/tabs/person/person_controller.dart';
 
 import '../../../common/my_exception.dart';
 import '../../../common/toast_util.dart';
@@ -60,6 +62,10 @@ class BillsController extends GetxController {
       ToastUtil.showBasicToast("删除成功");
       billItems.removeAt(selectedIndex);
       getMonthlyPay();
+      await StorageUtil.setIntItem("StatisticNum", billItems.length);
+      // 修改个人页面的总记账次数
+      PersonController personController = Get.find();
+      personController.getStaticsInfo();
       update();
     } on MyException catch (e) {
       print(e);
@@ -72,8 +78,8 @@ class BillsController extends GetxController {
   getMonthlyPay() async{
     try{
       var response = await DioUtils().get("/analysis/curMonthTotal");
-      double money = response.data['data'];
-      monthlyPay.value = money;
+      num money = response.data['data'];
+      monthlyPay.value = money.toDouble();
     }on MyException catch (e) {
       print(e);
       ToastUtil.showBasicToast(e.msg);

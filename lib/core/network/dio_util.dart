@@ -29,7 +29,7 @@ class DioUtils {
     _baseOptions = BaseOptions(
         baseUrl: BASE_URL,
         connectTimeout: 5000,
-        receiveTimeout: 5000,
+        receiveTimeout: 60000,
         headers: {});
 
     //创建dio实例

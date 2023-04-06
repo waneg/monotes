@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:monotes/core/network/dio_util.dart';
+import 'package:monotes/pages/tabs/person/person_controller.dart';
 
 import '../../../common/my_exception.dart';
+import '../../../common/storage_util.dart';
 import '../../../common/toast_util.dart';
 import '../../../models/bills_detail.dart';
 
@@ -12,11 +15,13 @@ class IntroductoryController extends GetxController {
   RxList billItems = [].obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    fillLabelItem();
-    getBill();
+    await EasyLoading.show(status: 'loading...');
+    await fillLabelItem();
+    await getBill();
+    await EasyLoading.dismiss();
   }
 
   @override
@@ -41,6 +46,9 @@ class IntroductoryController extends GetxController {
           billItems.add(BillsDetail.fromJson(item));
         }
       }
+      await StorageUtil.setIntItem("StatisticNum", billItems.length);
+      PersonController personController = Get.find();
+      personController.getStaticsInfo();
     } on MyException catch (e){
       print(e);
       ToastUtil.showBasicToast(e.msg);

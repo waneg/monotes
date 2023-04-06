@@ -15,7 +15,6 @@ class PersonController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     getUserInfo();
-    getStaticsInfo();
     super.onInit();
   }
 
@@ -58,9 +57,7 @@ class PersonController extends GetxController {
 
   getStaticsInfo() async{
     try{
-      var response = await DioUtils().get("/bill/getList");
-      List list = response.data['data'];
-      int num = list.length;
+      int num = await StorageUtil.getIntItem("StatisticNum");
       noteNum.value = num;
     }on MyException catch (e) {
       print(e);
