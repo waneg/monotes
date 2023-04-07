@@ -118,6 +118,7 @@ class AnalysisController extends GetxController {
         monthItems.add(ExpenditureInfo(
             item['typeId'], item['total'], item['percent'] * 100));
       }
+      print(monthItems);
     }
   }
 }
