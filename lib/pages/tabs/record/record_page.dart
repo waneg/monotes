@@ -32,7 +32,6 @@ class RecordPage extends GetView<RecordController> {
     }
 
     if (pickedFile != null) {
-      ToastUtil.showBasicToast("选取照片成功");
       print("文件的路径：${pickedFile.path}");
       Future<RecordDetail> future = controller.getOcrInfo(pickedFile.path);
       future.then((value) {
@@ -48,6 +47,7 @@ class RecordPage extends GetView<RecordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
           IconButton(
@@ -141,7 +141,7 @@ class RecordPage extends GetView<RecordController> {
                           width: 200.sp,
                           child: TextField(
                               inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter(RegExp("[0-9.]"), allow: true)
                               ],
                               controller: controller.inputCostController,
                               keyboardType: TextInputType.number,

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:monotes/common/storage_util.dart';
 import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/models/bills_detail.dart';
+import 'package:monotes/pages/tabs/introductory/introductory_controller.dart';
 import 'package:monotes/pages/tabs/person/person_controller.dart';
 
 import '../../../common/my_exception.dart';
@@ -61,7 +62,7 @@ class BillsController extends GetxController {
       await DioUtils().delete("/bill/delete/$billId");
       ToastUtil.showBasicToast("删除成功");
       billItems.removeAt(selectedIndex);
-      getMonthlyPay();
+      await getMonthlyPay();
       await StorageUtil.setIntItem("StatisticNum", billItems.length);
       // 修改个人页面的总记账次数
       PersonController personController = Get.find();
@@ -88,9 +89,11 @@ class BillsController extends GetxController {
     }
   }
 
-  refreshAllData(){
-    getBills();
-    getMonthlyPay();
+  refreshAllData() async {
+    await getBills();
+    await getMonthlyPay();
+    IntroductoryController introductoryController = Get.find();
+    introductoryController.billItems = billItems;
   }
 
   selectBills(int year, int month) async {
