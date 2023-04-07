@@ -58,11 +58,11 @@ class ExpenditureItem extends StatelessWidget {
               BrnProgressChart(
                 width: double.infinity,
                 height: 15.sp,
-                value: pct / 100,
+                value: pct / 100.0,
                 brnProgressIndicatorBuilder:
                     (BuildContext context, double value) {
                   return Text(
-                    "${(value * 100).toStringAsFixed(2)}%",
+                    "${pct.toStringAsFixed(2)}%",
                     style: TextStyle(color: Colors.white, fontSize: 13.sp),
                   );
                 },
