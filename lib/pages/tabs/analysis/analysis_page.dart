@@ -112,7 +112,7 @@ class AnalysisPage extends GetView<AnalysisController> {
                       title: "支出趋势",
                       widget: ExpenseLineChart(controller.spotsYear,
                           controller.spotsMonth, controller.showMode)),
-                  Obx(()=>DoughnutChartCard(controller.yearItems, controller.monthItems, controller.showMode)),
+                  DoughnutChartCard(controller.yearItems, controller.monthItems, controller.showMode),
                   Obx(()=>SeparatedCard(
                       title: "支出构成",
                       widget: Column(
