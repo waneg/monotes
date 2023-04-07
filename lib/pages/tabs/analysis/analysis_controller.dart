@@ -43,7 +43,7 @@ class AnalysisController extends GetxController {
   // 刷新界面
   void refreshUi() {
     getMonthTrendInfo(year.value);
-    getDayTrendInfo(year.value, month.value.month);
+    getDayTrendInfo(month.value.year, month.value.month);
     getProportion(Period.year, year: year.value);
     getProportion(Period.month, month: month.value);
   }
