@@ -209,7 +209,7 @@ class RecordPage extends GetView<RecordController> {
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 5,
-                              childAspectRatio: 1.15, //显示区域宽高相等
+                              childAspectRatio: 1.10, //显示区域宽高相等
                             ),
                             itemCount: controller.consumptionTypes.length,
                             itemBuilder: (context, index) {

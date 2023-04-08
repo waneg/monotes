@@ -61,7 +61,7 @@ class RecordController extends GetxController {
       "file": [dio.MultipartFile.fromBytes(await File(filePath).readAsBytes(), filename: "${DateTime.now().toString()}.jpg")]
     });
 
-    await EasyLoading.show(status: 'loading...');
+    await EasyLoading.show(status: 'loading...', dismissOnTap: true);
 
     var response = await DioUtils().post('/bill/ocr', data: formData, options: dio.Options(receiveTimeout: 10000));
 

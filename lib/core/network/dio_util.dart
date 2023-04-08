@@ -9,17 +9,15 @@ import '../../common/storage_util.dart';
 class DioUtils {
   //hym 100.65.145.188
   //真机 192.168.251.81
-  //阿里云 http://47.120.1.145:8080
-  static const String BASE_URL = "http://47.120.1.145:15689"; //base url
+  //阿里云 http://47.101.136.247/api
+  static const String BASE_URL = "http://47.101.136.247/api"; //base url
   static late DioUtils _instance;
   static const String TAG = "DIO";
   late Dio _dio;
   late BaseOptions _baseOptions;
 
   static DioUtils getInstance() {
-    if (_instance == null) {
-      _instance = new DioUtils();
-    }
+    _instance ??= new DioUtils();
     return _instance;
   }
 
