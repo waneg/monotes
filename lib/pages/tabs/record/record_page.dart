@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pickers/pickers.dart';
@@ -23,7 +24,7 @@ class RecordPage extends GetView<RecordController> {
   final picker = ImagePicker();
 
   Future getImage(int device) async {
-    print("getImage() clicked");
+    debugPrint("getImage() clicked");
     XFile? pickedFile;
     if (device == 0) {
       pickedFile = await picker.pickImage(source: ImageSource.camera);
@@ -32,15 +33,15 @@ class RecordPage extends GetView<RecordController> {
     }
 
     if (pickedFile != null) {
-      print("文件的路径：${pickedFile.path}");
+      debugPrint("文件的路径：${pickedFile.path}");
       Future<RecordDetail> future = controller.getOcrInfo(pickedFile.path);
       future.then((value) {
-        print(value);
+        LogUtil.v(value, tag: "RECORD");
         controller.setInfo(value);
       });
     } else {
       ToastUtil.showBasicToast("选取照片失败");
-      print('No image selected.');
+      debugPrint('No image selected.');
     }
   }
 

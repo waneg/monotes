@@ -100,7 +100,7 @@ class codeLoginStepTwoPage extends GetView<codeLoginStepTwoController> {
                   }
                 },
                 beforeTextPaste: (text) {
-                  print("Allowing to paste $text");
+                  debugPrint("Allowing to paste $text");
                   return true;
                 },
               ),

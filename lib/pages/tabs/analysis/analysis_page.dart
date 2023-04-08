@@ -87,7 +87,6 @@ class AnalysisPage extends GetView<AnalysisController> {
                                       onConfirm: (p) {
                                     controller.month.value =
                                         DateTime(p.year!, p.month!);
-                                    print(controller.month.value);
                                     controller.refreshUi();
                                   });
                                 }

@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/models/expenditure_info.dart';
@@ -50,7 +51,7 @@ class AnalysisController extends GetxController {
 
   // 获取消费条目，返回一个组件列表
   List<ExpenditureItem> getExpenditureItems() {
-    // print(items.length);
+    // debugPrint(items.length);
     List<ExpenditureItem> ans = [];
     var items = showMode.value == 0 ? yearItems : monthItems;
     for (var item in items) {
@@ -69,7 +70,7 @@ class AnalysisController extends GetxController {
     for (var item in data['data']) {
       int month = item['month'];
       spotsYear[month - 1] = FlSpot(month.toDouble(), item['total']);
-      print("月度信息${spotsMonth[month - 1]}");
+      debugPrint("月度信息${spotsMonth[month - 1]}");
     }
     print(data);
   }
@@ -118,7 +119,6 @@ class AnalysisController extends GetxController {
         monthItems.add(ExpenditureInfo(
             item['typeId'], item['total'], item['percent'] * 100));
       }
-      print(monthItems);
     }
   }
 }

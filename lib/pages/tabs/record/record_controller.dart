@@ -56,7 +56,7 @@ class RecordController extends GetxController {
 
   Future<RecordDetail> getOcrInfo(String filePath) async {
 
-    print("图片的大小：${await File(filePath).length()}");
+    debugPrint("图片的大小：${await File(filePath).length()}");
     var formData = dio.FormData.fromMap({
       "file": [dio.MultipartFile.fromBytes(await File(filePath).readAsBytes(), filename: "${DateTime.now().toString()}.jpg")]
     });

@@ -5,6 +5,6 @@ class codeLoginStepOneBinding extends Bindings {
   @override
   void dependencies() {
     // TODO: implement dependencies
-    Get.put<codeLoginStepOneController>(codeLoginStepOneController());
+    Get.put<CodeLoginStepOneController>(CodeLoginStepOneController());
   }
 }
