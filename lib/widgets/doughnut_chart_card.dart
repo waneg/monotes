@@ -9,32 +9,35 @@ import 'package:monotes/common/config.dart';
 import 'package:monotes/models/expenditure_info.dart';
 import 'package:monotes/widgets/separated_card.dart';
 
-class DoughnutChartCard extends StatefulWidget {
+class DoughnutChartCard extends StatelessWidget {
   final RxList<ExpenditureInfo> _expenditureYearInfo;
   final RxList<ExpenditureInfo> _expenditureMonthInfo;
   final RxInt _mode;
 
-
-  DoughnutChartCard(this._expenditureYearInfo, this._expenditureMonthInfo, this._mode, {Key? key}) : super(key: key);
-
-  @override
-  State<DoughnutChartCard> createState() => _DoughnutChartCardState();
-}
-
-class _DoughnutChartCardState extends State<DoughnutChartCard> {
+  DoughnutChartCard(
+      this._expenditureYearInfo, this._expenditureMonthInfo, this._mode,
+      {Key? key})
+      : super(key: key) {}
 
   @override
   Widget build(BuildContext context) {
-    var items = widget._mode.value == 0 ? widget._expenditureYearInfo : widget._expenditureMonthInfo;
+    // TODO: implement build
     return SeparatedCard(
         title: "支出分析",
-        widget: Obx(() => items.isEmpty ? const Text("目前没有数据") : BrnDoughnutChart(
-              width: double.infinity,
-              height: 250.w,
-              padding: EdgeInsets.only(
-                  left: 40.w, right: 40.w, top: 20.w, bottom: 20.w),
-              data: getChartData(items),
-            )));
+        widget: Obx(() {
+          if (_mode.value == 0 && _expenditureYearInfo.isEmpty || _mode.value == 1 && _expenditureMonthInfo.isEmpty) {
+            return const Text("暂无数据");
+          }
+          return BrnDoughnutChart(
+            width: double.infinity,
+            height: 250.w,
+            padding: EdgeInsets.only(
+                left: 40.w, right: 40.w, top: 20.w, bottom: 20.w),
+            data: getChartData(_mode.value == 0
+                ? _expenditureYearInfo
+                : _expenditureMonthInfo),
+          );
+        }));
   }
 
   List<BrnDoughnutDataItem> getChartData(items) {

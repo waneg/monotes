@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:bruno/bruno.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pickers/pickers.dart';
@@ -23,7 +25,7 @@ class RecordPage extends GetView<RecordController> {
   final picker = ImagePicker();
 
   Future getImage(int device) async {
-    print("getImage() clicked");
+    debugPrint("getImage() clicked");
     XFile? pickedFile;
     if (device == 0) {
       pickedFile = await picker.pickImage(source: ImageSource.camera);
@@ -32,22 +34,22 @@ class RecordPage extends GetView<RecordController> {
     }
 
     if (pickedFile != null) {
-      ToastUtil.showBasicToast("选取照片成功");
-      print("文件的路径：${pickedFile.path}");
+      debugPrint("文件的路径：${pickedFile.path}");
       Future<RecordDetail> future = controller.getOcrInfo(pickedFile.path);
       future.then((value) {
-        print(value);
+        LogUtil.v(value, tag: "RECORD");
         controller.setInfo(value);
       });
     } else {
       ToastUtil.showBasicToast("选取照片失败");
-      print('No image selected.');
+      debugPrint('No image selected.');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
           IconButton(
@@ -141,7 +143,7 @@ class RecordPage extends GetView<RecordController> {
                           width: 200.sp,
                           child: TextField(
                               inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter(RegExp("[0-9.]"), allow: true)
                               ],
                               controller: controller.inputCostController,
                               keyboardType: TextInputType.number,
@@ -209,7 +211,7 @@ class RecordPage extends GetView<RecordController> {
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 5,
-                              childAspectRatio: 1.15, //显示区域宽高相等
+                              childAspectRatio: 1.10, //显示区域宽高相等
                             ),
                             itemCount: controller.consumptionTypes.length,
                             itemBuilder: (context, index) {
@@ -314,41 +316,22 @@ class RecordPage extends GetView<RecordController> {
                     )
                   ],
                 )),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 100.w,
-                ),
-                Column(
-                  children: [
-                    FloatingActionButton(
-                      backgroundColor: Colors.green,
-                      onPressed: () {
-                        getImage(0);
-                      },
-                      child: const Icon(Icons.camera_enhance_outlined),
-                    ),
-                    const Text(
-                      "扫描账单",
-                      style: TextStyle(color: Color(0xFF101010), height: 2),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  width: 10.w,
-                ),
-                TextButton(
-                    onPressed: () {
-                      getImage(1);
-                    },
-                    child: const Text(
-                      "从相册中选取图片",
-                      style: TextStyle(color: Colors.grey),
-                    ))
-              ],
-            )
+            SizedBox(height: 10.w,),
+            FloatingActionButton(
+              backgroundColor: Colors.green,
+              onPressed: () {
+                BrnDialogManager.showMoreButtonDialog(context,
+                    title: "请选择获取图片的方式",
+                    actions: [
+                      '从相册中选择',
+                      '拍照',
+                    ],
+                    indexedActionClickCallback: (index) {
+                      getImage(1-index);
+                    });
+              },
+              child: const Icon(Icons.camera_enhance_outlined),
+            ),
           ],
         ),
       ),

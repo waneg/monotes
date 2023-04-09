@@ -8,7 +8,7 @@ import 'package:monotes/widgets/text_field.dart';
 import 'package:monotes/widgets/UserAgreement.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class codeLoginStepOnePage extends GetView<codeLoginStepOneController> {
+class codeLoginStepOnePage extends GetView<CodeLoginStepOneController> {
   const codeLoginStepOnePage({Key? key}) : super(key: key);
 
   @override

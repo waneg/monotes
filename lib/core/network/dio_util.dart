@@ -10,8 +10,8 @@ import '../../common/storage_util.dart';
 class DioUtils {
   //hym 100.65.145.188
   //真机 192.168.251.81
-  //阿里云 http://47.120.1.145:8080
-  static const String BASE_URL = "http://47.120.1.145:15689"; //base url
+  //阿里云 http://47.101.136.247/api
+  static const String BASE_URL = "http://47.101.136.247/api"; //base url
   static late DioUtils _instance;
   static const String TAG = "DIO";
   late Dio _dio;
@@ -30,7 +30,7 @@ class DioUtils {
     _baseOptions = BaseOptions(
         baseUrl: BASE_URL,
         connectTimeout: 5000,
-        receiveTimeout: 5000,
+        receiveTimeout: 60000,
         headers: {});
 
     //创建dio实例
@@ -42,12 +42,11 @@ class DioUtils {
 
   /// get请求
   get(url, {data, options}) async {
-    debugPrint('get request path ------$url-------请求参数$data');
-    debugPrint('------------');
+    LogUtil.v('get request path ------$url-------请求参数$data', tag: TAG);
     late Response response;
     try {
       response = await _dio.get(url, queryParameters: data, options: options);
-      debugPrint('get result ---${response.data}');
+      LogUtil.v('get result ---${response.data}', tag: TAG);
       if (response.data["code"] != ResponseStatus.SUCCESS) {
         // 这里处理业务异常，具体异常处理在调用处处理
         throw MyException(response.data["msg"]);
@@ -62,17 +61,17 @@ class DioUtils {
 
   /// Post请求
   post(url, {data, options}) async {
-    print('post request path ------$url-------请求参数$data');
+    debugPrint('post request path ------$url-------请求参数$data');
     late Response response;
     try {
       response = await _dio.post(url, data: data, options: options);
-      print('post result ---${response.data}');
+      debugPrint('post result ---${response.data}');
       if (response.data["code"] != ResponseStatus.SUCCESS) {
         // 这里处理业务异常，具体异常处理在调用处处理
         throw MyException(response.data["msg"]);
       }
     } on DioError catch (e) {
-      print('请求失败---错误类型${e.type}--错误信息${e.message}');
+      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}');
       throw Exception(e.message);
     }
 
@@ -81,18 +80,18 @@ class DioUtils {
 
   /// Put请求
   put(url, {data, options}) async {
-    print('post request path ------${url}-------请求参数${data}');
+    debugPrint('post request path ------${url}-------请求参数${data}');
     late Response response;
     try {
       response = await _dio.put(url, data: data, options: options);
-      print('post result ---${response.data}');
+      debugPrint('post result ---${response.data}');
       if (response.data["code"] != ResponseStatus.SUCCESS) {
         // 这里处理业务异常，具体异常处理在调用处处理
         throw MyException(response.data["msg"]);
       }
     } on DioError catch (e) {
       //TODO TOAST提示用户
-      print('请求失败---错误类型${e.type}--错误信息${e.message}');
+      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}');
       //  这里处理了错误可能同样涉及到业务异常，所以需要抛出异常，根据业务决定是否在调用处处理
       // 比如发送验证码，如果网络异常，提示用户无法连接到服务器，需要停止倒计时
       throw Exception(e.message);
@@ -103,18 +102,18 @@ class DioUtils {
 
   /// Delete请求
   delete(url, {data, options}) async {
-    print('post request path ------${url}-------请求参数${data}');
+    debugPrint('post request path ------${url}-------请求参数${data}');
     late Response response;
     try {
       response = await _dio.delete(url, data: data, options: options);
-      print('post result ---${response.data}');
+      debugPrint('post result ---${response.data}');
       if (response.data["code"] != ResponseStatus.SUCCESS) {
         // 这里处理业务异常，具体异常处理在调用处处理
         throw MyException(response.data["msg"]);
       }
     } on DioError catch (e) {
       //TODO TOAST提示用户
-      print('请求失败---错误类型${e.type}--错误信息${e.message}');
+      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}');
       //  这里处理了错误可能同样涉及到业务异常，所以需要抛出异常，根据业务决定是否在调用处处理
       // 比如发送验证码，如果网络异常，提示用户无法连接到服务器，需要停止倒计时
       throw Exception(e.message);

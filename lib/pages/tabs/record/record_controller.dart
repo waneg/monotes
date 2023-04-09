@@ -4,6 +4,7 @@ import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/core/network/dio_util.dart';
@@ -42,7 +43,7 @@ class RecordController extends GetxController {
           goodsController.text);
       try {
         var response =
-            DioUtils().post('/bill/addRecord', data: record.toJson());
+            await DioUtils().post('/bill/addRecord', data: record.toJson());
         // 返回并刷新
         back();
       } catch (e) {
@@ -53,12 +54,17 @@ class RecordController extends GetxController {
   }
 
   Future<RecordDetail> getOcrInfo(String filePath) async {
-    print("图片的大小：${await File(filePath).length()}");
+
+    debugPrint("图片的大小：${await File(filePath).length()}");
     var formData = dio.FormData.fromMap({
       "file": [dio.MultipartFile.fromBytes(await File(filePath).readAsBytes(), filename: "${DateTime.now().toString()}.jpg")]
     });
+
+    await EasyLoading.show(status: 'loading...', dismissOnTap: true);
+
     var response = await DioUtils().post('/bill/ocr', data: formData, options: dio.Options(receiveTimeout: 10000));
 
+    await EasyLoading.dismiss();
 
     ToastUtil.showBasicToast(response.data['msg']);
 
@@ -87,9 +93,9 @@ class RecordController extends GetxController {
     return true;
   }
 
-  back() {
+  back() async {
     BillsController billsController = Get.find();
-    billsController.refreshAllData();
+    await billsController.refreshAllData();
     Get.back();
   }
 

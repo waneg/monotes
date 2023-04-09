@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/toast_util.dart';
 
-class codeLoginStepOneController extends GetxController {
+class CodeLoginStepOneController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   RxBool isCheck = false.obs;
 

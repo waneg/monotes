@@ -4,7 +4,7 @@ class ThemeColor {
   static var pageColor = const Color.fromRGBO(241, 243, 240, 1);
   static var conclusionBgColor = const Color.fromRGBO(221, 240, 238, 1);
   static var appBarColor = const Color(0xFF4095E5);
-  static var bgColor = const Color(0xFFEFEFEF);
+  static var bgColor = const Color(0xFFF0F0F0);
 }
 
 const String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxIiwiZXhwIjoxNjgwMzU2NDAwfQ.P2S1L1oYIkurEuAVszaQgIAJ1sXkRfiSwLN55gk_M4g";
