@@ -32,7 +32,9 @@ class BillsPage extends StatelessWidget {
           title: const Text("账单明细"),
         ),
         body: RefreshIndicator(
-          onRefresh: () => Future.delayed(const Duration(seconds: 1), billsController.refreshAllData),
+          onRefresh: () async {
+            await billsController.getBills();
+          },
           child: Padding(
             padding: EdgeInsets.fromLTRB(20.w, 20.w, 20.2, 0),
             child: Column(

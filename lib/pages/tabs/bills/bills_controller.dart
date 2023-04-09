@@ -90,10 +90,12 @@ class BillsController extends GetxController {
   }
 
   refreshAllData() async {
+    print("refresh");
     await getBills();
     await getMonthlyPay();
     IntroductoryController introductoryController = Get.find();
     introductoryController.billItems = billItems;
+    print("end");
   }
 
   selectBills(int year, int month) async {
