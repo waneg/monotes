@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bruno/bruno.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -315,41 +316,22 @@ class RecordPage extends GetView<RecordController> {
                     )
                   ],
                 )),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 100.w,
-                ),
-                Column(
-                  children: [
-                    FloatingActionButton(
-                      backgroundColor: Colors.green,
-                      onPressed: () {
-                        getImage(0);
-                      },
-                      child: const Icon(Icons.camera_enhance_outlined),
-                    ),
-                    const Text(
-                      "扫描账单",
-                      style: TextStyle(color: Color(0xFF101010), height: 2),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  width: 10.w,
-                ),
-                TextButton(
-                    onPressed: () {
-                      getImage(1);
-                    },
-                    child: const Text(
-                      "从相册中选取图片",
-                      style: TextStyle(color: Colors.grey),
-                    ))
-              ],
-            )
+            SizedBox(height: 10.w,),
+            FloatingActionButton(
+              backgroundColor: Colors.green,
+              onPressed: () {
+                BrnDialogManager.showMoreButtonDialog(context,
+                    title: "请选择获取图片的方式",
+                    actions: [
+                      '从相册中选择',
+                      '拍照',
+                    ],
+                    indexedActionClickCallback: (index) {
+                      getImage(1-index);
+                    });
+              },
+              child: const Icon(Icons.camera_enhance_outlined),
+            ),
           ],
         ),
       ),

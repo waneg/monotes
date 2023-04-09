@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/common/toast_util.dart';
-import 'package:monotes/models/bills_detail.dart';
 import 'package:monotes/models/record_detail.dart';
 
 import '../bills/bills_controller.dart';
