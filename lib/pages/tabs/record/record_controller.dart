@@ -74,7 +74,7 @@ class RecordController extends GetxController {
   setInfo(RecordDetail recordDetail) {
     inputTimeController.text = recordDetail.time;
     inputCostController.text = recordDetail.price.toString();
-    goodsController.text = recordDetail.shopkeeper.toString();
+    goodsController.text = recordDetail.goods.toString();
     selectedType.value = recordDetail.typeId;
   }
 
