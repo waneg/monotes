@@ -7,6 +7,7 @@ import 'package:monotes/pages/tabs/person/person_controller.dart';
 
 import '../../../common/my_exception.dart';
 import '../../../common/toast_util.dart';
+import 'package:dio/dio.dart' as dio;
 
 class BillsController extends GetxController {
   RxList billItems = [].obs;
@@ -22,7 +23,7 @@ class BillsController extends GetxController {
 
   getBills() async {
     try {
-      var response = await DioUtils().get("/bill/getList");
+      var response = await DioUtils().get("/bill/getList",options: dio.Options(receiveTimeout: 30000));
       var list = response.data['data'];
       var tempList = [];
       for (var item in list) {
@@ -94,7 +95,7 @@ class BillsController extends GetxController {
     await getBills();
     await getMonthlyPay();
     IntroductoryController introductoryController = Get.find();
-    introductoryController.billItems = billItems;
+    introductoryController.billItems.value = billItems;
     print("end");
   }
 

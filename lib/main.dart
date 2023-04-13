@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:monotes/routes/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main(){
-  runApp(const MyApp());
+void main() {
+    runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
