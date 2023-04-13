@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:monotes/common/config.dart';
 import 'package:monotes/common/toast_util.dart';
+
 import '../../common/my_exception.dart';
 import '../../common/storage_util.dart';
 
@@ -126,7 +127,7 @@ class DioInterceptors extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    String token = await StorageUtil.getToken()??"";
+    String token = await StorageUtil.getToken() ?? "";
     if (token != "" && token.isNotEmpty) {
       // 头部添加token
       options.headers["token"] = token;
