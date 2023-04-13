@@ -48,7 +48,7 @@ class PersonPage extends GetView<PersonController> {
             FunctionCard(icon: Icons.add, title: "记账分类管理", onTap: (){}),
             FunctionCard(icon: Icons.add, title: "多币种", onTap: (){Get.toNamed(Routes.MULTI_CURRENCY);}),
             FunctionCard(icon: Icons.add, title: "订阅和分期", onTap: (){}),
-            FunctionCard(icon: Icons.add, title: "账单导入与导出", onTap: (){}),
+            FunctionCard(icon: Icons.add, title: "账单导入与导出", onTap: (){Get.toNamed(Routes.IMPORT_AND_EXPORT);}),
           ],
         ),
       ),

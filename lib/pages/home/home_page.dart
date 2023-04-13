@@ -35,7 +35,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: tabPages.elementAt(_currentIndex),
+      // body: tabPages.elementAt(_currentIndex),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: tabPages,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: addRecord,
         child: const Icon(Icons.add),

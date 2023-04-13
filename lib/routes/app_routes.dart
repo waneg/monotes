@@ -27,6 +27,8 @@ import 'package:monotes/pages/login/login_by_password/login_by_password_binding.
 import 'package:monotes/pages/login/login_by_password/login_by_password_page.dart';
 import 'package:monotes/pages/expand_function/account_setting/account_setting_binding.dart';
 import 'package:monotes/pages/expand_function/account_setting/account_setting_page.dart';
+import 'package:monotes/pages/expand_function/import_and_export/import_and_export_binding.dart';
+import 'package:monotes/pages/expand_function/import_and_export/import_and_export_page.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -90,6 +92,10 @@ abstract class AppPages {
         name: Routes.ACCOUNT_SETTING,
         page: () => AccountSettingPage(),
         binding: AccountSettingBinding()),
+    GetPage(
+        name: Routes.IMPORT_AND_EXPORT,
+        page: () => ImportAndExportPage(),
+        binding: ImportAndExportBinding()),
   ];
 
 // 命名路由的名称
@@ -136,4 +142,7 @@ abstract class Routes {
   static const LOGIN_BY_PASSWORD = "/login_by_password";
 
   static const ACCOUNT_SETTING = "/account_setting";
+
+  // 账单导入导出
+  static const IMPORT_AND_EXPORT = "/import_and_export";
 }

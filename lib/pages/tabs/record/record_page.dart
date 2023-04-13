@@ -242,7 +242,7 @@ class RecordPage extends GetView<RecordController> {
                                         Text(SHOPPING_TYPE[index + 1] ?? "",
                                             style: TextStyle(
                                                 color: Colors.black54,
-                                                fontSize: 12.sp,
+                                                fontSize: 11.sp,
                                                 height: 2))
                                       ],
                                     ),
@@ -328,6 +328,7 @@ class RecordPage extends GetView<RecordController> {
                     ],
                     indexedActionClickCallback: (index) {
                       getImage(1-index);
+                      Get.back();
                     });
               },
               child: const Icon(Icons.camera_enhance_outlined),

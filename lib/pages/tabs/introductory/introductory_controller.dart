@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -39,7 +40,7 @@ class IntroductoryController extends GetxController {
 
   getBill() async {
     try{
-      var response = await DioUtils().get("/bill/getList");
+      var response = await DioUtils().get("/bill/getList",options: dio.Options(receiveTimeout: 30000));
       if (response.data['code'] == 0) {
         var list = response.data['data'];
         for (var item in list) {
