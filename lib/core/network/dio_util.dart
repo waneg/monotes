@@ -1,12 +1,17 @@
-import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:monotes/common/config.dart';
 import 'package:monotes/common/toast_util.dart';
 
 import '../../common/my_exception.dart';
 import '../../common/storage_util.dart';
 
+/// Dio网络请求工具类
+/// 封装了get、post、put、delete请求
+/// 调用时必须Catch MyException处理业务相关错误
+/// 例如获取验证码失败，需要处理倒计时，有loading的页面需要关闭loading
+/// 部分Catch MyException的地方不需要任何操作，只是为了防止程序崩溃
 class DioUtils {
   //hym 100.65.145.188
   //真机 192.168.251.81
@@ -29,8 +34,8 @@ class DioUtils {
     //请求参数配置
     _baseOptions = BaseOptions(
         baseUrl: BASE_URL,
-        connectTimeout: 5000,
-        receiveTimeout: 5000,
+        connectTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 5),
         headers: {});
 
     //创建dio实例
@@ -42,40 +47,45 @@ class DioUtils {
 
   /// get请求
   get(url, {data, options}) async {
-    LogUtil.v('get request path ------$url-------请求参数$data', tag: TAG);
+    debugPrint('get request path ------$url-------请求参数$data');
     late Response response;
     try {
       response = await _dio.get(url, queryParameters: data, options: options);
-      LogUtil.v('get result ---${response.data}', tag: TAG);
-      if (response.data["code"] != ResponseStatus.SUCCESS) {
-        // 这里处理业务异常，具体异常处理在调用处处理
-        throw MyException(response.data["msg"]);
-      }
+      debugPrint('get result ---${response.data}');
+      return response;
     } on DioError catch (e) {
-      LogUtil.v('请求失败---错误类型${e.type}--错误信息${e.message}', tag: TAG);
-      throw Exception(e.message);
+      //统一异常处理，DioError错误在MyException中code为-1
+      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}--error信息${e.error}');
+      throw MyException(
+          msg: e.message == null ? "" : e.message!,
+          code: e.error is int ? e.error as int : -1);
     }
-
-    return response;
   }
 
   /// Post请求
-  post(url, {data, options}) async {
-    debugPrint('post request path ------$url-------请求参数$data');
+  Future<Response> post(url, {data, options}) async {
+    // debugPrint('post request path ------$url-------请求参数$data');
+    // late Response response;
+    // _dio.post(url, data: data, options: options).then((value) {
+    //   debugPrint('post result ---${value.data}');
+    //   return value;
+    // }).catchError((e) {
+    //   //统一异常处理，DioError错误在MyException中code为-1
+    //   debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}');
+    //   throw MyException(msg: e.message == null ? "" : e.message!);
+    // });
     late Response response;
     try {
       response = await _dio.post(url, data: data, options: options);
       debugPrint('post result ---${response.data}');
-      if (response.data["code"] != ResponseStatus.SUCCESS) {
-        // 这里处理业务异常，具体异常处理在调用处处理
-        throw MyException(response.data["msg"]);
-      }
+      return response;
     } on DioError catch (e) {
-      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}');
-      throw Exception(e.message);
+      //统一异常处理，DioError错误在MyException中code为-1
+      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}--error信息${e.error}');
+      throw MyException(
+          msg: e.message == null ? "" : e.message!,
+          code: e.error is int ? e.error as int : -1);
     }
-
-    return response;
   }
 
   /// Put请求
@@ -85,19 +95,14 @@ class DioUtils {
     try {
       response = await _dio.put(url, data: data, options: options);
       debugPrint('post result ---${response.data}');
-      if (response.data["code"] != ResponseStatus.SUCCESS) {
-        // 这里处理业务异常，具体异常处理在调用处处理
-        throw MyException(response.data["msg"]);
-      }
+      return response;
     } on DioError catch (e) {
-      //TODO TOAST提示用户
-      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}');
-      //  这里处理了错误可能同样涉及到业务异常，所以需要抛出异常，根据业务决定是否在调用处处理
-      // 比如发送验证码，如果网络异常，提示用户无法连接到服务器，需要停止倒计时
-      throw Exception(e.message);
+      //统一异常处理，DioError错误在MyException中code为-1
+      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}--error信息${e.error}');
+      throw MyException(
+          msg: e.message == null ? "" : e.message!,
+          code: e.error is int ? e.error as int : -1);
     }
-
-    return response;
   }
 
   /// Delete请求
@@ -107,19 +112,14 @@ class DioUtils {
     try {
       response = await _dio.delete(url, data: data, options: options);
       debugPrint('post result ---${response.data}');
-      if (response.data["code"] != ResponseStatus.SUCCESS) {
-        // 这里处理业务异常，具体异常处理在调用处处理
-        throw MyException(response.data["msg"]);
-      }
+      return response;
     } on DioError catch (e) {
-      //TODO TOAST提示用户
-      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}');
-      //  这里处理了错误可能同样涉及到业务异常，所以需要抛出异常，根据业务决定是否在调用处处理
-      // 比如发送验证码，如果网络异常，提示用户无法连接到服务器，需要停止倒计时
-      throw Exception(e.message);
+      //统一异常处理，DioError错误在MyException中code为-1
+      debugPrint('请求失败---错误类型${e.type}--错误信息${e.message}--error信息${e.error}');
+      throw MyException(
+          msg: e.message == null ? "" : e.message!,
+          code: e.error is int ? e.error as int : -1);
     }
-
-    return response;
   }
 }
 
@@ -133,63 +133,91 @@ class DioInterceptors extends Interceptor {
       options.headers["token"] = token;
     }
     // 更多业务需求
-    handler.next(options);
+    return handler.next(options);
     // super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
-    if (response.data["code"] == ResponseStatus.TOKEN_EX) {
+    if (response.data["code"] == ResponseStatus.TOKEN_EX ||
+        response.data["code"] == ResponseStatus.NO_TOKEN ||
+        response.data["code"] == ResponseStatus.USER_EX) {
       //这里处理token失效的情况，目前token有效期为30天，如果token失效，目前直接登出，重新登录，后期优化为刷新token
-      // throw Exception(response.data["msg"]);
-      //  await StorageUtil.removeToken();
-      //  await StorageUtil.removeBoolItem("isLogin");
       //  清除token，退出登录，跳转登录页......
+      Get.offAllNamed("/code_login_step_one");
+      StorageUtil.clear();
+      ToastUtil.showBasicToast(
+          "${response.data["code"]}: ${response.data["msg"]}");
+      return handler.reject(DioError(
+          requestOptions: response.requestOptions,
+          error: response.data["code"],
+          message: response.data["msg"]));
+      // handler.reject(DioError(
+      //     requestOptions: response.requestOptions,
+      //     error: response.data["code"],
+      //     message: response.data["msg"]));
+      // throw MyException(msg: response.data["msg"], code: response.data["code"]);
     }
     // 重点
-    handler.next(response);
+    if (response.data["code"] != ResponseStatus.SUCCESS) {
+      ToastUtil.showBasicToast(
+          "${response.data["code"]}: ${response.data["msg"]}");
+      return handler.reject(DioError(
+          requestOptions: response.requestOptions,
+          error: response.data["code"],
+          message: response.data["msg"]));
+      // throw MyException(msg: response.data["msg"], code: response.data["code"]);
+    }
+    return handler.next(response);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     switch (err.type) {
       // 连接服务器超时
-      case DioErrorType.connectTimeout:
+      case DioErrorType.connectionTimeout:
         {
           // 根据自己的业务需求来设定该如何操作,可以是弹出框提示/或者做一些路由跳转处理
-          ToastUtil.showBasicToast("无法连接到服务器，请稍后重试");
+          ToastUtil.showBasicToast("连接服务器超时，请稍后重试");
         }
         break;
       // 响应超时
       case DioErrorType.receiveTimeout:
         {
           // 根据自己的业务需求来设定该如何操作,可以是弹出框提示/或者做一些路由跳转处理
-          ToastUtil.showBasicToast("无法连接到服务器，请稍后重试");
+          ToastUtil.showBasicToast("响应超时，请稍后重试");
         }
         break;
       // 发送超时
       case DioErrorType.sendTimeout:
         {
           // 根据自己的业务需求来设定该如何操作,可以是弹出框提示/或者做一些路由跳转处理
+          ToastUtil.showBasicToast("发送超时，请稍后重试");
         }
         break;
       // 请求取消
       case DioErrorType.cancel:
         {
           // 根据自己的业务需求来设定该如何操作,可以是弹出框提示/或者做一些路由跳转处理
+          ToastUtil.showBasicToast("请求取消");
         }
         break;
       // 404/503错误
-      case DioErrorType.response:
+      case DioErrorType.badResponse:
         {
           // 根据自己的业务需求来设定该如何操作,可以是弹出框提示/或者做一些路由跳转处理
+          ToastUtil.showBasicToast(
+              "服务器响应错误，HttpStatusCode: ${err.response?.statusCode}");
         }
         break;
       // other 其他错误类型
-      case DioErrorType.other:
-        {}
+      default:
+        {
+          // 根据自己的业务需求来设定该如何操作,可以是弹出框提示/或者做一些路由跳转处理
+          ToastUtil.showBasicToast("请求失败，请稍后重试");
+        }
         break;
     }
-    super.onError(err, handler);
+    return handler.reject(err);
   }
 }

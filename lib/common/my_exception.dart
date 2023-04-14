@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 /// Dart 语言提供了Exception和Error类型，以及许多预定义的子类类型
 /// 也可以自定义异常，Error是程序无法恢复的严重错误，表示程序出现
 /// 较严重问题，而又无法通过编程处理，只能终止程序
@@ -10,13 +12,15 @@
 class MyException implements Exception {
   // 接收异常信息
   final String msg;
+  final int code;
 
-  MyException(this.msg);
+  // code为-1表示来自dio的错误，否则为后端返回的错误码
+  MyException({required this.msg, this.code = -1});
 
   // 覆写toString方法
   @override
   String toString() {
     // TODO: implement toString
-    return msg ?? 'MyException:$msg';
+    return "MyException($code): $msg";
   }
 }

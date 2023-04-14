@@ -25,34 +25,33 @@ class LoginByPasswordController extends GetxController {
   }
 
   bool isChinaPhoneLegal(String str) {
-    return RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
+    return RegExp(
+            '^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$')
+        .hasMatch(str);
   }
 
-  loginByPassword() async{
+  loginByPassword() async {
     String phone = phoneController.text;
     String password = passwordController.text;
 
-    try{
-      if(!isCheck.value){
+    try {
+      if (!isCheck.value) {
         ToastUtil.showBasicToast("请先同意用户协议、隐私政策和儿童隐私保护指引");
-      }else if(!isChinaPhoneLegal(phone)){
+      } else if (!isChinaPhoneLegal(phone)) {
         ToastUtil.showBasicToast("手机号格式不正确，请重新输入");
-      }else{
-        String encrypt_pass = await encrypt(password)??"";
-        if(encrypt_pass != "" && encrypt_pass.isNotEmpty){
-          var response = await DioUtils().post("/user/loginByPassword", data: {"phone":phone,"password":encrypt_pass});
-          String token =  response.data["data"]["token"];
+      } else {
+        String encrypt_pass = await encrypt(password) ?? "";
+        if (encrypt_pass != "" && encrypt_pass.isNotEmpty) {
+          var response = await DioUtils().post("/user/loginByPassword",
+              data: {"phone": phone, "password": encrypt_pass});
+          String token = response.data["data"]["token"];
           await StorageUtil.setToken(token);
           await StorageUtil.setBoolItem("isLogin", true);
           Get.offAndToNamed("/home");
         }
       }
-    }on MyException catch (e){
-      print(e);
-      ToastUtil.showBasicToast(e.msg);
-    }on Exception catch (e){
+    } on MyException catch (e) {
       print(e);
     }
   }
-
 }

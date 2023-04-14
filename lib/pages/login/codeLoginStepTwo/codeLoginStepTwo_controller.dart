@@ -1,13 +1,17 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/common/my_exception.dart';
 import 'package:monotes/common/storage_util.dart';
-import 'package:monotes/common/toast_util.dart';
+import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/routes/app_routes.dart';
 
 class codeLoginStepTwoController extends GetxController {
+  FlutterLocalNotificationsPlugin localNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   final TextEditingController editingController = TextEditingController();
   RxInt seconds = 60.obs;
   int phone = Get.arguments["phone"];
@@ -17,7 +21,26 @@ class codeLoginStepTwoController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
+    var android = const AndroidInitializationSettings('@mipmap/ic_launcher');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: android);
+    localNotificationsPlugin.initialize(
+      initializationSettings,
+    );
     sendCode();
+  }
+
+  showNotification(String msg) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails('your channel id', 'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await localNotificationsPlugin.show(0, '验证码', msg, platformChannelSpecifics,
+        payload: 'item x');
   }
 
   @override
@@ -36,8 +59,6 @@ class codeLoginStepTwoController extends GetxController {
     });
   }
 
-
-
   sendCode() async {
     seconds.value = 60;
     countDown();
@@ -47,12 +68,11 @@ class codeLoginStepTwoController extends GetxController {
       print(e);
       //  在这里处理返回的业务相关错误，是后端返回了信息
       //  如果服务器返回发送验证码失败，那么就不需要倒计时
-      ToastUtil.showBasicToast(e.msg);
-      timer.cancel();
-      seconds.value = 0;
-      update();
-    } on Exception catch (e) {
-      //  在这里处理网络请求错误，是后端没有返回信息
+      if (e.code == 104) {
+        //测试用户，后期删除
+        var response = await DioUtils().get("/test/code/${phone}");
+        showNotification("欢迎测试用户登录，您的验证码是：${response.data["data"]}");
+      }
       timer.cancel();
       seconds.value = 0;
       update();
@@ -60,7 +80,7 @@ class codeLoginStepTwoController extends GetxController {
   }
 
   loginByCode(String code) async {
-    try{
+    try {
       var response = await DioUtils().post("/user/loginByCode",
           data: {"phone": phone.toString(), "code": code});
       String token = response.data["data"]["token"];
@@ -69,15 +89,11 @@ class codeLoginStepTwoController extends GetxController {
       if (!isRegister) {
         await StorageUtil.setBoolItem("isLogin", true);
         Get.offAllNamed(Routes.HOME);
-      }else{
+      } else {
         Get.offAndToNamed(Routes.SET_PASSWORD);
       }
-    } on MyException catch (e){
-      print(e);
-      ToastUtil.showBasicToast(e.msg);
-    }on Exception catch (e){
+    } on MyException catch (e) {
       print(e);
     }
   }
-
 }

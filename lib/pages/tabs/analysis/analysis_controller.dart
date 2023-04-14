@@ -63,28 +63,32 @@ class AnalysisController extends GetxController {
 
   // 获取月度消费趋势
   getMonthTrendInfo(int year) async {
-    var response =
-        await DioUtils().get('/analysis/trend/month/$year-1/$year-12');
-    var data = response.data;
-    clearYearSpots();
-    for (var item in data['data']) {
-      int month = item['month'];
-      spotsYear[month - 1] = FlSpot(month.toDouble(), item['total']);
-      debugPrint("月度信息${spotsMonth[month - 1]}");
-    }
-    print(data);
+    try {
+      var response =
+          await DioUtils().get('/analysis/trend/month/$year-1/$year-12');
+      var data = response.data;
+      clearYearSpots();
+      for (var item in data['data']) {
+        int month = item['month'];
+        spotsYear[month - 1] = FlSpot(month.toDouble(), item['total']);
+        debugPrint("月度信息${spotsMonth[month - 1]}");
+      }
+      print(data);
+    } catch (e) {}
   }
 
   // 获取日度消费趋势
   getDayTrendInfo(int year, int month) async {
-    var response = await DioUtils()
-        .get('/analysis/trend/day/$year-$month-1/$year-$month-30');
-    var data = response.data;
-    clearMonthSpots();
-    for (var item in data['data']) {
-      int day = int.parse(item['date'].split('-')[2]);
-      spotsMonth[day - 1] = FlSpot(day.toDouble(), item['total']);
-    }
+    try {
+      var response = await DioUtils()
+          .get('/analysis/trend/day/$year-$month-1/$year-$month-30');
+      var data = response.data;
+      clearMonthSpots();
+      for (var item in data['data']) {
+        int day = int.parse(item['date'].split('-')[2]);
+        spotsMonth[day - 1] = FlSpot(day.toDouble(), item['total']);
+      }
+    } catch (e) {}
   }
 
   void clearYearSpots() {
@@ -103,27 +107,26 @@ class AnalysisController extends GetxController {
   }
 
   void getProportion(Period p, {int year = 2023, var month}) async {
-    var response;
-    if (p == Period.year) {
-      response = await DioUtils().get('/analysis/typeProportion/year/$year');
-      yearItems.clear();
-      for (var item in response.data['data']) {
-        yearItems.add(ExpenditureInfo(
-            item['typeId'], item['total'], item['percent'] * 100));
+    try {
+      var response;
+      if (p == Period.year) {
+        response = await DioUtils().get('/analysis/typeProportion/year/$year');
+        yearItems.clear();
+        for (var item in response.data['data']) {
+          yearItems.add(ExpenditureInfo(
+              item['typeId'], item['total'], item['percent'] * 100));
+        }
+      } else {
+        response = await DioUtils()
+            .get('/analysis/typeProportion/month/${month.year}-${month.month}');
+        monthItems.clear();
+        for (var item in response.data['data']) {
+          monthItems.add(ExpenditureInfo(
+              item['typeId'], item['total'], item['percent'] * 100));
+        }
       }
-    } else {
-      response = await DioUtils()
-          .get('/analysis/typeProportion/month/${month.year}-${month.month}');
-      monthItems.clear();
-      for (var item in response.data['data']) {
-        monthItems.add(ExpenditureInfo(
-            item['typeId'], item['total'], item['percent'] * 100));
-      }
-    }
+    } catch (e) {}
   }
 }
 
-enum Period {
-  year,
-  month
-}
+enum Period { year, month }

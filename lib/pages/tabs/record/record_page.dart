@@ -18,6 +18,8 @@ import 'package:monotes/pages/tabs/record/record_controller.dart';
 class RecordPage extends GetView<RecordController> {
   RecordPage({super.key});
 
+  final _ = Get.put(RecordController());
+
   // 拍摄的照片
   late File _image;
 
@@ -35,13 +37,16 @@ class RecordPage extends GetView<RecordController> {
 
     if (pickedFile != null) {
       debugPrint("文件的路径：${pickedFile.path}");
-      Future<RecordDetail> future = controller.getOcrInfo(pickedFile.path);
+      Future<RecordDetail?> future = controller.getOcrInfo(pickedFile.path);
+
       future.then((value) {
         LogUtil.v(value, tag: "RECORD");
-        controller.setInfo(value);
+        if (value != null) {
+          controller.setInfo(value);
+        }
       });
     } else {
-      ToastUtil.showBasicToast("选取照片失败");
+      ToastUtil.showBasicToast("取消图片选择");
       debugPrint('No image selected.');
     }
   }
@@ -94,7 +99,7 @@ class RecordPage extends GetView<RecordController> {
                         ),
                         const Spacer(),
                         SizedBox(
-                          height: 40.sp,
+                          height: 50.sp,
                           width: 200.sp,
                           child: TextField(
                               controller: controller.inputTimeController,
@@ -139,11 +144,12 @@ class RecordPage extends GetView<RecordController> {
                         const Spacer(),
                         Container(
                           margin: const EdgeInsets.only(top: 10),
-                          height: 40.sp,
+                          height: 50.sp,
                           width: 200.sp,
                           child: TextField(
                               inputFormatters: [
-                                FilteringTextInputFormatter(RegExp("[0-9.]"), allow: true)
+                                FilteringTextInputFormatter(RegExp("[0-9.]"),
+                                    allow: true)
                               ],
                               controller: controller.inputCostController,
                               keyboardType: TextInputType.number,
@@ -165,7 +171,7 @@ class RecordPage extends GetView<RecordController> {
                         ),
                         const Spacer(),
                         Container(
-                          height: 40.sp,
+                          height: 50.sp,
                           margin: const EdgeInsets.only(top: 10),
                           width: 200.sp,
                           child: TextField(
@@ -264,22 +270,22 @@ class RecordPage extends GetView<RecordController> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 10.w,),
+                        SizedBox(
+                          width: 10.w,
+                        ),
                         TextButton(
                             onPressed: controller.addLabel,
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
                                       borderRadius:
-                                      BorderRadius.circular(
-                                          10.w))),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.blue),
-                              foregroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.white),
+                                          BorderRadius.circular(10.w))),
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.blue),
+                              foregroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
                             ),
-                            child: const Text("新增")
-                            ),
+                            child: const Text("新增")),
                         SizedBox(
                           width: 10.w,
                         ),
@@ -296,10 +302,13 @@ class RecordPage extends GetView<RecordController> {
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       //取出每个数据
-                                      return InputChip(label: Text(controller.labelList[index]),
-                                      onDeleted: (){
-                                        controller.labelList.removeAt(index);
-                                      },);
+                                      return InputChip(
+                                        label:
+                                            Text(controller.labelList[index]),
+                                        onDeleted: () {
+                                          controller.labelList.removeAt(index);
+                                        },
+                                      );
                                     },
                                     //子布局排列方式
                                     //按照固定列数来排列
@@ -316,7 +325,9 @@ class RecordPage extends GetView<RecordController> {
                     )
                   ],
                 )),
-            SizedBox(height: 10.w,),
+            SizedBox(
+              height: 10.w,
+            ),
             FloatingActionButton(
               backgroundColor: Colors.green,
               onPressed: () {
@@ -325,11 +336,10 @@ class RecordPage extends GetView<RecordController> {
                     actions: [
                       '从相册中选择',
                       '拍照',
-                    ],
-                    indexedActionClickCallback: (index) {
-                      getImage(1-index);
-                      Get.back();
-                    });
+                    ], indexedActionClickCallback: (index) {
+                  getImage(1 - index);
+                  Get.back();
+                });
               },
               child: const Icon(Icons.camera_enhance_outlined),
             ),

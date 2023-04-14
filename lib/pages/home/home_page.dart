@@ -8,6 +8,8 @@ import 'package:monotes/pages/tabs/person/person_page.dart';
 import 'package:monotes/pages/tabs/record/record_page.dart';
 import 'package:monotes/routes/app_routes.dart';
 
+import '../tabs/record/record_controller.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -32,6 +34,7 @@ class _HomePageState extends State<HomePage> {
     BottomNavigationBarItem(icon: Icon(Icons.person), label: "我的"),
   ];
   var homeController = Get.find<HomeController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -24,8 +24,8 @@ class PersonController extends GetxController {
     super.onReady();
   }
 
-  getUserInfo() async{
-    try{
+  getUserInfo() async {
+    try {
       var response = await DioUtils().get("/user/info");
 
       String phone = response.data["data"]["phone"];
@@ -34,32 +34,29 @@ class PersonController extends GetxController {
       String createTime = response.data["data"]["createTime"];
 
       StorageUtil.setStringItem("phone", phone);
-      StorageUtil.setStringItem("username", username??"");
-      StorageUtil.setStringItem("birthday", birthday??"");
+      StorageUtil.setStringItem("username", username ?? "");
+      StorageUtil.setStringItem("birthday", birthday ?? "");
       StorageUtil.setStringItem("createTime", createTime);
 
-      if(username != null){
+      if (username != null) {
         p_username.value = username;
-      }else{
-        p_username.value = "手机用户${phone.substring(0,4)}...";
+      } else {
+        p_username.value = "手机用户${phone.substring(0, 4)}...";
       }
 
       DateTime dateTime = DateTime.parse(createTime);
       int days = DateTime.now().difference(dateTime).inDays;
       createDay.value = days;
-    }on MyException catch (e) {
-      print(e);
-      ToastUtil.showBasicToast(e.msg);
-    } on Exception catch (e) {
+    } on MyException catch (e) {
       print(e);
     }
   }
 
-  getStaticsInfo() async{
-    try{
+  getStaticsInfo() async {
+    try {
       int num = await StorageUtil.getIntItem("StatisticNum");
       noteNum.value = num;
-    }on MyException catch (e) {
+    } on MyException catch (e) {
       print(e);
       ToastUtil.showBasicToast(e.msg);
     } on Exception catch (e) {
