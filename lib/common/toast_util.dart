@@ -5,12 +5,11 @@ class ToastUtil {
   static showBasicToast(String msg) {
     Fluttertoast.showToast(
         msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
+        toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         backgroundColor: Colors.black,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
   }
 
   /// cancel all the toasts call

@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:common_utils/common_utils.dart';
-import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:monotes/common/config.dart';
-import 'package:monotes/core/network/dio_util.dart';
+import 'package:monotes/common/my_exception.dart';
 import 'package:monotes/common/toast_util.dart';
+import 'package:monotes/core/network/dio_util.dart';
 import 'package:monotes/models/record_detail.dart';
 
 import '../bills/bills_controller.dart';
@@ -42,33 +42,41 @@ class RecordController extends GetxController {
           remarkController.text,
           goodsController.text);
       try {
+        EasyLoading.show(status: '提交中...', dismissOnTap: false);
         var response =
             await DioUtils().post('/bill/addRecord', data: record.toJson());
         // 返回并刷新
-        back();
+        Get.back();
+        ToastUtil.showBasicToast("添加成功");
       } catch (e) {
         LogUtil.v(record, tag: "SUBMIT");
-        Get.back();
+        // Get.back();
+      } finally {
+        await EasyLoading.dismiss();
       }
     }
   }
 
-  Future<RecordDetail> getOcrInfo(String filePath) async {
-
+  Future<RecordDetail?> getOcrInfo(String filePath) async {
     debugPrint("图片的大小：${await File(filePath).length()}");
     var formData = dio.FormData.fromMap({
-      "file": [dio.MultipartFile.fromBytes(await File(filePath).readAsBytes(), filename: "${DateTime.now().toString()}.jpg")]
+      "file": [
+        dio.MultipartFile.fromBytes(await File(filePath).readAsBytes(),
+            filename: "${DateTime.now().toString()}.jpg")
+      ]
     });
 
-    await EasyLoading.show(status: 'loading...', dismissOnTap: true);
-
-    var response = await DioUtils().post('/bill/ocr', data: formData, options: dio.Options(receiveTimeout: 10000));
-
-    await EasyLoading.dismiss();
-
-    ToastUtil.showBasicToast(response.data['msg']);
-
-    return RecordDetail.fromJson(response.data['data']);
+    await EasyLoading.show(status: '识别中...', dismissOnTap: false);
+    try {
+      var response = await DioUtils().post('/bill/ocr',
+          data: formData,
+          options: dio.Options(receiveTimeout: const Duration(seconds: 10)));
+      return RecordDetail.fromJson(response.data['data']);
+    } on MyException catch (e) {
+      return null;
+    } finally {
+      await EasyLoading.dismiss();
+    }
   }
 
   setInfo(RecordDetail recordDetail) {
@@ -117,7 +125,6 @@ class RecordController extends GetxController {
       ToastUtil.showBasicToast("请勿重复输入标签");
     }
   }
-
 }
 
 class TypeButtonInfo {
@@ -126,5 +133,3 @@ class TypeButtonInfo {
 
   TypeButtonInfo(this.assetName, this.label);
 }
-
-

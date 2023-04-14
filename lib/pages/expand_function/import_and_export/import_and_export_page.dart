@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:monotes/widgets/currency_card.dart';
 import 'package:bruno/bruno.dart';
-import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../../../common/toast_util.dart';
 
@@ -47,36 +47,37 @@ class ImportAndExportPage extends GetView<ImportAndExportController> {
                 icon: Icons.call_received_sharp,
                 title: "批量导入",
                 onTap: () async {
-                  List<Asset> resultList = <Asset>[];
-                  List<Asset> selectList = <Asset>[];
+                  List<AssetEntity>? resultList= <AssetEntity>[];
 
-                  try {
-                    resultList = await MultipleImagesPicker.pickImages(
-                      maxImages: 9,
-                      enableCamera: true,
-                      selectedAssets: selectList,
-                      cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
-                      materialOptions: const MaterialOptions(
-                        statusBarColor: "#000000",
-                        actionBarColor: "#000000",
-                        actionBarTitle: "图片选择",
-                        allViewTitle: "所有图片",
-                        useDetailsView: false,
-                        selectCircleStrokeColor: "#FF4095",
+                    resultList = await AssetPicker.pickAssets(
+                      context,
+                      pickerConfig: const AssetPickerConfig(
+                        maxAssets: 9,
+                        requestType: RequestType.image,
                       ),
                     );
-                  } on Exception catch (e) {
-                    ToastUtil.showBasicToast("取消图片选择");
-                  }
-
-
-                  if(resultList.isNotEmpty){
-                    controller.getOcr(resultList);
-                  }
-
+                    // resultList = await MultipleImagesPicker.pickImages(
+                    //   maxImages: 9,
+                    //   enableCamera: true,
+                    //   selectedAssets: selectList,
+                    //   cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
+                    //   materialOptions: const MaterialOptions(
+                    //     statusBarColor: "#000000",
+                    //     actionBarColor: "#000000",
+                    //     actionBarTitle: "图片选择",
+                    //     allViewTitle: "所有图片",
+                    //     useDetailsView: false,
+                    //     selectCircleStrokeColor: "#FF4095",
+                    //   ),
+                    // );
+                    if(resultList!.isNotEmpty&&resultList.length>1){
+                      controller.getOcr(resultList);
+                    }else{
+                      ToastUtil.showBasicToast("请至少选择两张图片");
+                    }
                 }),
             FunctionCard(icon: Icons.call_made, title: "账单导出", onTap: () {
-              controller.showNotification("xixi");
+              controller.showNotification("账单导出");
             }),
           ],
         ),

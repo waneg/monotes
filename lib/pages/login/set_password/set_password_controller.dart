@@ -25,58 +25,57 @@ class SetPasswordController extends GetxController {
     super.onReady();
   }
 
-  sendPassword(String password) async{
-    var response = await DioUtils().put("/user/setPassword", data: {"password" : password});
-    int status = response.data["code"];
-    if(status == ResponseStatus.SUCCESS){
-      await StorageUtil.setBoolItem("isLogin", true);
+  sendPassword(String password) async {
+    try {
+      var response = await DioUtils()
+          .put("/user/setPassword", data: {"password": password});
+      int status = response.data["code"];
+      return status;
+    } on MyException catch (e) {
+      print(e);
     }
-    return status;
   }
 
-  isPasswordLegal(String password){
-    return RegExp("^(?![a-zA-Z]+\$)(?!\d+\$)(?![^\da-zA-Z\s]+\$).{8,16}\$").hasMatch(password);
+  isPasswordLegal(String password) {
+    return RegExp("^(?![a-zA-Z]+\$)(?!\d+\$)(?![^\da-zA-Z\s]+\$).{8,16}\$")
+        .hasMatch(password);
     // return true;
   }
 
   checkPassword() async {
     String pass = passwordController.text;
     String pass_confirm = passwordConfirmController.text;
-    if (pass.isNotEmpty && pass_confirm.isNotEmpty){
-      if(pass == pass_confirm){
-        if(pass.length < 8) {
+    if (pass.isNotEmpty && pass_confirm.isNotEmpty) {
+      if (pass == pass_confirm) {
+        if (pass.length < 8) {
           ToastUtil.showBasicToast("密码位数不得少于8位");
-        } else if(pass.length > 16) {
+        } else if (pass.length > 16) {
           ToastUtil.showBasicToast("密码位数不得超过16位");
-        } else if(!isPasswordLegal(pass)){
+        } else if (!isPasswordLegal(pass)) {
           ToastUtil.showBasicToast("密码必须包含字母、数字、符号中的至少两种");
-        }else{
-          String encrypt_pass = await encrypt(pass)??"";
-          if(encrypt_pass != "" && encrypt_pass.isNotEmpty){
+        } else {
+          String encrypt_pass = await encrypt(pass) ?? "";
+          if (encrypt_pass != "" && encrypt_pass.isNotEmpty) {
             await sendPassword(encrypt_pass);
             Get.offAllNamed("/home");
           }
         }
-      }else{
+      } else {
         ToastUtil.showBasicToast("两次密码不一致，请重试");
       }
-    }else{
+    } else {
       ToastUtil.showBasicToast("密码不得为空");
     }
   }
 
-  setButton() async{
-    try{
+  setButton() async {
+    try {
       await checkPassword();
-    }on MyException catch (e){
+    } on MyException catch (e) {
       print(e);
       ToastUtil.showBasicToast(e.msg);
-    }on Exception catch (e){
+    } on Exception catch (e) {
       print(e);
     }
   }
-
-
-
-
 }

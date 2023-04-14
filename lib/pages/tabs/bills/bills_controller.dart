@@ -23,7 +23,8 @@ class BillsController extends GetxController {
 
   getBills() async {
     try {
-      var response = await DioUtils().get("/bill/getList",options: dio.Options(receiveTimeout: 30000));
+      var response = await DioUtils().get("/bill/getList",
+          options: dio.Options(receiveTimeout: const Duration(seconds: 30)));
       var list = response.data['data'];
       var tempList = [];
       for (var item in list) {
@@ -31,30 +32,23 @@ class BillsController extends GetxController {
       }
       billItems.value = tempList;
       update();
-    } on MyException catch (e) {
-      print(e);
-      ToastUtil.showBasicToast(e.msg);
-    } on Exception catch (e) {
-      print(e);
-    }
+    } on MyException catch (e) {}
   }
 
   editBill(int selectedIndex, double price) async {
     try {
       BillsDetail item = billItems[selectedIndex];
       int billId = item.billId;
-      var response = await DioUtils().put("/bill/editRecord", data: {"billId":billId, "price": price});
-      BillsDetail eitem = BillsDetail(item.billId, item.typeId, price, item.goods, item.time);
+      var response = await DioUtils()
+          .put("/bill/editRecord", data: {"billId": billId, "price": price});
+      BillsDetail eitem =
+          BillsDetail(item.billId, item.typeId, price, item.goods, item.time);
       billItems[selectedIndex] = eitem;
       getMonthlyPay();
     } on MyException catch (e) {
       print(e);
-      ToastUtil.showBasicToast(e.msg);
-    } on Exception catch (e) {
-      print(e);
     }
   }
-
 
   deleteBill(int selectedIndex) async {
     try {
@@ -71,21 +65,15 @@ class BillsController extends GetxController {
       update();
     } on MyException catch (e) {
       print(e);
-      ToastUtil.showBasicToast(e.msg);
-    } on Exception catch (e) {
-      print(e);
     }
   }
-  
-  getMonthlyPay() async{
-    try{
+
+  getMonthlyPay() async {
+    try {
       var response = await DioUtils().get("/analysis/curMonthTotal");
       num money = response.data['data'];
       monthlyPay.value = money.toDouble();
-    }on MyException catch (e) {
-      print(e);
-      ToastUtil.showBasicToast(e.msg);
-    } on Exception catch (e) {
+    } on MyException catch (e) {
       print(e);
     }
   }
@@ -101,11 +89,11 @@ class BillsController extends GetxController {
 
   selectBills(int year, int month) async {
     await getBills();
-    String format = "$year-${month.toString().padLeft(2,'0')}";
+    String format = "$year-${month.toString().padLeft(2, '0')}";
     print(format);
     var tempList = [];
-    for(BillsDetail item in billItems){
-      if(item.time.startsWith(format)){
+    for (BillsDetail item in billItems) {
+      if (item.time.startsWith(format)) {
         tempList.add(item);
       }
     }
