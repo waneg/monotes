@@ -4,7 +4,7 @@
     tools:ignore="ExtraText">
 
     <application
-        android:label="monotes"
+        android:label="记账全能王"
         android:name="${applicationName}"
         android:icon="@mipmap/monotes_logo">
         <activity
@@ -44,9 +44,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-<!-- flutter_wechat_assets_picker   -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- flutter_wechat_assets_picker   -->
     <!--请求图片和视频权限-->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
